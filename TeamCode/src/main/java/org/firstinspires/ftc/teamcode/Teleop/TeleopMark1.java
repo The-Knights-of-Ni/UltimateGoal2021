@@ -289,7 +289,7 @@ public class TeleopMark1 extends LinearOpMode {
 //            telemetry.addData("Arm "," tilt %.0f, %.0f; length %.0f, %.0f",
 //                    robot.control.getMainArmAngleTickTarget(), robot.control.getMainArmAngleTickCurrent(),
 //                    robot.control.getMainArmLengthTickTarget(), robot.control.getMainArmLengthTickCurrent());
-            telemetry.addData("clawRotation", mainClawRotationAngle);
+//            telemetry.addData("clawRotation", mainClawRotationAngle);
             telemetry.addData("Drive Mode ", prospectiveMode.toString());
             telemetry.addData("robot angle ", robotAngle);
             int currentPositions[] = robot.drive.getCurrentPositions();

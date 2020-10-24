@@ -48,7 +48,7 @@ public class TeleopMark1 extends LinearOpMode {
         OPEN,
         WIDEOPEN,
     }
-    private MainClawState mainClawState;
+//    private MainClawState mainClawState;
 
     private Prospective prospectiveMode = Prospective.ROBOT;
     private double robotAngle;
@@ -102,7 +102,7 @@ public class TeleopMark1 extends LinearOpMode {
             robot.vision.getTargetsSkyStone().activate();
         }
 
-        mainClawState = MainClawState.CLOSE;
+//      mainClawState = MainClawState.CLOSE;
         while(opModeIsActive()) {
 
             // Get gamepad inputs

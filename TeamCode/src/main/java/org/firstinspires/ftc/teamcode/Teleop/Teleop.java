@@ -13,48 +13,32 @@ import java.io.IOException;
  * Created by PaigeYeung on 10/17/2020
  */
 
-@TeleOp(name = "TeleopMark1")
-public class TeleopMark1 extends LinearOpMode {
+@TeleOp(name = "Teleop")
+public class Teleop extends LinearOpMode {
     //Declare DC motor objects
     private Robot robot;
-
-
-
-//    double mainArmHorizontalPos = 0.0;
-//    double mainArmVerticalPos = 0.0;
-//    double mainArmHorizontalMax = 1000.0;
-//    double mainArmVerticalMax = 1100.0;
-//    double mainArmIncrement = 600.0;
-//    double mainClawRotationAngle;
-//    double mainClawRotationIncrement = 300;
 
     double deltaT;
     double timeCurrent;
     double timePre;
     ElapsedTime timer;
 
-//    private boolean mainClawArmControlDigital = true;
-//    private boolean mainClawArmDeployed = false;
-//    private boolean csClawArmControlDigital = true;
-//    private boolean csClawArmDeployed = false;
-
     enum Prospective {
         ROBOT,
         DRIVER,
     }
 
-//    enum MainClawState {
-//        CLOSE,
-//        OPEN,
-//        WIDEOPEN,
-//    }
-//    private MainClawState mainClawState;
+    enum MainClawState {
+        CLOSE,
+        OPEN,
+        WIDEOPEN,
+    }
 
     private Prospective prospectiveMode = Prospective.ROBOT;
     private double robotAngle;
     private boolean visionEnabled = false;
 
-    private double turretAngle; // vertical angle for turret
+    private double turretAngle; // for turret
 
     private void initOpMode() {
         //Initialize DC motor objects
@@ -95,9 +79,9 @@ public class TeleopMark1 extends LinearOpMode {
         telemetry.clearAll();
         timeCurrent = timer.nanoseconds();
         timePre = timeCurrent;
-        if (visionEnabled) {
-            robot.vision.getTargetsSkyStone().activate();
-        }
+//        if (visionEnabled) {
+//            robot.vision.getTargetsSkyStone().activate();
+//        }
 
 //      mainClawState = MainClawState.CLOSE;
         while(opModeIsActive()) {
@@ -143,14 +127,8 @@ public class TeleopMark1 extends LinearOpMode {
                 }
             }
 
-//            telemetry.addData("Arm ","X %.1f, Y %.1f", mainArmHorizontalPos, mainArmVerticalPos);
-//            telemetry.addData("Arm "," tilt %.0f, %.0f; length %.0f, %.0f",
-//                    robot.control.getMainArmAngleTickTarget(), robot.control.getMainArmAngleTickCurrent(),
-//                    robot.control.getMainArmLengthTickTarget(), robot.control.getMainArmLengthTickCurrent());
-//            telemetry.addData("clawRotation", mainClawRotationAngle);
             telemetry.addData("Drive Mode ", prospectiveMode.toString());
             telemetry.addData("robot angle ", robotAngle);
-
             telemetry.addData("turret angle ", turretAngle);
 
             int currentPositions[] = robot.drive.getCurrentPositions();

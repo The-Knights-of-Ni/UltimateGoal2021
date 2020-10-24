@@ -54,6 +54,8 @@ public class TeleopMark1 extends LinearOpMode {
     private double robotAngle;
     private boolean visionEnabled = false;
 
+    private double verticalAngle; // for turret
+
 //    private int verticalStepsCount = 10;
 //    private double[] verticalSteps = {110.0, 210.0, 310.0, 410.0, 510.0, 603.0, 693.0, 790.0, 880.0, 970.0};
 
@@ -92,14 +94,14 @@ public class TeleopMark1 extends LinearOpMode {
         robot.initServosTeleop();
         // call initServosAuto() if testing Teleop stand-alone
 //        robot.initServosAuto();
-        mainClawRotationAngle = robot.control.getMainClawRotationDegrees();
+
         telemetry.clearAll();
         timeCurrent = timer.nanoseconds();
         timePre = timeCurrent;
         if (visionEnabled) {
             robot.vision.getTargetsSkyStone().activate();
         }
-        robot.control.closeMainClawStone();
+
         mainClawState = MainClawState.CLOSE;
         while(opModeIsActive()) {
 

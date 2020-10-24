@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.SubSystems;
+package org.firstinspires.ftc.teamcode.Subsystems;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
@@ -257,7 +257,7 @@ public class Robot extends Subsystem {
 //        drive.printMotorPIDCoefficients();
 //        opMode.sleep(2000);
 
-        control = new Control(xRailWinch, armTilt, mainClaw, mainClawRotation, mainClawArm, csClaw, csArm, fClawL, fClawR, imu, opMode, timer);
+        control = new Control(xRailWinch, armTilt, imu, opMode, timer);
 
         if (visionMode != 0) {
             opMode.telemetry.addData("Mode", " Camera initializing...");

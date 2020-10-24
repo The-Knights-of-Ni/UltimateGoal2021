@@ -22,13 +22,13 @@ public class Control extends Subsystem {
     private DcMotorEx armTilt;
 
     //Servos
-    private Servo mainClawArm;
-    private Servo mainClawRotation;
-    private Servo mainClaw; //0
-    private Servo csClaw; //capstone claw
-    private Servo csArm; //capstone arm
-    private Servo fClawL; //foundationClawLeft
-    private Servo fClawR; // foundationClawRight
+//    private Servo mainClawArm;
+//    private Servo mainClawRotation;
+//    private Servo mainClaw; //0
+//    private Servo csClaw; //capstone claw
+//    private Servo csArm; //capstone arm
+//    private Servo fClawL; //foundationClawLeft
+//    private Servo fClawR; // foundationClawRight
 
     //Sensors
     private BNO055IMU imu;
@@ -89,30 +89,39 @@ public class Control extends Subsystem {
     private static final double     MAINARM_LENGTH_TICK_MAX         = 8900.0;    // main arm tick max
 
     // Servos
-    private static final double     fClawLFoundation = 0.42;
-    private static final double     fClawRFoundation = 0.58;
-    private static final double     fClawLDown = 0.36;
-    private static final double     fClawLUp = 0.795;
-    private static final double     fClawRUp = 0.05;
-    private static final double     fClawRDown = 0.63;
+//    private static final double     fClawLFoundation = 0.42;
+//    private static final double     fClawRFoundation = 0.58;
+//    private static final double     fClawLDown = 0.36;
+//    private static final double     fClawLUp = 0.795;
+//    private static final double     fClawRUp = 0.05;
+//    private static final double     fClawRDown = 0.63;
+//
+//    private static final double     CLAW_ARM_POS_ANGLE                  = 70.1; // most positive angle
+//    private static final double     CLAW_ARM_POS_VALUE                  = 0.971; // servo setting at most positive angle
+//    private static final double     CLAW_ARM_POS_0_DEG                  = 0.692; // xRail horizontal and main claw facing down
+//    private static final double     CLAW_ARM_POS_N180_DEG                = 0.04;
+//    private static final double     CLAW_ARM_ROT_0_DEG                  = 0.046;
+//    private static final double     CLAW_ARM_ROT_180_DEG                = 0.796;
+//    private static final double     MAIN_CLAW_POS_OPEN_WIDE              = 0.369;
+//    private static final double     MAIN_CLAW_POS_OPEN                  = 0.416;
+//    private static final double     MAIN_CLAW_POS_CLOSED_STONE          = 0.589;
+//    private static final double     MAIN_CLAW_POS_CLOSED                = 0.64;
+//
+//    private static final double     CS_ARM_POS_ANGLE                  = 68.5; // most positive angle
+//    private static final double     CS_ARM_POS_VALUE                  = 0.038; // servo setting at most positive angle
+//    private static final double     CS_ARM_POS_0_DEG                  = 0.301; // xRail horizontal and cs claw facing down
+//    private static final double     CS_ARM_POS_N180_DEG                = 0.939;
+//    private static final double     CS_CLAW_POS_OPEN                  = 0.66;
+//    private static final double     CS_CLAW_POS_CLOSED                = 0.43;
+//
 
-    private static final double     CLAW_ARM_POS_ANGLE                  = 70.1; // most positive angle
-    private static final double     CLAW_ARM_POS_VALUE                  = 0.971; // servo setting at most positive angle
-    private static final double     CLAW_ARM_POS_0_DEG                  = 0.692; // xRail horizontal and main claw facing down
-    private static final double     CLAW_ARM_POS_N180_DEG                = 0.04;
-    private static final double     CLAW_ARM_ROT_0_DEG                  = 0.046;
-    private static final double     CLAW_ARM_ROT_180_DEG                = 0.796;
-    private static final double     MAIN_CLAW_POS_OPEN_WIDE              = 0.369;
-    private static final double     MAIN_CLAW_POS_OPEN                  = 0.416;
-    private static final double     MAIN_CLAW_POS_CLOSED_STONE          = 0.589;
-    private static final double     MAIN_CLAW_POS_CLOSED                = 0.64;
-
-    private static final double     CS_ARM_POS_ANGLE                  = 68.5; // most positive angle
-    private static final double     CS_ARM_POS_VALUE                  = 0.038; // servo setting at most positive angle
-    private static final double     CS_ARM_POS_0_DEG                  = 0.301; // xRail horizontal and cs claw facing down
-    private static final double     CS_ARM_POS_N180_DEG                = 0.939;
-    private static final double     CS_CLAW_POS_OPEN                  = 0.66;
-    private static final double     CS_CLAW_POS_CLOSED                = 0.43;
+    // THESE NEXT VALUES NEED TO BE SET LATER - wobble goal for ultimategoal
+    private static final double     WB_ARM_POS_ANGLE                  = 0; // most positive angle
+    private static final double     WB_ARM_POS_VALUE                  = 0; // servo setting at most positive angle
+    private static final double     WB_CLAW_POS_OPEN_WIDE              = 0;
+    private static final double     WB_CLAW_POS_OPEN                  = 0;
+    private static final double     WB_CLAW_POS_CLOSED_STONE          = 0;
+    private static final double     WB_CLAW_POS_CLOSED                = 0;
 
     // define variables
     private double mainArmAngle = 0.0;
@@ -123,18 +132,17 @@ public class Control extends Subsystem {
     private boolean mainClawArmTrackingMode = false;
     private double mainClawRotationAngle = 0.0;
 
-    public Control(DcMotorEx xRailWinch, DcMotorEx armTilt, Servo mainClaw, Servo mainClawRotation, Servo mainClawArm,
-                   Servo csClaw, Servo csArm, Servo fClawL, Servo fClawR, BNO055IMU imu, LinearOpMode opMode, ElapsedTime timer) {
+    public Control(DcMotorEx xRailWinch, DcMotorEx armTilt, BNO055IMU imu, LinearOpMode opMode, ElapsedTime timer) {
         // store device information locally
         this.xRailWinch = xRailWinch;
         this.armTilt = armTilt;
-        this.mainClaw = mainClaw;
-        this.mainClawRotation = mainClawRotation;
-        this.mainClawArm = mainClawArm;
-        this.csClaw = csClaw;
-        this.csArm = csArm;
-        this.fClawL = fClawL;
-        this.fClawR = fClawR;
+//        this.mainClaw = mainClaw;
+//        this.mainClawRotation = mainClawRotation;
+//        this.mainClawArm = mainClawArm;
+//        this.csClaw = csClaw;
+//        this.csArm = csArm;
+//        this.fClawL = fClawL;
+//        this.fClawR = fClawR;
         this.opMode = opMode;
         this.hardwareMap = opMode.hardwareMap;
         this.imu = imu;
@@ -153,102 +161,72 @@ public class Control extends Subsystem {
         armTilt.setZeroPowerBehavior(mode);
     }
 
-    // main arm tilting angle from horizontal
-    public double getMainArmAngle() {
-        mainArmAngle = mainArmTickToAngle((double) armTilt.getCurrentPosition());
-        return mainArmAngle;
-    }
-    public double getMainArmTargetAngle() {
-        return mainArmTargetAngle;
-    }
-    public void setMainArmAngle(double angle) {
-        mainArmTargetAngle = angle;
-        mainArmAngleTick = mainArmAngleToTick(angle);
-        armTilt.setTargetPosition((int) mainArmAngleTick);
-    }
-    public double getMainArmAngleTickTarget() { return mainArmAngleTick;}
-    public double getMainArmAngleTickCurrent() { return (double) armTilt.getCurrentPosition();}
-
-    // main arm extension length
-    public double getMainArmExtensionLength() {
-        return WINCH_MM_PER_TICK * ((double) xRailWinch.getCurrentPosition());
-    }
-    public void setMainArmExtensionLength(double length) {
-        mainArmLengthTick = length / WINCH_MM_PER_TICK;
-        if (mainArmLengthTick > MAINARM_LENGTH_TICK_MAX) {
-            mainArmLengthTick = MAINARM_LENGTH_TICK_MAX;
-        }
-        xRailWinch.setTargetPosition((int) mainArmLengthTick);
-    }
-    public double getMainArmLengthTickTarget() { return mainArmLengthTick;}
-    public double getMainArmLengthTickCurrent() { return (double) xRailWinch.getCurrentPosition();}
-
-    // main arm total length
-    public double getMainArmTotalLength() {
-        return getMainArmExtensionLength() + MAINARM_INIT_LENGTH;
-    }
-    public void setMainArmTotalLength(double length) {
-        setMainArmExtensionLength(length - MAINARM_INIT_LENGTH);
-    }
+//    // main arm total length
+//    public double getMainArmTotalLength() {
+//        return getMainArmExtensionLength() + MAINARM_INIT_LENGTH;
+//    }
+//    public void setMainArmTotalLength(double length) {
+//        setMainArmExtensionLength(length - MAINARM_INIT_LENGTH);
+//    }
 
     // main arm horizontal offset measured from the initial position
-    public double getMainArmHorizontalOffset() {
-        mainArmAngle = getMainArmAngle();
-        return getMainArmTotalLength()*Math.cos(mainArmAngle*Math.PI/180.0)
-                - MAINARM_STACK_HEIGHT*Math.sin(mainArmAngle*Math.PI/180.0) - MAINARM_INIT_LENGTH;
-    }
+//    public double getMainArmHorizontalOffset() {
+//        mainArmAngle = getMainArmAngle();
+//        return getMainArmTotalLength()*Math.cos(mainArmAngle*Math.PI/180.0)
+//                - MAINARM_STACK_HEIGHT*Math.sin(mainArmAngle*Math.PI/180.0) - MAINARM_INIT_LENGTH;
+//    }
 
     // main arm vertical offset measured from the initial position
-    public double getMainArmVerticalOffset() {
-        mainArmAngle = getMainArmAngle();
-        return getMainArmTotalLength()*Math.sin(mainArmAngle*Math.PI/180.0)
-                + MAINARM_STACK_HEIGHT*Math.cos(mainArmAngle*Math.PI/180.0) - MAINARM_STACK_HEIGHT;
-    }
-
-    // set main arm offset measured from the initial position
-    public void setMainArmPosition(double horizontalOffset, double verticalOffset) {
-        double targetAngle, targetLength;
-        // change coordinate system to the main arm pivoting point
-        double targetHorizontalOffset = horizontalOffset + MAINARM_INIT_LENGTH;
-        double targetVerticalOffset = verticalOffset + MAINARM_STACK_HEIGHT;
-        if (targetHorizontalOffset > targetVerticalOffset) {
-            // use targetHorizontalOffset as the anchor formula
-            // initial guess of target length
-            targetLength = Math.sqrt(targetHorizontalOffset*targetHorizontalOffset + targetVerticalOffset*targetVerticalOffset);
-            // first iteration
-            targetAngle = (Math.atan(targetVerticalOffset/targetHorizontalOffset)
-                    - Math.acos(targetLength/Math.sqrt(targetLength*targetLength+MAINARM_STACK_HEIGHT*MAINARM_STACK_HEIGHT)))*180.0/Math.PI;
-            targetLength = (targetHorizontalOffset + MAINARM_STACK_HEIGHT*Math.sin(targetAngle*Math.PI/180.0)) / Math.cos(targetAngle*Math.PI/180.0);
-            // second iteration
-            targetAngle = (Math.atan(targetVerticalOffset/targetHorizontalOffset)
-                    - Math.acos(targetLength/Math.sqrt(targetLength*targetLength+MAINARM_STACK_HEIGHT*MAINARM_STACK_HEIGHT)))*180.0/Math.PI;
-            targetLength = (targetHorizontalOffset + MAINARM_STACK_HEIGHT*Math.sin(targetAngle*Math.PI/180.0)) / Math.cos(targetAngle*Math.PI/180.0);
-            // third iteration
-            targetAngle = (Math.atan(targetVerticalOffset/targetHorizontalOffset)
-                    - Math.acos(targetLength/Math.sqrt(targetLength*targetLength+MAINARM_STACK_HEIGHT*MAINARM_STACK_HEIGHT)))*180.0/Math.PI;
-            targetLength = (targetHorizontalOffset + MAINARM_STACK_HEIGHT*Math.sin(targetAngle*Math.PI/180.0)) / Math.cos(targetAngle*Math.PI/180.0);
-        }
-        else {
-            // use targetVerticalOffset as the anchor formula
-            // initial guess of target length
-            targetLength = Math.sqrt(targetHorizontalOffset*targetHorizontalOffset + targetVerticalOffset*targetVerticalOffset);
-            // first iteration
-            targetAngle = (Math.atan(targetVerticalOffset/targetHorizontalOffset)
-                    - Math.acos(targetLength/Math.sqrt(targetLength*targetLength+MAINARM_STACK_HEIGHT*MAINARM_STACK_HEIGHT)))*180.0/Math.PI;
-            targetLength = (targetVerticalOffset - MAINARM_STACK_HEIGHT*Math.cos(targetAngle*Math.PI/180.0)) / Math.sin(targetAngle*Math.PI/180.0);
-            // second iteration
-            targetAngle = (Math.atan(targetVerticalOffset/targetHorizontalOffset)
-                    - Math.acos(targetLength/Math.sqrt(targetLength*targetLength+MAINARM_STACK_HEIGHT*MAINARM_STACK_HEIGHT)))*180.0/Math.PI;
-            targetLength = (targetVerticalOffset - MAINARM_STACK_HEIGHT*Math.cos(targetAngle*Math.PI/180.0)) / Math.sin(targetAngle*Math.PI/180.0);
-            // third iteration
-            targetAngle = (Math.atan(targetVerticalOffset/targetHorizontalOffset)
-                    - Math.acos(targetLength/Math.sqrt(targetLength*targetLength+MAINARM_STACK_HEIGHT*MAINARM_STACK_HEIGHT)))*180.0/Math.PI;
-            targetLength = (targetVerticalOffset - MAINARM_STACK_HEIGHT*Math.cos(targetAngle*Math.PI/180.0)) / Math.sin(targetAngle*Math.PI/180.0);
-        }
-
-        setMainArmAngle(targetAngle);
-        setMainArmTotalLength(targetLength);
-    }
+//    public double getMainArmVerticalOffset() {
+//        mainArmAngle = getMainArmAngle();
+//        return getMainArmTotalLength()*Math.sin(mainArmAngle*Math.PI/180.0)
+//                + MAINARM_STACK_HEIGHT*Math.cos(mainArmAngle*Math.PI/180.0) - MAINARM_STACK_HEIGHT;
+//    }
+//
+//    // set main arm offset measured from the initial position
+//    public void setMainArmPosition(double horizontalOffset, double verticalOffset) {
+//        double targetAngle, targetLength;
+//        // change coordinate system to the main arm pivoting point
+//        double targetHorizontalOffset = horizontalOffset + MAINARM_INIT_LENGTH;
+//        double targetVerticalOffset = verticalOffset + MAINARM_STACK_HEIGHT;
+//        if (targetHorizontalOffset > targetVerticalOffset) {
+//            // use targetHorizontalOffset as the anchor formula
+//            // initial guess of target length
+//            targetLength = Math.sqrt(targetHorizontalOffset*targetHorizontalOffset + targetVerticalOffset*targetVerticalOffset);
+//            // first iteration
+//            targetAngle = (Math.atan(targetVerticalOffset/targetHorizontalOffset)
+//                    - Math.acos(targetLength/Math.sqrt(targetLength*targetLength+MAINARM_STACK_HEIGHT*MAINARM_STACK_HEIGHT)))*180.0/Math.PI;
+//            targetLength = (targetHorizontalOffset + MAINARM_STACK_HEIGHT*Math.sin(targetAngle*Math.PI/180.0)) / Math.cos(targetAngle*Math.PI/180.0);
+//            // second iteration
+//            targetAngle = (Math.atan(targetVerticalOffset/targetHorizontalOffset)
+//                    - Math.acos(targetLength/Math.sqrt(targetLength*targetLength+MAINARM_STACK_HEIGHT*MAINARM_STACK_HEIGHT)))*180.0/Math.PI;
+//            targetLength = (targetHorizontalOffset + MAINARM_STACK_HEIGHT*Math.sin(targetAngle*Math.PI/180.0)) / Math.cos(targetAngle*Math.PI/180.0);
+//            // third iteration
+//            targetAngle = (Math.atan(targetVerticalOffset/targetHorizontalOffset)
+//                    - Math.acos(targetLength/Math.sqrt(targetLength*targetLength+MAINARM_STACK_HEIGHT*MAINARM_STACK_HEIGHT)))*180.0/Math.PI;
+//            targetLength = (targetHorizontalOffset + MAINARM_STACK_HEIGHT*Math.sin(targetAngle*Math.PI/180.0)) / Math.cos(targetAngle*Math.PI/180.0);
+//        }
+//        else {
+//            // use targetVerticalOffset as the anchor formula
+//            // initial guess of target length
+//            targetLength = Math.sqrt(targetHorizontalOffset*targetHorizontalOffset + targetVerticalOffset*targetVerticalOffset);
+//            // first iteration
+//            targetAngle = (Math.atan(targetVerticalOffset/targetHorizontalOffset)
+//                    - Math.acos(targetLength/Math.sqrt(targetLength*targetLength+MAINARM_STACK_HEIGHT*MAINARM_STACK_HEIGHT)))*180.0/Math.PI;
+//            targetLength = (targetVerticalOffset - MAINARM_STACK_HEIGHT*Math.cos(targetAngle*Math.PI/180.0)) / Math.sin(targetAngle*Math.PI/180.0);
+//            // second iteration
+//            targetAngle = (Math.atan(targetVerticalOffset/targetHorizontalOffset)
+//                    - Math.acos(targetLength/Math.sqrt(targetLength*targetLength+MAINARM_STACK_HEIGHT*MAINARM_STACK_HEIGHT)))*180.0/Math.PI;
+//            targetLength = (targetVerticalOffset - MAINARM_STACK_HEIGHT*Math.cos(targetAngle*Math.PI/180.0)) / Math.sin(targetAngle*Math.PI/180.0);
+//            // third iteration
+//            targetAngle = (Math.atan(targetVerticalOffset/targetHorizontalOffset)
+//                    - Math.acos(targetLength/Math.sqrt(targetLength*targetLength+MAINARM_STACK_HEIGHT*MAINARM_STACK_HEIGHT)))*180.0/Math.PI;
+//            targetLength = (targetVerticalOffset - MAINARM_STACK_HEIGHT*Math.cos(targetAngle*Math.PI/180.0)) / Math.sin(targetAngle*Math.PI/180.0);
+//        }
+//
+//        setMainArmAngle(targetAngle);
+//        setMainArmTotalLength(targetLength);
+//    }
 
     public double getWinchMaxSpeedMMpSec(){
         return WINCH_MAX_SPEED_MM_PER_SEC;
@@ -268,155 +246,82 @@ public class Control extends Subsystem {
     //    public double getTiltTickPer90Degree(){
 //        return TILT_TICK_PER_90_DEGREE;
 //    }
-    public double getClawArmPos0Deg(){
-        return CLAW_ARM_POS_0_DEG;
-    }
-    public double getClawArmPosN180Deg(){
-        return CLAW_ARM_POS_N180_DEG;
-    }
-    public double getClawArmRot0Deg(){
-        return CLAW_ARM_ROT_0_DEG;
-    }
-    public double getClawArmRot180Deg(){
-        return CLAW_ARM_ROT_180_DEG;
-    }
-    public double getMainClawPosOpenWide(){
-        return  MAIN_CLAW_POS_OPEN_WIDE;
-    }
-    public double getMainClawPosOpen(){
-        return  MAIN_CLAW_POS_OPEN;
-    }
-    public double getMainClawPosClosedStone(){
-        return MAIN_CLAW_POS_CLOSED_STONE;
-    }
-    public double getMainClawPosClosed(){
-        return MAIN_CLAW_POS_CLOSED;
-    }
-    public double getCSArmPos0Deg(){
-        return CS_ARM_POS_0_DEG;
-    }
-    public double getCSArmPosN180Deg(){
-        return CS_ARM_POS_N180_DEG;
-    }
-    public double getCSClawPosOpen(){
-        return  CS_CLAW_POS_OPEN;
-    }
-    public double getCSClawPosClosed(){
-        return CS_CLAW_POS_CLOSED;
-    }
+//    public double getClawArmPos0Deg(){
+//        return CLAW_ARM_POS_0_DEG;
+//    }
+//    public double getClawArmPosN180Deg(){
+//        return CLAW_ARM_POS_N180_DEG;
+//    }
+//    public double getClawArmRot0Deg(){
+//        return CLAW_ARM_ROT_0_DEG;
+//    }
+//    public double getClawArmRot180Deg(){
+//        return CLAW_ARM_ROT_180_DEG;
+//    }
+//    public double getMainClawPosOpenWide(){
+//        return  MAIN_CLAW_POS_OPEN_WIDE;
+//    }
+//    public double getMainClawPosOpen(){
+//        return  MAIN_CLAW_POS_OPEN;
+//    }
+//    public double getMainClawPosClosedStone(){
+//        return MAIN_CLAW_POS_CLOSED_STONE;
+//    }
+//    public double getMainClawPosClosed(){
+//        return MAIN_CLAW_POS_CLOSED;
+//    }
+//    public double getCSArmPos0Deg(){
+//        return CS_ARM_POS_0_DEG;
+//    }
+//    public double getCSArmPosN180Deg(){
+//        return CS_ARM_POS_N180_DEG;
+//    }
+//    public double getCSClawPosOpen(){
+//        return  CS_CLAW_POS_OPEN;
+//    }
+//    public double getCSClawPosClosed(){
+//        return CS_CLAW_POS_CLOSED;
+//    }
 
-    public void retractMainClawArm() {
-        setMainClawArmDegrees(-180.0);
-    }
-
-    public void retractCSClawArm() {
-        setCSClawArmDegrees(-174.0);
-    }
-
-
-    public void lowerClawsToFoundation() {
-        fClawL.setPosition(fClawLFoundation);
-        fClawR.setPosition(fClawRFoundation);
-    }
-
-    public void raiseClawsFromFoundation() {
-        fClawL.setPosition(fClawLUp);
-        fClawR.setPosition(fClawRUp);
-    }
-
-    //    public void pickUpStone() {
-//        // Lower arm
-//        // need to add rotation, arm claw synchronization
-//        mainClawArm.setPosition(mainArmDown);
-//        mainClaw.setPosition(mainClawOpen);
-//        mainClaw.setPosition(mainClawStone);
-//        mainClawArm.setPosition(0.5);
+//    public void retractMainClawArm() {
+//        setMainClawArmDegrees(-180.0);
 //    }
 //
-//    public void dropStone() {
-//        // lower arm
-//        // rotate?
-//        mainClawArm.setPosition(mainArmDown);
-//        mainClaw.setPosition(mainClawOpen);
-//        mainClawArm.setPosition(0.5);
-//        mainClaw.setPosition(0);
+//    public void retractCSClawArm() {
+//        setCSClawArmDegrees(-174.0);
 //    }
 //
-    public void openMainClawWide() {
-        mainClaw.setPosition(this.getMainClawPosOpenWide());
-    }
-    public void openMainClaw() {
-        mainClaw.setPosition(this.getMainClawPosOpen());
-    }
-    public void closeMainClawStone() {
-        mainClaw.setPosition(this.getMainClawPosClosedStone());
-    }
-    public void closeMainClaw() {
-        mainClaw.setPosition(this.getMainClawPosClosed());
-    }
-    public void setMainClawArmDegrees(double angle) {
-        mainClawArm.setPosition(this.mainClawArmAngleToPos(angle));
-    }
-    public double mainClawArmAngleToPos(double angle){
-//        double value;
-//        if (angle < 0.0) {
-//            value = ((angle / 180.0) * (CLAW_ARM_POS_0_DEG - CLAW_ARM_POS_N180_DEG)) + CLAW_ARM_POS_0_DEG;
-//        }
-//        else {
-//            value = ((angle / CLAW_ARM_POS_ANGLE) * (CLAW_ARM_POS_VALUE - CLAW_ARM_POS_0_DEG)) + CLAW_ARM_POS_0_DEG;
-//        }
-//        if (value > 1.0) value = 1.0;
-//        if (value < 0.0) value = 0.0;
-//        return value;
 //
-        int lowerIndex, upperIndex;
-        int i = 1;
-        double servoTarget;
-        while ((i < CLAW_ARM_TILT_TABLE_SIZE) && (CLAW_ARM_TILT_TABLE[i*2] < angle)) {
-            ++i;
-        }
-        upperIndex = i;
-        lowerIndex = i-1;
-        servoTarget = CLAW_ARM_TILT_TABLE[lowerIndex*2+1] +
-                (CLAW_ARM_TILT_TABLE[upperIndex*2+1]-CLAW_ARM_TILT_TABLE[lowerIndex*2+1])*(angle-CLAW_ARM_TILT_TABLE[lowerIndex*2])
-                        /(CLAW_ARM_TILT_TABLE[upperIndex*2]-CLAW_ARM_TILT_TABLE[lowerIndex*2]);
-        return servoTarget;
-    }
-    public void setMainClawRotationDegrees(double angle) {
-        mainClawRotationAngle = angle;
-        mainClawRotation.setPosition(this.mainClawRotationAngleToPos(angle));
-    }
-    public double getMainClawRotationDegrees() {
-        return mainClawRotationAngle;
-    }
-    public double mainClawRotationAngleToPos(double angle){
-        double value = ((angle / 180.0) * (this.getClawArmRot180Deg() - this.getClawArmRot0Deg())) + this.getClawArmRot0Deg();
-        if (value > 1.0) value = 1.0;
-        if (value < 0.0) value = 0.0;
-        return value;
-    }
-
-    public void openCSClaw() {
-        csClaw.setPosition(this.getCSClawPosOpen());
-    }
-    public void closeCSClaw() {
-        csClaw.setPosition(this.getCSClawPosClosed());
-    }
-    public void setCSClawArmDegrees(double angle) {
-        csArm.setPosition(this.CSClawArmAngleToPos(angle));
-    }
-    public double CSClawArmAngleToPos(double angle){
-        double value;
-        if (angle < 0.0) {
-            value = ((angle / 180.0) * (CS_ARM_POS_0_DEG - CS_ARM_POS_N180_DEG)) + CS_ARM_POS_0_DEG;
-        }
-        else {
-            value = ((angle / CS_ARM_POS_ANGLE) * (CS_ARM_POS_VALUE - CS_ARM_POS_0_DEG)) + CS_ARM_POS_0_DEG;
-        }
-        if (value > 1.0) value = 1.0;
-        if (value < 0.0) value = 0.0;
-        return value;
-    }
+//
+//    public void openMainClawWide() {
+//        mainClaw.setPosition(this.getMainClawPosOpenWide());
+//    }
+//    public void openMainClaw() {
+//        mainClaw.setPosition(this.getMainClawPosOpen());
+//    }
+//    public void closeMainClawStone() {
+//        mainClaw.setPosition(this.getMainClawPosClosedStone());
+//    }
+//    public void closeMainClaw() {
+//        mainClaw.setPosition(this.getMainClawPosClosed());
+//    }
+//    public void setMainClawArmDegrees(double angle) {
+//        mainClawArm.setPosition(this.mainClawArmAngleToPos(angle));
+//    }
+//    public double mainClawArmAngleToPos(double angle){
+//        int lowerIndex, upperIndex;
+//        int i = 1;
+//        double servoTarget;
+//        while ((i < CLAW_ARM_TILT_TABLE_SIZE) && (CLAW_ARM_TILT_TABLE[i*2] < angle)) {
+//            ++i;
+//        }
+//        upperIndex = i;
+//        lowerIndex = i-1;
+//        servoTarget = CLAW_ARM_TILT_TABLE[lowerIndex*2+1] +
+//                (CLAW_ARM_TILT_TABLE[upperIndex*2+1]-CLAW_ARM_TILT_TABLE[lowerIndex*2+1])*(angle-CLAW_ARM_TILT_TABLE[lowerIndex*2])
+//                        /(CLAW_ARM_TILT_TABLE[upperIndex*2]-CLAW_ARM_TILT_TABLE[lowerIndex*2]);
+//        return servoTarget;
+//    }
 
     public void modifyServo(Servo servo, double value) {
         double currentValue = servo.getPosition();
@@ -426,45 +331,9 @@ public class Control extends Subsystem {
         servo.setPosition(currentValue);
     }
 
-    /**
-     * look up motor tick count position from TILT_TABLE using main arm tilting angle
-     * @param angle
-     * @return motor tick count position
-     */
-    public double mainArmAngleToTick(double angle) {
-        int lowerIndex, upperIndex;
-        int i = 1;
-        double tickTarget;
-        while ((i < TILT_TABLE_SIZE) && (TILT_TABLE[i*2] < angle)) {
-            ++i;
-        }
-        upperIndex = i;
-        lowerIndex = i-1;
-        tickTarget = TILT_TABLE[lowerIndex*2+1] +
-                (TILT_TABLE[upperIndex*2+1]-TILT_TABLE[lowerIndex*2+1])*(angle-TILT_TABLE[lowerIndex*2])
-                        /(TILT_TABLE[upperIndex*2]-TILT_TABLE[lowerIndex*2]);
-        return tickTarget;
+    //complete later. need to take some robot position (absolute)/angle values as input and calculate how much to rotate the turret
+    public double autoRotateTurret() {
+        double angle = 0;
+        return angle;
     }
-
-    /**
-     * look up main arm tiling angle from TILT_TABLE using motor tick count
-     * @param tick
-     * @return main arm tilting angle
-     */
-    public double mainArmTickToAngle(double tick) {
-        int lowerIndex, upperIndex;
-        int i = 1;
-        double angleTarget;
-        while ((i < TILT_TABLE_SIZE) && (TILT_TABLE[i*2+1] < tick)) {
-            ++i;
-        }
-        upperIndex = i;
-        lowerIndex = i-1;
-        angleTarget = TILT_TABLE[lowerIndex*2] +
-                (TILT_TABLE[upperIndex*2]-TILT_TABLE[lowerIndex*2])*(tick-TILT_TABLE[lowerIndex*2+1])
-                        /(TILT_TABLE[upperIndex*2+1]-TILT_TABLE[lowerIndex*2+1]);
-        return angleTarget;
-    }
-
-
 }

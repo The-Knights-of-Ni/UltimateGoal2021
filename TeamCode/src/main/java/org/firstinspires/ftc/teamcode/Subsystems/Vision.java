@@ -154,7 +154,7 @@ public class Vision {
     private float phoneXRotate    = 0;
     private float phoneYRotate    = 0;
     private float phoneZRotate    = 0;
-    private org.firstinspires.ftc.teamcode.SubSystems.Robot robot;
+    private org.firstinspires.ftc.teamcode.Subsystems.Robot robot;
 
     // IMPORTANT: If you are using a USB WebCam, you must select CAMERA_CHOICE = BACK; and PHONE_IS_PORTRAIT = false;
     private static final VuforiaLocalizer.CameraDirection CAMERA_CHOICE = BACK;
@@ -171,7 +171,7 @@ public class Vision {
         initVuforiaEngine(0);
     }
 
-    public Vision(HardwareMap hardwareMap, org.firstinspires.ftc.teamcode.SubSystems.Robot robot){
+    public Vision(HardwareMap hardwareMap, org.firstinspires.ftc.teamcode.Subsystems.Robot robot){
         this.hardwareMap = hardwareMap;
         this.robot = robot;
         setupCameraNames();
@@ -192,7 +192,7 @@ public class Vision {
      *          4: backWebcam is initialized for Vuforia and armWebcam is initialized for OpenCV
      *          5: armWebcam is initialized for OpenCV and frontWebcam is initialized for OpenCV
      */
-    public Vision(HardwareMap hardwareMap, org.firstinspires.ftc.teamcode.SubSystems.Robot robot, int visionMode) throws IOException {
+    public Vision(HardwareMap hardwareMap, org.firstinspires.ftc.teamcode.Subsystems.Robot robot, int visionMode) throws IOException {
         this.hardwareMap = hardwareMap;
         this.robot = robot;
         setupCameraNames();

@@ -35,17 +35,31 @@ public class Robot extends Subsystem {
     public DcMotorEx frontRightDriveMotor;
     public DcMotorEx rearRightDriveMotor;
     public DcMotorEx rearLeftDriveMotor;
+
+    public DcMotorEx launcherMotor;
+
+
+    // delete these later; these are from last year, but they cause an error in the current code
+    //when they're removed (will fix that later)
     public DcMotorEx xRailWinch;
     public DcMotorEx armTilt;
 
     //Servos
-    public Servo mainClawArm;
-    public Servo mainClawRotation;
-    public Servo mainClaw; //0
-    public Servo csClaw; //capstone claw
-    public Servo csArm; //capstone arm
-    public Servo fClawL; //foundationClawLeft
-    public Servo fClawR; // foundationClawRight
+
+//    public Servo mainClawArm;
+//    public Servo mainClawRotation;
+//    public Servo mainClaw; //0
+//    public Servo csClaw; //capstone claw
+//    public Servo csArm; //capstone arm
+//    public Servo fClawL; //foundationClawLeft
+//    public Servo fClawR; // foundationClawRight
+
+    public Servo mainClaw; // may need 2 servos for claw mechanism
+
+    public Servo elevator1;
+    public Servo elevator2; // what are the individual elevator1 and elevator2 motors for? ask hardware team
+    public DcMotorEx intakeMotor; // motor, servo, or both for intake
+    public Servo intake;
 
     /**
      * HUB2

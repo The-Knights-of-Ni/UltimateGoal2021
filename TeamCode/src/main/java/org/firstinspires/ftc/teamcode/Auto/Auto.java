@@ -29,7 +29,7 @@
 
 package org.firstinspires.ftc.teamcode.Auto;
 
-import org.firstinspires.ftc.teamcode.SubSystems.Robot;
+import org.firstinspires.ftc.teamcode.Subsystems.Robot;
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -53,10 +53,13 @@ import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
  */
 @TeleOp(name = "Concept: TensorFlow Object Detection", group = "Concept")
 @Disabled
-public class ConceptTensorFlowObjectDetection extends LinearOpMode {
+public class Auto extends LinearOpMode {
+    private Robot robot;
+
     private static final String TFOD_MODEL_ASSET = "UltimateGoal.tflite";
     private static final String LABEL_FIRST_ELEMENT = "Quad";
     private static final String LABEL_SECOND_ELEMENT = "Single";
+
 
     /*
      * IMPORTANT: You need to obtain your own license key to use Vuforia. The string below with which
@@ -89,6 +92,9 @@ public class ConceptTensorFlowObjectDetection extends LinearOpMode {
     public void runOpMode() {
         // The TFObjectDetector uses the camera frames from the VuforiaLocalizer, so we create that
         // first.
+
+
+
         initVuforia();
         initTfod();
 
@@ -113,6 +119,12 @@ public class ConceptTensorFlowObjectDetection extends LinearOpMode {
         /** Wait for the game to begin */
         telemetry.addData(">", "Press Play to start op mode");
         telemetry.update();
+        
+        Thread driveThread = new DriveThread(); // start thread to have robot move while vision is being initialized
+
+        telemetry.addData("Mode", "waiting");
+        telemetry.update();
+
         waitForStart();
 
         if (opModeIsActive()) {
@@ -172,5 +184,51 @@ public class ConceptTensorFlowObjectDetection extends LinearOpMode {
         tfodParameters.minResultConfidence = 0.8f;
         tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
         tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_FIRST_ELEMENT, LABEL_SECOND_ELEMENT);
+    }
+
+    private class DriveThread extends Thread
+    {
+        public DriveThread()
+        {
+            this.setName("DriveThread");
+
+            telemetry.addData("DriveThread ",this.getName());
+        }
+
+        // called when tread.start is called. thread stays in loop to do what it does until exit is
+        // signaled by main code calling thread.interrupt.
+        @Override
+        public void run()
+        {
+            telemetry.addData("Starting thread ",this.getName());
+
+            try
+            {
+                while (!isInterrupted())
+                {
+                    // we record the Y values in the main class to make showing them in telemetry
+                    // easier.
+
+                    robot.leftStickY = gamepad1.left_stick_y * -1;
+                    robot.rightStickY = gamepad1.right_stick_y * -1;
+
+//                    robot.frontLeftDriveMotor.setPower(Range.clip(leftY, -1.0, 1.0));
+//                    rightMotor.setPower(Range.clip(rightY, -1.0, 1.0));
+
+                    idle();
+                }
+            }
+            // interrupted means time to shutdown. note we can stop by detecting isInterrupted = true
+            // or by the interrupted exception thrown from the sleep function.
+            catch (InterruptedException e) {
+//                Logging.log("%s interrupted", this.getName());
+            }
+            // an error occurred in the run loop.
+            catch (Exception e) {
+//                e.printStackTrace(Logging.logPrintStream);
+            }
+
+//            Logging.log("end of thread %s", this.getName());
+        }
     }
 }

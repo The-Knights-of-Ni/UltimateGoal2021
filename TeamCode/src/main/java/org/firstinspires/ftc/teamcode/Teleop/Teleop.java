@@ -28,11 +28,11 @@ public class Teleop extends LinearOpMode {
         DRIVER,
     }
 
-    enum MainClawState {
-        CLOSE,
-        OPEN,
-        WIDEOPEN,
-    }
+//    enum MainClawState {
+//        CLOSE,
+//        OPEN,
+//        WIDEOPEN,
+//    }
 
     private Prospective prospectiveMode = Prospective.ROBOT;
     private double robotAngle;

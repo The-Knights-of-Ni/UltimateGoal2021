@@ -220,9 +220,6 @@ public class Auto extends LinearOpMode {
             }
             // interrupted means time to shutdown. note we can stop by detecting isInterrupted = true
             // or by the interrupted exception thrown from the sleep function.
-            catch (InterruptedException e) {
-//                Logging.log("%s interrupted", this.getName());
-            }
             // an error occurred in the run loop.
             catch (Exception e) {
 //                e.printStackTrace(Logging.logPrintStream);

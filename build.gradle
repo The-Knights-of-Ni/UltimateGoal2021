@@ -9,7 +9,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.0.1'
+        classpath 'com.android.tools.build:gradle:4.1.0'
     }
 }
 
@@ -22,3 +22,7 @@ allprojects {
         maven { url 'https://jitpack.io' }
     }
 }
+
+//dependencies {
+//    implementation 'org.openftc:easyopencv:1.4.1'
+//}

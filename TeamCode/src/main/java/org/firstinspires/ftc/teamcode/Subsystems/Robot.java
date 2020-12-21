@@ -62,24 +62,26 @@ public class Robot extends Subsystem {
     public Servo intake;
 
     /**
-     * HUB2
+     * Control Hub
+     *
      * fl   0
      * fr   1
      * bl   2
      * br   3
+     *
+     * fR (fClawR)          1
+     * fL (fClawL)          2
+     * --------------------
+     * Expansion Hub 2
+     *
+     * tilt     0
+     * winch    1
      *
      * mA (mainArm)         2
      * mR (mainRotation)    1
      * mC (mainClaw)        0
      * csC (csClaw)         3
      * csA (csArm)          4
-     * --------------------
-     * HUB1
-     * tilt     0
-     * winch    1
-     *
-     * fL (fClawL)          2
-     * fR (fClawR)          1
      */
 
     //Sensors

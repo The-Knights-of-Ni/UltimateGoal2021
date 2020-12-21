@@ -472,6 +472,7 @@ public class Vision {
         initFrontWebcam(1);
     }
 
+
     public void initFrontWebcam(int viewportID) {
         frontWebcam = OpenCvCameraFactory.getInstance().createWebcam(frontWebcamName, viewportContainerIds[viewportID]);
         frontWebcam.openCameraDevice();

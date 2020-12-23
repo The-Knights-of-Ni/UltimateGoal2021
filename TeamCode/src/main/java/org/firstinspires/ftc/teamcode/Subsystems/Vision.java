@@ -476,7 +476,7 @@ public class Vision {
     public void initFrontWebcam(int viewportID) {
         frontWebcam = OpenCvCameraFactory.getInstance().createWebcam(frontWebcamName, viewportContainerIds[viewportID]);
         frontWebcam.openCameraDevice();
-        frontWebcam.setPipeline(new ExtractColor());
+        //frontWebcam.setPipeline(new ExtractColor());
         frontWebcam.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
         frontWebcamIsActive = true;
     }
@@ -494,7 +494,7 @@ public class Vision {
     public void initArmWebcam(int viewportID) {
         armWebcam = OpenCvCameraFactory.getInstance().createWebcam(armWebcamName, viewportContainerIds[viewportID]);
         armWebcam.openCameraDevice();
-        armWebcam.setPipeline(new ExtractColor());
+        //armWebcam.setPipeline(new ExtractColor());
         armWebcam.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
         armWebcamIsActive = true;
     }
@@ -579,12 +579,12 @@ public class Vision {
         robot.getOpmode().telemetry.addData("reading", "map1");
         robot.getOpmode().telemetry.update();
 
-        map1 = YamlMatLoader.getMatYml(file, "map1");
+        //map1 = YamlMatLoader.getMatYml(file, "map1");
 
         robot.getOpmode().telemetry.addData("file", file);
         robot.getOpmode().telemetry.addData("reading", "map2");
         robot.getOpmode().telemetry.update();
-        map2 = YamlMatLoader.getMatYml(file, "map2");
+        //map2 = YamlMatLoader.getMatYml(file, "map2");
         robot.getOpmode().telemetry.addData(" camera calibration", "completed");
         robot.getOpmode().telemetry.addData(" map1", "row: %d, col: %d", map1.rows(), map1.cols());
         robot.getOpmode().telemetry.update();

@@ -43,9 +43,15 @@ public class Multithreading extends LinearOpMode {
 
         waitForStart();
 
+        driveThread.start();
+
+        int value = 1;
+
         if (opModeIsActive()) {
             while (opModeIsActive()) {
-                telemetry.addData("Main thread ",1);
+                telemetry.addData("Main thread ",value);
+                telemetry.update();
+                value += 2;
 //                if (tfod != null) {
 //                    // getUpdatedRecognitions() will return null if no new information is available since
 //                    // the last time that call was made.
@@ -68,6 +74,8 @@ public class Multithreading extends LinearOpMode {
             }
 
         }
+
+        driveThread.interrupt();
     }
 
     class DriveThread extends Thread {
@@ -75,6 +83,7 @@ public class Multithreading extends LinearOpMode {
             this.setName("DriveThread");
 
             telemetry.addData("DriveThread ", this.getName());
+            telemetry.update();
         }
 
         // called when tread.start is called. thread stays in loop to do what it does until exit is
@@ -82,7 +91,7 @@ public class Multithreading extends LinearOpMode {
         @Override
         public void run() {
             telemetry.addData("Starting thread ", this.getName());
-
+            int evenValue = 0;
             try {
 //                while (!isInterrupted()) {
 //                    // we record the Y values in the main class to make showing them in telemetry
@@ -97,7 +106,12 @@ public class Multithreading extends LinearOpMode {
 //                    idle();
 //                }
 
-                telemetry.addData("Running thread ",2);
+                while (!isInterrupted()) {
+                    telemetry.addData("Running thread ",evenValue);
+                    telemetry.update();
+                }
+
+                evenValue += 2;
             }
             // interrupted means time to shutdown. note we can stop by detecting isInterrupted = true
             // or by the interrupted exception thrown from the sleep function.

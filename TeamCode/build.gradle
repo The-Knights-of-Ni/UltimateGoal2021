@@ -23,4 +23,5 @@ dependencies {
     implementation 'org.openftc:easyopencv:1.4.1'
     implementation 'com.esotericsoftware.yamlbeans:yamlbeans:1.13'
     implementation 'com.arcrobotics:ftclib:1.1.6' // core
+    implementation 'com.arcrobotics.ftclib:vision:1.1.0' //vision
 }

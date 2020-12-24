@@ -42,7 +42,7 @@ public class RectDetector {
         camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
             public void onOpened() {
-                camera.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
+                camera.startStreaming(4920, 3264, OpenCvCameraRotation.UPRIGHT);
             }
         });
     }

@@ -1,3 +1,5 @@
+package org.firstinspires.ftc.teamcode.Vision;
+
 import com.arcrobotics.ftclib.vision.UGContourRingPipeline;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 

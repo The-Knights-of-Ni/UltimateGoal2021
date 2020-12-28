@@ -4,6 +4,7 @@ import com.arcrobotics.ftclib.vision.UGContourRingPipeline;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.teamcode.Subsystems.Robot;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
@@ -18,8 +19,9 @@ public class ContourRingDetector extends LinearOpMode {
     private static final boolean DEBUG = false; // if debug is wanted, change to true
 
     private static final boolean USING_WEBCAM = false; // change to true if using webcam
-    private static final String WEBCAM_NAME = ""; // insert webcam name from configuration if using webcam
+    private static final String WEBCAM_NAME = "Webcam 1"; // insert webcam name from configuration if using webcam
 
+    private Robot robot;
     private UGContourRingPipeline pipeline;
     private OpenCvCamera camera;
 

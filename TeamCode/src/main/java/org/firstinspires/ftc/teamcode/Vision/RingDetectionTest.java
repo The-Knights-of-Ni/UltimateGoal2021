@@ -11,6 +11,8 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvInternalCamera;
 
+import java.io.IOException;
+
 @TeleOp(name="Ring Detection Test")
 public class RingDetectionTest extends LinearOpMode {
     private static final int CAMERA_WIDTH = 4920; // width  of wanted camera resolution

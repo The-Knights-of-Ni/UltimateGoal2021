@@ -381,6 +381,7 @@ public class Control extends Subsystem {
         if (currentValue > 1.0) currentValue = 1.0;
         if (currentValue < 0.0) currentValue = 0.0;
         servo.setPosition(currentValue);
+    }
     //complete later. need to take some robot position (absolute)/angle values as input and calculate how much to rotate the turret
     public double autoRotateTurret() {
         double angle = 0;

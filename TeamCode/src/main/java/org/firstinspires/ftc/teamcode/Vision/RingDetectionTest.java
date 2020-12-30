@@ -15,8 +15,8 @@ import java.io.IOException;
 
 @TeleOp(name="Ring Detection Test")
 public class RingDetectionTest extends LinearOpMode {
-    private static final int CAMERA_WIDTH = 4920; // width  of wanted camera resolution
-    private static final int CAMERA_HEIGHT = 3264; // height of wanted camera resolution
+    private static final int CAMERA_WIDTH = 320; // width  of wanted camera resolution
+    private static final int CAMERA_HEIGHT = 240; // height of wanted camera resolution
 
     private static final int HORIZON = 100; // horizon value to tune
 

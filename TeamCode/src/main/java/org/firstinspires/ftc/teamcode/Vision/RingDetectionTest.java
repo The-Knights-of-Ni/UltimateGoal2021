@@ -8,7 +8,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.Robot;
 
 import java.io.IOException;
 
-@TeleOp(name="Vision Test")
+@TeleOp(name="Ring Detection Test")
 public class RingDetectionTest extends LinearOpMode {
     //Declare DC motor objects
     private Robot robot;

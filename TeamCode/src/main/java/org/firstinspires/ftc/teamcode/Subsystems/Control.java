@@ -20,6 +20,8 @@ public class Control extends Subsystem {
     private DcMotorEx xRailWinch;
     private DcMotorEx armTilt;
 
+    public DcMotorEx intake;
+    public DcMotorEx launch;
     //Servos
 //    private Servo mainClawArm;
 //    private Servo mainClawRotation;
@@ -28,6 +30,9 @@ public class Control extends Subsystem {
 //    private Servo csArm; //capstone arm
 //    private Servo fClawL; //foundationClawLeft
 //    private Servo fClawR; // foundationClawRight
+    private Servo wobbleGoalArm;
+    private Servo wobbleGoalClaw;
+    private Servo wobbleClaw;
 
     //Sensors
     private BNO055IMU imu;
@@ -129,12 +134,12 @@ public class Control extends Subsystem {
     private double mainArmLength = 0.0;
     private double mainArmLengthTick = 0.0;
     private boolean mainClawArmTrackingMode = false;
-    private double mainClawRotationAngle = 0.0;
+    private double ClawRotationAngle = 0.0;
 
-    public Control(DcMotorEx xRailWinch, DcMotorEx armTilt, BNO055IMU imu, LinearOpMode opMode, ElapsedTime timer) {
+    public Control(DcMotorEx intake, DcMotorEx launch, BNO055IMU imu, LinearOpMode opMode, ElapsedTime timer) {
         // store device information locally
-        this.xRailWinch = xRailWinch;
-        this.armTilt = armTilt;
+        this.intake = intake;
+        this.launch = launch;
 //        this.mainClaw = mainClaw;
 //        this.mainClawRotation = mainClawRotation;
 //        this.mainClawArm = mainClawArm;
@@ -321,6 +326,54 @@ public class Control extends Subsystem {
 //                        /(CLAW_ARM_TILT_TABLE[upperIndex*2]-CLAW_ARM_TILT_TABLE[lowerIndex*2]);
 //        return servoTarget;
 //    }
+    public void openWobbleClaw() {
+        wobbleClaw.setPosition(0.416);
+    }
+    public void closeWobbleClaw(){
+        wobbleClaw.setPosition(0.64);
+    }
+    public double getWobbleArmTargetAngle() {
+    return mainArmTargetAngle;
+}
+    public double wobbleGoalArmAngleToPos(double angle){
+        int lowerIndex, upperIndex;
+        int i = 1;
+        double servoTarget;
+        while ((i < CLAW_ARM_TILT_TABLE_SIZE) && (CLAW_ARM_TILT_TABLE[i*2] < angle)) {
+            ++i;
+        }
+        upperIndex = i;
+        lowerIndex = i-1;
+        servoTarget = CLAW_ARM_TILT_TABLE[lowerIndex*2+1] +
+                (CLAW_ARM_TILT_TABLE[upperIndex*2+1]-CLAW_ARM_TILT_TABLE[lowerIndex*2+1])*(angle-CLAW_ARM_TILT_TABLE[lowerIndex*2])
+                        /(CLAW_ARM_TILT_TABLE[upperIndex*2]-CLAW_ARM_TILT_TABLE[lowerIndex*2]);
+        return servoTarget;
+    }
+    public void setWobbleAngle(double angle){
+        wobbleGoalArm.setPosition(this.wobbleGoalArmAngleToPos(angle));
+    }
+    public void retractWobbleClaw(){
+        setWobbleAngle(-180);
+    }
+
+    public void setIntake(boolean status){
+        if(status){
+            intake.setPower(1.0);
+        }
+        else {
+            intake.setPower(0.0);
+        }
+    }
+
+    public void setLaunch(boolean status){
+        if (status){
+            launch.setPower(1.0);
+        }
+        else{
+            launch.setPower(0.0);
+        }
+    }
+
 
     public void modifyServo(Servo servo, double value) {
         double currentValue = servo.getPosition();
@@ -328,8 +381,6 @@ public class Control extends Subsystem {
         if (currentValue > 1.0) currentValue = 1.0;
         if (currentValue < 0.0) currentValue = 0.0;
         servo.setPosition(currentValue);
-    }
-
     //complete later. need to take some robot position (absolute)/angle values as input and calculate how much to rotate the turret
     public double autoRotateTurret() {
         double angle = 0;

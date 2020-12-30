@@ -23,6 +23,7 @@ public class Teleop extends LinearOpMode {
     double timePre;
     ElapsedTime timer;
 
+
     enum Prospective {
         ROBOT,
         DRIVER,
@@ -37,8 +38,11 @@ public class Teleop extends LinearOpMode {
     private Prospective prospectiveMode = Prospective.ROBOT;
     private double robotAngle;
     private boolean visionEnabled = false;
+    private boolean wobbleClawControlDigital = true;
+    private boolean wobbleClawDeployed = false;
 
     private double turretAngle; // for turret
+
 
     private void initOpMode() {
         //Initialize DC motor objects
@@ -126,6 +130,39 @@ public class Teleop extends LinearOpMode {
                     prospectiveMode = Prospective.DRIVER;
                 }
             }
+
+            if (wobbleClawControlDigital) {
+                if (robot.bumperRight2 && !robot.isrBumper2PressedPrev) { // toggle main claw arm deploy mode
+                    if (wobbleClawDeployed) {
+                        robot.control.retractWobbleClaw();
+                        wobbleClawDeployed = false;
+                    }
+                    else {
+                        robot.control.setWobbleAngle(robot.control.getWobbleArmTargetAngle());
+                        wobbleClawDeployed = true;
+                    }
+                }
+            }
+            if ((robot.triggerLeft2 > 0.5) && (robot.triggerRight2 < 0.5)) {
+                robot.control.openWobbleClaw();
+            }
+            else if ((robot.triggerRight2 > 0.5) && (robot.triggerLeft2 < 0.5)){
+                robot.control.closeWobbleClaw();
+            }
+            if (robot.aButton && !robot.isaButtonPressedPrev){
+                //
+                robot.control.setIntake(true);
+            }
+            else if (robot.aButton){
+                robot.control.setIntake(false);
+            }
+            if (robot.bButton && !robot.isbButtonPressedPrev){
+                robot.control.setLaunch(true);
+            }
+            else if (robot.bButton){
+                robot.control.setLaunch(false);
+            }
+
 
             telemetry.addData("Drive Mode ", prospectiveMode.toString());
             telemetry.addData("robot angle ", robotAngle);

@@ -243,11 +243,9 @@ public class Vision {
     }
 
     private void setupCameraNames() {
-        backWebcamName = hardwareMap.get(WebcamName.class, "Webcam 3");
-        frontWebcamName = hardwareMap.get(WebcamName.class, "Webcam 2");
-        armWebcamName = hardwareMap.get(WebcamName.class, "Webcam 1");
-
-
+//        backWebcamName = hardwareMap.get(WebcamName.class, "Webcam 3");
+        frontWebcamName = hardwareMap.get(WebcamName.class, "Webcam 1");
+//        armWebcamName = hardwareMap.get(WebcamName.class, "Webcam 1");
     }
 
     private void initVuforiaEngine(int viewportID) {

@@ -37,7 +37,7 @@ public class GoalTower {
 
     }
 
-    public OpenGLMatrix detectGoal(Telemetry telemetry) {
+    public void detectGoal(Telemetry telemetry) {
         // check all the trackable targets to see which one (if any) is visible.
         boolean targetVisible = false; //this variable isn't used anywhere other than this section, so I decided it would be okay to make the variable visible only in this method
 

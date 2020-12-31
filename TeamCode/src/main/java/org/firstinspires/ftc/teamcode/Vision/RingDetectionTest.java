@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.Vision;
 
+import com.arcrobotics.ftclib.vision.UGContourRingDetector;
 import com.arcrobotics.ftclib.vision.UGContourRingPipeline;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -31,7 +32,7 @@ public class RingDetectionTest extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        robot.vision.initFrontWebcam();
+        //robot.vision.initFrontWebcam();
 
         int cameraMonitorViewId = this
                 .hardwareMap
@@ -51,13 +52,22 @@ public class RingDetectionTest extends LinearOpMode {
                     .createInternalCamera(OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId);
         }
 
-        camera.setPipeline(pipeline = new UGContourRingPipeline(telemetry, DEBUG));
-
         UGContourRingPipeline.Config.setCAMERA_WIDTH(CAMERA_WIDTH);
 
         UGContourRingPipeline.Config.setHORIZON(HORIZON);
 
-        camera.openCameraDeviceAsync(() -> camera.startStreaming(CAMERA_WIDTH, CAMERA_HEIGHT, OpenCvCameraRotation.UPRIGHT));
+        //camera.openCameraDeviceAsync(() -> camera.startStreaming(CAMERA_WIDTH, CAMERA_HEIGHT, OpenCvCameraRotation.UPRIGHT));
+        camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
+        {
+            @Override
+            public void onOpened()
+            {
+                camera.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
+
+                pipeline = new UGContourRingPipeline(telemetry, DEBUG);
+                camera.setPipeline(pipeline);
+            }
+        });
 
         waitForStart();
 

@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.robotcontroller.external.samples;
+package org.firstinspires.ftc.teamcode.Vision;
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -51,7 +51,7 @@ import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocaliz
  */
 
 
-@TeleOp(name="ULTIMATEGOAL Vuforia Nav Webcam", group ="Concept")
+@TeleOp(name="ULTIMATEGOAL Vuforia Nav Webcam")
 public class GoalTracking extends LinearOpMode {
 
     // IMPORTANT: If you are using a USB WebCam, you must select CAMERA_CHOICE = BACK; and PHONE_IS_PORTRAIT = false;
@@ -131,17 +131,18 @@ public class GoalTracking extends LinearOpMode {
         VuforiaTrackables targetsUltimateGoal = this.vuforia.loadTrackablesFromAsset("UltimateGoal");
         VuforiaTrackable blueTowerGoalTarget = targetsUltimateGoal.get(0);
         blueTowerGoalTarget.setName("Blue Tower Goal Target");
-		
-		//These are for the red goal towers; we're using blue
-		//VuforiaTrackable redTowerGoalTarget = targetsUltimateGoal.get(1);
+
+        //These are for the red goal towers; we're using blue
+        //VuforiaTrackable redTowerGoalTarget = targetsUltimateGoal.get(1);
         //redTowerGoalTarget.setName("Red Tower Goal Target");
         //VuforiaTrackable redAllianceTarget = targetsUltimateGoal.get(2);
         //redAllianceTarget.setName("Red Alliance Target");
-        //VuforiaTrackable blueAllianceTarget = targetsUltimateGoal.get(3);
-		
-        blueAllianceTarget.setName("Blue Alliance Target");
-        VuforiaTrackable frontWallTarget = targetsUltimateGoal.get(4);
-        frontWallTarget.setName("Front Wall Target");
+
+        //These are not needed either
+//        VuforiaTrackable blueAllianceTarget = targetsUltimateGoal.get(3);
+//        blueAllianceTarget.setName("Blue Alliance Target");
+//        VuforiaTrackable frontWallTarget = targetsUltimateGoal.get(4);
+//        frontWallTarget.setName("Front Wall Target");
 
         // For convenience, gather together all the trackable objects in one easily-iterable collection.  (Commented out because we will only need one detection.)
         //List<VuforiaTrackable> allTrackables = new ArrayList<VuforiaTrackable>();
@@ -170,12 +171,12 @@ public class GoalTracking extends LinearOpMode {
                 .translation(0, -halfField, mmTargetHeight)
                 .multiplied(Orientation.getRotationMatrix(EXTRINSIC, XYZ, DEGREES, 90, 0, 180)));*/
 
-        blueAllianceTarget.setLocation(OpenGLMatrix
-                .translation(0, halfField, mmTargetHeight)
-                .multiplied(Orientation.getRotationMatrix(EXTRINSIC, XYZ, DEGREES, 90, 0, 0)));
-        frontWallTarget.setLocation(OpenGLMatrix
-                .translation(-halfField, 0, mmTargetHeight)
-                .multiplied(Orientation.getRotationMatrix(EXTRINSIC, XYZ, DEGREES, 90, 0 , 90)));
+//        blueAllianceTarget.setLocation(OpenGLMatrix
+//                .translation(0, halfField, mmTargetHeight)
+//                .multiplied(Orientation.getRotationMatrix(EXTRINSIC, XYZ, DEGREES, 90, 0, 0)));
+//        frontWallTarget.setLocation(OpenGLMatrix
+//                .translation(-halfField, 0, mmTargetHeight)
+//                .multiplied(Orientation.getRotationMatrix(EXTRINSIC, XYZ, DEGREES, 90, 0 , 90)));
 
         // The tower goal targets are located a quarter field length from the ends of the back perimeter wall.
         blueTowerGoalTarget.setLocation(OpenGLMatrix
@@ -184,7 +185,7 @@ public class GoalTracking extends LinearOpMode {
         /*redTowerGoalTarget.setLocation(OpenGLMatrix
                 .translation(halfField, -quadField, mmTargetHeight)
                 .multiplied(Orientation.getRotationMatrix(EXTRINSIC, XYZ, DEGREES, 90, 0, -90)));*/
-		
+
         //
         // Create a transformation matrix describing where the phone is on the robot.
         //
@@ -218,12 +219,12 @@ public class GoalTracking extends LinearOpMode {
         final float CAMERA_LEFT_DISPLACEMENT     = 0;     // eg: Camera is ON the robot's center line
 
         OpenGLMatrix robotFromCamera = OpenGLMatrix
-                    .translation(CAMERA_FORWARD_DISPLACEMENT, CAMERA_LEFT_DISPLACEMENT, CAMERA_VERTICAL_DISPLACEMENT)
-                    .multiplied(Orientation.getRotationMatrix(EXTRINSIC, YZX, DEGREES, phoneYRotate, phoneZRotate, phoneXRotate));
+                .translation(CAMERA_FORWARD_DISPLACEMENT, CAMERA_LEFT_DISPLACEMENT, CAMERA_VERTICAL_DISPLACEMENT)
+                .multiplied(Orientation.getRotationMatrix(EXTRINSIC, YZX, DEGREES, phoneYRotate, phoneZRotate, phoneXRotate));
 
         /**  Let all the tracked target know where the phone is.  */
-		((VuforiaTrackableDefaultListener) blueTowerGoalTarget.getListener()).setPhoneInformation(robotFromCamera, parameters.cameraDirection);
-        
+        ((VuforiaTrackableDefaultListener) blueTowerGoalTarget.getListener()).setPhoneInformation(robotFromCamera, parameters.cameraDirection);
+
 
         // WARNING:
         // In this sample, we do not wait for PLAY to be pressed.  Target Tracking is started immediately when INIT is pressed.
@@ -239,8 +240,8 @@ public class GoalTracking extends LinearOpMode {
 
         targetsUltimateGoal.activate();
 
-		GoalTower g = new GoalTower(blueTowerGoalTarget); //GoalTower object
-		g.detectTower();
+        GoalTower g = new GoalTower(blueTowerGoalTarget); //GoalTower object
+        g.detectGoal(telemetry);
         /*while (!isStopRequested()) {
 
             // check if tracked tower goal is visible.
@@ -257,7 +258,7 @@ public class GoalTracking extends LinearOpMode {
 				}
 				break;
 			}
-      
+
 
             // Provide feedback as to where the robot is located (if we know).
             if (targetVisible) {

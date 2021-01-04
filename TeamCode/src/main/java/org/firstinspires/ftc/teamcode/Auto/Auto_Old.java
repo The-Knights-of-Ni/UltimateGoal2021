@@ -53,7 +53,7 @@ import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
  */
 @TeleOp(name = "Concept: TensorFlow Object Detection", group = "Concept")
 @Disabled
-public class Auto extends LinearOpMode {
+public class Auto_Old extends LinearOpMode {
     private Robot robot;
 
     private static final String TFOD_MODEL_ASSET = "UltimateGoal.tflite";

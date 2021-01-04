@@ -43,7 +43,8 @@ public class TowerDetection extends LinearOpMode {
 
     private boolean targetVisible = false;
 
-    @Override public void runOpMode() {
+    @Override
+    public void runOpMode() {
 
         // Retrieve webcame from hardwareMap
         webcamName = hardwareMap.get(WebcamName.class, "Webcam 1");

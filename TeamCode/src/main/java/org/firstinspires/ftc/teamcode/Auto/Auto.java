@@ -51,7 +51,7 @@ public class Auto extends LinearOpMode {
 
 
     @Override
-    public void runOpMode() {
+    public void runOpMode() throws InterruptedException {
         initVuforia();
         initTfod();
 
@@ -61,6 +61,43 @@ public class Auto extends LinearOpMode {
 
         telemetry.addData(">", "Press Play to start op mode");
         telemetry.update();
+
+        waitForStart();
+
+        if (opModeIsActive()) {
+            while (opModeIsActive()) {
+                detectRings();
+
+//                if (tfod != null) {
+//                    // getUpdatedRecognitions() will return null if no new information is available since
+//                    // the last time that call was made.
+//                    List<Recognition> updatedRecognitions = tfod.getRecognitions();
+//                    if (updatedRecognitions != null) {
+//                        telemetry.addData("# Object Detected", updatedRecognitions.size());
+//                        //if (updatedRecognitions.size() == 3) {
+//                        int skystoneX = -1;
+//                        int i = 0;
+//                        for (Recognition recognition : updatedRecognitions) {
+//                            if (recognition.getLabel().equals("Skystone")) {
+//                                skystoneX = (int) recognition.getLeft();
+//                                telemetry.addData(String.format("  skystoneX"), skystoneX);
+//                            }
+//                        }
+//                        telemetry.update();
+//                    }
+//                }
+//                robot.drive.moveForward(750); //move to foundation
+//                robot.control.lowerClawsToFoundation();
+//                robot.drive.moveBackward(750);
+//
+//                // foundation claws back to original positions
+//                robot.control.raiseClawsFromFoundation();
+            }
+        }
+
+        if (tfod != null) {
+            tfod.shutdown();
+        }
     }
 
 
@@ -143,5 +180,31 @@ public class Auto extends LinearOpMode {
             telemetry.addData("[Ring Stack] >>", height);
             telemetry.update();
         }
+
+        switch(""+pipeline.getHeight()) {
+            case "0":
+                moveToA();
+                break;
+            case "1":
+                moveToB();
+                break;
+            case "4":
+                moveToC();
+                break;
+            default:
+
+        }
+    }
+
+    public void moveToA() {
+
+    }
+
+    public void moveToB() {
+
+    }
+
+    public void moveToC() {
+
     }
 }

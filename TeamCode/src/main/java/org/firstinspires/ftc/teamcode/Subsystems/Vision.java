@@ -44,9 +44,6 @@ public class Vision {
     private static final String VUFORIA_KEY =
             "ATDGULf/////AAABmRRGSyLSbUY4lPoqBYjklpYqC4y9J7bCk42kjgYS5KtgpKL8FbpEDQTovzZG8thxB01dClvthxkSuSyCkaZi+JiD5Pu0cMVre3gDwRvwRXA7V9kpoYyMIPMVX/yBTGaW8McUaK9UeQUaFSepsTcKjX/itMtcy7nl1k84JChE4i8whbinHWDpaNwb5qcJsXlQwJhE8JE7t8NMxMm31AgzqjVf/7HwprTRfrxjTjVx5v2rp+wgLeeLTE/xk1JnL3fZMG6yyxPHgokWlIYEBZ5gBX+WJfgA+TDsdSPY/MnBp5Z7QxQsO9WJA59o/UzyEo/9BkbvYJZfknZqeoZWrJoN9jk9sivFh0wIPsH+JjZNFsPw";
 
-    UGContourRingPipeline pipeline;
-    OpenCvCamera camera;
-
     private VuforiaLocalizer.Parameters parameters = null;
 
     // Since ImageTarget trackables use mm to specify their dimensions, we must use mm for all the physical dimension.
@@ -70,43 +67,7 @@ public class Vision {
         initVuforia();
     }
 
-    private void initRingPipeline() {
-        // get camera from the robot
-        int cameraMonitorViewId = this
-                .hardwareMap
-                .appContext
-                .getResources().getIdentifier(
-                        "cameraMonitorViewId",
-                        "id",
-                        hardwareMap.appContext.getPackageName()
-                );
-        if (USING_WEBCAM) {
-            camera = OpenCvCameraFactory
-                    .getInstance()
-                    .createWebcam(hardwareMap.get(WebcamName.class, WEBCAM_NAME), cameraMonitorViewId);
-        } else {
-            camera = OpenCvCameraFactory
-                    .getInstance()
-                    .createInternalCamera(OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId);
-        }
-
-        UGContourRingPipeline.Config.setCAMERA_WIDTH(CAMERA_WIDTH);
-        UGContourRingPipeline.Config.setHORIZON(HORIZON);
-
-        camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
-        {
-            @Override
-            public void onOpened()
-            {
-                camera.startStreaming(CAMERA_WIDTH, CAMERA_HEIGHT, OpenCvCameraRotation.UPRIGHT);
-
-                pipeline = new UGContourRingPipeline(telemetry, DEBUG);
-                camera.setPipeline(pipeline);
-            }
-        });
-    }
-
-    private void initVuforia() {
+    public void initVuforia() {
         // Configure parameters
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);

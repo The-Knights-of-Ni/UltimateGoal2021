@@ -13,12 +13,15 @@ import org.firstinspires.ftc.teamcode.Subsystems.Robot;
 import com.arcrobotics.ftclib.vision.UGContourRingPipeline;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvInternalCamera;
+
+import java.io.IOException;
 
 import static org.firstinspires.ftc.robotcore.external.navigation.AngleUnit.DEGREES;
 import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.XYZ;
@@ -27,6 +30,7 @@ import static org.firstinspires.ftc.robotcore.external.navigation.AxesReference.
 @Autonomous(name = "Auto Test (Ryan)")
 public class Auto_Test_Ryan extends LinearOpMode{
     private Robot robot;
+    public ElapsedTime timer;
 
     private static final boolean isBlue = true;
 
@@ -65,6 +69,11 @@ public class Auto_Test_Ryan extends LinearOpMode{
 
     @Override
     public void runOpMode() {
+        try {
+            robot = new Robot(this, timer);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         initRingPipeline();
         initVuforia();
 

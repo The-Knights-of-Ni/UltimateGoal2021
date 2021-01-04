@@ -33,6 +33,8 @@ public class RingDetectionTest extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         //robot.vision.initFrontWebcam();
 
+
+        // get camera from the robot
         int cameraMonitorViewId = this
                 .hardwareMap
                 .appContext

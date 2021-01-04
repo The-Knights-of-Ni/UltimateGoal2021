@@ -30,7 +30,6 @@ public class RingDetectionTest extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
 
-
         // get camera from the robot
         int cameraMonitorViewId = this
                 .hardwareMap
@@ -58,7 +57,7 @@ public class RingDetectionTest extends LinearOpMode {
             @Override
             public void onOpened()
             {
-                camera.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
+                camera.startStreaming(CAMERA_WIDTH, CAMERA_HEIGHT, OpenCvCameraRotation.UPRIGHT);
 
                 pipeline = new UGContourRingPipeline(telemetry, DEBUG);
                 camera.setPipeline(pipeline);

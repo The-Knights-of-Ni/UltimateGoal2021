@@ -5,7 +5,6 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.teamcode.Subsystems.Robot;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
@@ -25,13 +24,11 @@ public class RingDetectionTest extends LinearOpMode {
     private static final boolean USING_WEBCAM = true; // change to true if using webcam
     private static final String WEBCAM_NAME = "Webcam 1"; // insert webcam name from configuration if using webcam
 
-    private Robot robot;
     private UGContourRingPipeline pipeline;
     private OpenCvCamera camera;
 
     @Override
     public void runOpMode() throws InterruptedException {
-        //robot.vision.initFrontWebcam();
 
         int cameraMonitorViewId = this
                 .hardwareMap
@@ -52,10 +49,8 @@ public class RingDetectionTest extends LinearOpMode {
         }
 
         UGContourRingPipeline.Config.setCAMERA_WIDTH(CAMERA_WIDTH);
-
         UGContourRingPipeline.Config.setHORIZON(HORIZON);
 
-        //camera.openCameraDeviceAsync(() -> camera.startStreaming(CAMERA_WIDTH, CAMERA_HEIGHT, OpenCvCameraRotation.UPRIGHT));
         camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
         {
             @Override

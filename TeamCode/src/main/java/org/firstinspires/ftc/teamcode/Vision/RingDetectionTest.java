@@ -30,6 +30,8 @@ public class RingDetectionTest extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
 
+
+        // get camera from the robot
         int cameraMonitorViewId = this
                 .hardwareMap
                 .appContext

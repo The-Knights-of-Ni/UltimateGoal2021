@@ -52,6 +52,11 @@ public class Auto_Test_Ryan extends LinearOpMode{
     private static final float mmPerInch        = 25.4f;
     private static final float mmTargetHeight   = (6) * mmPerInch;          // the height of the center of the target image above the floor
 
+    // Define where camera is in relation to center of robot in inches
+    final float CAMERA_FORWARD_DISPLACEMENT  = 0 * mmPerInch;
+    final float CAMERA_VERTICAL_DISPLACEMENT = 0 * mmPerInch;
+    final float CAMERA_LEFT_DISPLACEMENT     = 0 * mmPerInch;
+
     // Class Members
     private OpenGLMatrix lastLocation = null;
     private VuforiaLocalizer vuforia = null;
@@ -77,11 +82,6 @@ public class Auto_Test_Ryan extends LinearOpMode{
         // Set the position of the perimeter targets with relation to origin in millimeters (in our case, this is the "sweet spot")
         target.setLocation(createMatrix(0, 500, mmTargetHeight, 90, 0, 0));
 
-        // Define where camera is in relation to center of robot in inches
-        final float CAMERA_FORWARD_DISPLACEMENT  = 0 * mmPerInch;
-        final float CAMERA_VERTICAL_DISPLACEMENT = 0 * mmPerInch;
-        final float CAMERA_LEFT_DISPLACEMENT     = 0 * mmPerInch;
-
         OpenGLMatrix robotFromCamera = createMatrix(CAMERA_LEFT_DISPLACEMENT, CAMERA_FORWARD_DISPLACEMENT, CAMERA_VERTICAL_DISPLACEMENT, 90, 0, 0);
 
         ((VuforiaTrackableDefaultListener) target.getListener()).setPhoneInformation(robotFromCamera, parameters.cameraDirection);
@@ -91,13 +91,13 @@ public class Auto_Test_Ryan extends LinearOpMode{
         String numRings = null;
         switch(pipeline.getHeight()) {
             case ZERO:
-                numRings = "0";
+                numRings = "ZERO";
                 break;
             case ONE:
-                numRings = "1";
+                numRings = "ONE";
                 break;
             case FOUR:
-                numRings = "4";
+                numRings = "FOUR";
                 break;
         }
 

@@ -96,7 +96,7 @@ public class TeleopMark1 extends LinearOpMode {
         timeCurrent = timer.nanoseconds();
         timePre = timeCurrent;
         if (visionEnabled) {
-            robot.vision.getTargetsSkyStone().activate();
+//            robot.vision.getTargetsSkyStone().activate();
         }
 
 //      mainClawState = MainClawState.CLOSE;
@@ -111,7 +111,7 @@ public class TeleopMark1 extends LinearOpMode {
             timePre = timeCurrent;
 
             if (visionEnabled) {
-                robot.vision.vuMarkScan();
+//                robot.vision.vuMarkScan();
             }
 
             // Drive the motors

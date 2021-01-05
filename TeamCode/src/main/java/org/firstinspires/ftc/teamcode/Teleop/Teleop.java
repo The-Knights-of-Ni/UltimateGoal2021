@@ -99,7 +99,7 @@ public class Teleop extends LinearOpMode {
             timePre = timeCurrent;
 
             if (visionEnabled) {
-                robot.vision.vuMarkScan();
+//                robot.vision.vuMarkScan();
             }
 
             // Drive the motors

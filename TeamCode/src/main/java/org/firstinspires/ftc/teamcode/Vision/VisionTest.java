@@ -77,7 +77,7 @@ public class VisionTest extends LinearOpMode {
         timeCurrent = timer.nanoseconds();
         timePre = timeCurrent;
 
-        robot.vision.getTargetsSkyStone().activate();
+//        robot.vision.getTargetsSkyStone().activate();
 
 //        mainArmHorizontalPos = 40.0;
 //        mainArmVerticalPos = 80.0;
@@ -94,7 +94,7 @@ public class VisionTest extends LinearOpMode {
             deltaT = timeCurrent - timePre;
             timePre = timeCurrent;
 
-            robot.vision.vuMarkScan();
+//            robot.vision.vuMarkScan();
 //
 //            // robot control
             // Get gamepad inputs
@@ -105,7 +105,7 @@ public class VisionTest extends LinearOpMode {
             deltaT = timeCurrent - timePre;
             timePre = timeCurrent;
 
-            robot.vision.vuMarkScan();
+//            robot.vision.vuMarkScan();
 //            // move foundation claw
 //            if (robot.bumperLeft && (!robot.bumperRight)) { // foundation claw up
 //                robot.control.raiseClawsFromFoundation();
@@ -323,7 +323,7 @@ public class VisionTest extends LinearOpMode {
         }
 
         // Disable Tracking when we are done;
-        robot.vision.getTargetsSkyStone().deactivate();
+//        robot.vision.getTargetsSkyStone().deactivate();
 
     }
 }

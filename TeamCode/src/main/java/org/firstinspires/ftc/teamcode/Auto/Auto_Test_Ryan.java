@@ -69,11 +69,11 @@ public class Auto_Test_Ryan extends LinearOpMode{
 
     @Override
     public void runOpMode() {
-        try {
-            robot = new Robot(this, timer);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            robot = new Robot(this, timer);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
         initRingPipeline();
         initVuforia();
 
@@ -97,18 +97,20 @@ public class Auto_Test_Ryan extends LinearOpMode{
 
         waitForStart();
 
-        String numRings = null;
-        switch(pipeline.getHeight()) {
-            case ZERO:
-                numRings = "ZERO";
-                break;
-            case ONE:
-                numRings = "ONE";
-                break;
-            case FOUR:
-                numRings = "FOUR";
-                break;
-        }
+//        String numRings = null;
+//
+//        sleep(300);
+//        switch(pipeline.getHeight()) {
+//            case ZERO:
+//                numRings = "ZERO";
+//                break;
+//            case ONE:
+//                numRings = "ONE";
+//                break;
+//            case FOUR:
+//                numRings = "FOUR";
+//                break;
+//        }
 
         targetsUltimateGoal.activate();
         while (!isStopRequested()) {
@@ -140,7 +142,8 @@ public class Auto_Test_Ryan extends LinearOpMode{
             else {
                 telemetry.addData("Visible Target", "none");
             }
-            telemetry.addData("[Ring Stack] >>", numRings);
+            String height = "[HEIGHT]" + " " + pipeline.getHeight();
+            telemetry.addData("[Ring Stack] >>", height);
             telemetry.update();
         }
     }

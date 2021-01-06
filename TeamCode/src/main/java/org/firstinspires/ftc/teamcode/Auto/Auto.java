@@ -181,14 +181,14 @@ public class Auto extends LinearOpMode {
             telemetry.update();
         }
 
-        switch(""+pipeline.getHeight()) {
-            case "0":
+        switch(pipeline.getHeight()) {
+            case ZERO:
                 moveToA();
                 break;
-            case "1":
+            case ONE:
                 moveToB();
                 break;
-            case "4":
+            case FOUR:
                 moveToC();
                 break;
             default:

@@ -146,6 +146,7 @@ public class Auto_Test_Ryan extends LinearOpMode{
             telemetry.addData("[Ring Stack] >>", height);
             telemetry.update();
         }
+        targetsUltimateGoal.deactivate();
     }
 
     private void initRingPipeline() {
@@ -171,14 +172,14 @@ public class Auto_Test_Ryan extends LinearOpMode{
         UGContourRingPipeline.Config.setCAMERA_WIDTH(CAMERA_WIDTH);
         UGContourRingPipeline.Config.setHORIZON(HORIZON);
 
+        pipeline = new UGContourRingPipeline(telemetry, DEBUG);
+
         camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
         {
             @Override
             public void onOpened()
             {
                 camera.startStreaming(CAMERA_WIDTH, CAMERA_HEIGHT, OpenCvCameraRotation.UPRIGHT);
-
-                pipeline = new UGContourRingPipeline(telemetry, DEBUG);
                 camera.setPipeline(pipeline);
             }
         });

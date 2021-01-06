@@ -173,6 +173,7 @@ public class Auto_Test_Ryan extends LinearOpMode{
         UGContourRingPipeline.Config.setHORIZON(HORIZON);
 
         pipeline = new UGContourRingPipeline(telemetry, DEBUG);
+        camera.setPipeline(pipeline);
 
         camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
         {
@@ -180,7 +181,6 @@ public class Auto_Test_Ryan extends LinearOpMode{
             public void onOpened()
             {
                 camera.startStreaming(CAMERA_WIDTH, CAMERA_HEIGHT, OpenCvCameraRotation.UPRIGHT);
-                camera.setPipeline(pipeline);
             }
         });
     }

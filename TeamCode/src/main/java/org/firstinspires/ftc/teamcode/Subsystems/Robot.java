@@ -25,6 +25,7 @@ import java.io.IOException;
  */
 
 public class Robot extends Subsystem {
+    private boolean isBlue;
     public String name;
     private HardwareMap hardwareMap;
     private LinearOpMode opMode;
@@ -150,6 +151,18 @@ public class Robot extends Subsystem {
     public Drive drive;
     public Control control;
     public Vision vision;
+
+    public Robot(LinearOpMode opMode, ElapsedTime timer, boolean isBlue) throws IOException {
+        hardwareMap = opMode.hardwareMap;
+        this.opMode = opMode;
+        this.timer = timer;
+        if(isBlue) {
+            this.isBlue = true;
+        } else {
+            this.isBlue = false;
+        }
+        initVisionTest();
+    }
 
     public Robot(LinearOpMode opMode, ElapsedTime timer) throws IOException {
         hardwareMap = opMode.hardwareMap;
@@ -280,6 +293,11 @@ public class Robot extends Subsystem {
             opMode.telemetry.update();
             //vision = new Vision(hardwareMap, this, visionMode);
         }
+        vision = new Vision(hardwareMap, this, isBlue);
+    }
+
+    public void initVisionTest() {
+        vision = new Vision(hardwareMap, this, isBlue);
     }
 
     public void initServosAuto() {

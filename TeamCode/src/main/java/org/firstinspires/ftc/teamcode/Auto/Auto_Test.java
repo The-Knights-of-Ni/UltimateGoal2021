@@ -69,32 +69,11 @@ public class Auto_Test extends LinearOpMode{
 
     @Override
     public void runOpMode() {
-//        try {
-//            robot = new Robot(this, timer);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-        initRingPipeline();
-        initVuforia();
-
-        // Load the data sets for the trackable objects. These particular data sets are stored in the 'assets' part of our application.
-        VuforiaTrackables targetsUltimateGoal = this.vuforia.loadTrackablesFromAsset("UltimateGoal");
-        VuforiaTrackable target;
-        if(isBlue) {
-            target = targetsUltimateGoal.get(0);
-            target.setName("Blue Tower Goal Target");
-        } else {
-            target = targetsUltimateGoal.get(1);
-            target.setName("Red Tower Goal Target");
+        try {
+            robot = new Robot(this, timer, isBlue);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-
-        // Set the position of the perimeter targets with relation to origin in millimeters (in our case, this is the "sweet spot")
-        target.setLocation(createMatrix(0, 500, mmTargetHeight, 90, 0, 0));
-
-        OpenGLMatrix robotFromCamera = createMatrix(CAMERA_LEFT_DISPLACEMENT, CAMERA_FORWARD_DISPLACEMENT, CAMERA_VERTICAL_DISPLACEMENT, 90, 0, 0);
-
-        ((VuforiaTrackableDefaultListener) target.getListener()).setPhoneInformation(robotFromCamera, parameters.cameraDirection);
-
         waitForStart();
 
 //        String numRings = null;
@@ -111,42 +90,13 @@ public class Auto_Test extends LinearOpMode{
 //                numRings = "FOUR";
 //                break;
 //        }
-
-        targetsUltimateGoal.activate();
-        while (!isStopRequested()) {
-            // check all the trackable targets to see which one (if any) is visible.
-            targetVisible = false;
-            if (((VuforiaTrackableDefaultListener)target.getListener()).isVisible()) {
-                telemetry.addData("Visible Target", target.getName());
-                targetVisible = true;
-
-                // getUpdatedRobotLocation() will return null if no new information is available since
-                // the last time that call was made, or if the trackable is not currently visible.
-                OpenGLMatrix robotLocationTransform = ((VuforiaTrackableDefaultListener)target.getListener()).getUpdatedRobotLocation();
-                if (robotLocationTransform != null) {
-                    lastLocation = robotLocationTransform;
-                }
-            }
-
-            // Provide feedback as to where the robot is located (if we know).
-            if (targetVisible) {
-                // express position (translation) of robot in inches.
-                VectorF translation = lastLocation.getTranslation();
-                telemetry.addData("Pos (in)", "{X, Y, Z} = %.1f, %.1f, %.1f",
-                        translation.get(0) / mmPerInch, translation.get(1) / mmPerInch, translation.get(2) / mmPerInch);
-
-                // express the rotation of the robot in degrees.
-                Orientation rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
-                telemetry.addData("Rot (deg)", "{Roll, Pitch, Heading} = %.0f, %.0f, %.0f", rotation.firstAngle, rotation.secondAngle, rotation.thirdAngle);
-            }
-            else {
-                telemetry.addData("Visible Target", "none");
-            }
-            String height = "[HEIGHT]" + " " + pipeline.getHeight();
-            telemetry.addData("[Ring Stack] >>", height);
-            telemetry.update();
+        while(!isStopRequested()) {
+            robot.vision.vuMarkScan();
+            //robot.vision.ringDetect();
         }
-        targetsUltimateGoal.deactivate();
+//        telemetry.clearAll();
+//        sleep(5000);
+//
     }
 
     private void initRingPipeline() {
@@ -183,24 +133,5 @@ public class Auto_Test extends LinearOpMode{
                 camera.startStreaming(CAMERA_WIDTH, CAMERA_HEIGHT, OpenCvCameraRotation.UPRIGHT);
             }
         });
-    }
-
-    private void initVuforia() {
-        // Configure parameters
-        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
-        parameters.vuforiaLicenseKey = VUFORIA_KEY;
-        parameters.cameraName = hardwareMap.get(WebcamName.class, WEBCAM_NAME); //Indicate which webcame should be used
-        parameters.useExtendedTracking = false;
-
-        // Instantiate the Vuforia engine
-        vuforia = ClassFactory.getInstance().createVuforia(parameters);
-    }
-
-
-    // Helper method to create matrix to identify locations
-    public OpenGLMatrix createMatrix(float x, float y, float z, float u, float v, float w) {
-        return OpenGLMatrix.translation(x, y, z)
-                .multiplied(Orientation.getRotationMatrix(EXTRINSIC, XYZ, DEGREES, u, v , w));
     }
 }

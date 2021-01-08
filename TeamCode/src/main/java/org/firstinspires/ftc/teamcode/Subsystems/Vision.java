@@ -31,6 +31,7 @@ import static org.firstinspires.ftc.robotcore.external.navigation.AxesReference.
 
 public class Vision {
     private HardwareMap hardwareMap;
+    private Robot robot;
 
     private static final int CAMERA_WIDTH = 320; // width  of wanted camera resolution
     private static final int CAMERA_HEIGHT = 240; // height of wanted camera resolution
@@ -62,8 +63,9 @@ public class Vision {
 
     private boolean targetVisible = false;
 
-    public Vision(HardwareMap hardwareMap) {
+    public Vision(HardwareMap hardwareMap, Robot robot) {
         this.hardwareMap = hardwareMap;
+        this.robot = robot;
         initVuforia();
     }
 

@@ -16,20 +16,12 @@ public class Control extends Subsystem {
     // device declaration
     private HardwareMap hardwareMap;
     private LinearOpMode opMode;
-    //DC Motors
-    private DcMotorEx xRailWinch;
-    private DcMotorEx armTilt;
 
+    //DC Motors
     public DcMotorEx intake;
     public DcMotorEx launch;
+
     //Servos
-//    private Servo mainClawArm;
-//    private Servo mainClawRotation;
-//    private Servo mainClaw; //0
-//    private Servo csClaw; //capstone claw
-//    private Servo csArm; //capstone arm
-//    private Servo fClawL; //foundationClawLeft
-//    private Servo fClawR; // foundationClawRight
     private Servo wobbleGoalArm;
     private Servo wobbleGoalClaw;
     private Servo wobbleClaw;
@@ -140,13 +132,6 @@ public class Control extends Subsystem {
         // store device information locally
         this.intake = intake;
         this.launch = launch;
-//        this.mainClaw = mainClaw;
-//        this.mainClawRotation = mainClawRotation;
-//        this.mainClawArm = mainClawArm;
-//        this.csClaw = csClaw;
-//        this.csArm = csArm;
-//        this.fClawL = fClawL;
-//        this.fClawR = fClawR;
         this.opMode = opMode;
         this.hardwareMap = opMode.hardwareMap;
         this.imu = imu;
@@ -161,76 +146,9 @@ public class Control extends Subsystem {
      * Sets all drive motors to specified zero power behavior
      */
     private void setZeroPowerBehavior(DcMotor.ZeroPowerBehavior mode) {
-        xRailWinch.setZeroPowerBehavior(mode);
-        armTilt.setZeroPowerBehavior(mode);
+        intake.setZeroPowerBehavior(mode);
+        launch.setZeroPowerBehavior(mode);
     }
-
-//    // main arm total length
-//    public double getMainArmTotalLength() {
-//        return getMainArmExtensionLength() + MAINARM_INIT_LENGTH;
-//    }
-//    public void setMainArmTotalLength(double length) {
-//        setMainArmExtensionLength(length - MAINARM_INIT_LENGTH);
-//    }
-
-    // main arm horizontal offset measured from the initial position
-//    public double getMainArmHorizontalOffset() {
-//        mainArmAngle = getMainArmAngle();
-//        return getMainArmTotalLength()*Math.cos(mainArmAngle*Math.PI/180.0)
-//                - MAINARM_STACK_HEIGHT*Math.sin(mainArmAngle*Math.PI/180.0) - MAINARM_INIT_LENGTH;
-//    }
-
-    // main arm vertical offset measured from the initial position
-//    public double getMainArmVerticalOffset() {
-//        mainArmAngle = getMainArmAngle();
-//        return getMainArmTotalLength()*Math.sin(mainArmAngle*Math.PI/180.0)
-//                + MAINARM_STACK_HEIGHT*Math.cos(mainArmAngle*Math.PI/180.0) - MAINARM_STACK_HEIGHT;
-//    }
-//
-//    // set main arm offset measured from the initial position
-//    public void setMainArmPosition(double horizontalOffset, double verticalOffset) {
-//        double targetAngle, targetLength;
-//        // change coordinate system to the main arm pivoting point
-//        double targetHorizontalOffset = horizontalOffset + MAINARM_INIT_LENGTH;
-//        double targetVerticalOffset = verticalOffset + MAINARM_STACK_HEIGHT;
-//        if (targetHorizontalOffset > targetVerticalOffset) {
-//            // use targetHorizontalOffset as the anchor formula
-//            // initial guess of target length
-//            targetLength = Math.sqrt(targetHorizontalOffset*targetHorizontalOffset + targetVerticalOffset*targetVerticalOffset);
-//            // first iteration
-//            targetAngle = (Math.atan(targetVerticalOffset/targetHorizontalOffset)
-//                    - Math.acos(targetLength/Math.sqrt(targetLength*targetLength+MAINARM_STACK_HEIGHT*MAINARM_STACK_HEIGHT)))*180.0/Math.PI;
-//            targetLength = (targetHorizontalOffset + MAINARM_STACK_HEIGHT*Math.sin(targetAngle*Math.PI/180.0)) / Math.cos(targetAngle*Math.PI/180.0);
-//            // second iteration
-//            targetAngle = (Math.atan(targetVerticalOffset/targetHorizontalOffset)
-//                    - Math.acos(targetLength/Math.sqrt(targetLength*targetLength+MAINARM_STACK_HEIGHT*MAINARM_STACK_HEIGHT)))*180.0/Math.PI;
-//            targetLength = (targetHorizontalOffset + MAINARM_STACK_HEIGHT*Math.sin(targetAngle*Math.PI/180.0)) / Math.cos(targetAngle*Math.PI/180.0);
-//            // third iteration
-//            targetAngle = (Math.atan(targetVerticalOffset/targetHorizontalOffset)
-//                    - Math.acos(targetLength/Math.sqrt(targetLength*targetLength+MAINARM_STACK_HEIGHT*MAINARM_STACK_HEIGHT)))*180.0/Math.PI;
-//            targetLength = (targetHorizontalOffset + MAINARM_STACK_HEIGHT*Math.sin(targetAngle*Math.PI/180.0)) / Math.cos(targetAngle*Math.PI/180.0);
-//        }
-//        else {
-//            // use targetVerticalOffset as the anchor formula
-//            // initial guess of target length
-//            targetLength = Math.sqrt(targetHorizontalOffset*targetHorizontalOffset + targetVerticalOffset*targetVerticalOffset);
-//            // first iteration
-//            targetAngle = (Math.atan(targetVerticalOffset/targetHorizontalOffset)
-//                    - Math.acos(targetLength/Math.sqrt(targetLength*targetLength+MAINARM_STACK_HEIGHT*MAINARM_STACK_HEIGHT)))*180.0/Math.PI;
-//            targetLength = (targetVerticalOffset - MAINARM_STACK_HEIGHT*Math.cos(targetAngle*Math.PI/180.0)) / Math.sin(targetAngle*Math.PI/180.0);
-//            // second iteration
-//            targetAngle = (Math.atan(targetVerticalOffset/targetHorizontalOffset)
-//                    - Math.acos(targetLength/Math.sqrt(targetLength*targetLength+MAINARM_STACK_HEIGHT*MAINARM_STACK_HEIGHT)))*180.0/Math.PI;
-//            targetLength = (targetVerticalOffset - MAINARM_STACK_HEIGHT*Math.cos(targetAngle*Math.PI/180.0)) / Math.sin(targetAngle*Math.PI/180.0);
-//            // third iteration
-//            targetAngle = (Math.atan(targetVerticalOffset/targetHorizontalOffset)
-//                    - Math.acos(targetLength/Math.sqrt(targetLength*targetLength+MAINARM_STACK_HEIGHT*MAINARM_STACK_HEIGHT)))*180.0/Math.PI;
-//            targetLength = (targetVerticalOffset - MAINARM_STACK_HEIGHT*Math.cos(targetAngle*Math.PI/180.0)) / Math.sin(targetAngle*Math.PI/180.0);
-//        }
-//
-//        setMainArmAngle(targetAngle);
-//        setMainArmTotalLength(targetLength);
-//    }
 
     public double getWinchMaxSpeedMMpSec(){
         return WINCH_MAX_SPEED_MM_PER_SEC;
@@ -247,85 +165,7 @@ public class Control extends Subsystem {
     public double getMotorTickPerRevYellojacket223(){
         return MOTOR_TICK_PER_REV_YELLOJACKET223;
     }
-    //    public double getTiltTickPer90Degree(){
-//        return TILT_TICK_PER_90_DEGREE;
-//    }
-//    public double getClawArmPos0Deg(){
-//        return CLAW_ARM_POS_0_DEG;
-//    }
-//    public double getClawArmPosN180Deg(){
-//        return CLAW_ARM_POS_N180_DEG;
-//    }
-//    public double getClawArmRot0Deg(){
-//        return CLAW_ARM_ROT_0_DEG;
-//    }
-//    public double getClawArmRot180Deg(){
-//        return CLAW_ARM_ROT_180_DEG;
-//    }
-//    public double getMainClawPosOpenWide(){
-//        return  MAIN_CLAW_POS_OPEN_WIDE;
-//    }
-//    public double getMainClawPosOpen(){
-//        return  MAIN_CLAW_POS_OPEN;
-//    }
-//    public double getMainClawPosClosedStone(){
-//        return MAIN_CLAW_POS_CLOSED_STONE;
-//    }
-//    public double getMainClawPosClosed(){
-//        return MAIN_CLAW_POS_CLOSED;
-//    }
-//    public double getCSArmPos0Deg(){
-//        return CS_ARM_POS_0_DEG;
-//    }
-//    public double getCSArmPosN180Deg(){
-//        return CS_ARM_POS_N180_DEG;
-//    }
-//    public double getCSClawPosOpen(){
-//        return  CS_CLAW_POS_OPEN;
-//    }
-//    public double getCSClawPosClosed(){
-//        return CS_CLAW_POS_CLOSED;
-//    }
 
-//    public void retractMainClawArm() {
-//        setMainClawArmDegrees(-180.0);
-//    }
-//
-//    public void retractCSClawArm() {
-//        setCSClawArmDegrees(-174.0);
-//    }
-//
-//
-//
-//    public void openMainClawWide() {
-//        mainClaw.setPosition(this.getMainClawPosOpenWide());
-//    }
-//    public void openMainClaw() {
-//        mainClaw.setPosition(this.getMainClawPosOpen());
-//    }
-//    public void closeMainClawStone() {
-//        mainClaw.setPosition(this.getMainClawPosClosedStone());
-//    }
-//    public void closeMainClaw() {
-//        mainClaw.setPosition(this.getMainClawPosClosed());
-//    }
-//    public void setMainClawArmDegrees(double angle) {
-//        mainClawArm.setPosition(this.mainClawArmAngleToPos(angle));
-//    }
-//    public double mainClawArmAngleToPos(double angle){
-//        int lowerIndex, upperIndex;
-//        int i = 1;
-//        double servoTarget;
-//        while ((i < CLAW_ARM_TILT_TABLE_SIZE) && (CLAW_ARM_TILT_TABLE[i*2] < angle)) {
-//            ++i;
-//        }
-//        upperIndex = i;
-//        lowerIndex = i-1;
-//        servoTarget = CLAW_ARM_TILT_TABLE[lowerIndex*2+1] +
-//                (CLAW_ARM_TILT_TABLE[upperIndex*2+1]-CLAW_ARM_TILT_TABLE[lowerIndex*2+1])*(angle-CLAW_ARM_TILT_TABLE[lowerIndex*2])
-//                        /(CLAW_ARM_TILT_TABLE[upperIndex*2]-CLAW_ARM_TILT_TABLE[lowerIndex*2]);
-//        return servoTarget;
-//    }
     public void openWobbleClaw() {
         wobbleClaw.setPosition(0.416);
     }
@@ -333,8 +173,8 @@ public class Control extends Subsystem {
         wobbleClaw.setPosition(0.64);
     }
     public double getWobbleArmTargetAngle() {
-    return mainArmTargetAngle;
-}
+        return mainArmTargetAngle;
+    }
     public double wobbleGoalArmAngleToPos(double angle){
         int lowerIndex, upperIndex;
         int i = 1;

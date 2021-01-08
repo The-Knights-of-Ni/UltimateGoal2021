@@ -28,7 +28,7 @@ import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.XYZ;
 import static org.firstinspires.ftc.robotcore.external.navigation.AxesReference.EXTRINSIC;
 
 @Autonomous(name = "Auto Test (Ryan)")
-public class Auto_Test_Ryan extends LinearOpMode{
+public class Auto_Test extends LinearOpMode{
     private Robot robot;
     public ElapsedTime timer;
 

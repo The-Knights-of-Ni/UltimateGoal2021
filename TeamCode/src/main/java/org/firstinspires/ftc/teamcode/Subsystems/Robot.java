@@ -37,14 +37,13 @@ public class Robot extends Subsystem {
     public DcMotorEx rearRightDriveMotor;
     public DcMotorEx rearLeftDriveMotor;
     public DcMotorEx launcherMotor;
-    public DcMotorEx intake;
+    public DcMotorEx intakeMotor;
 
     //Servos
     public Servo mainClaw; // may need 2 servos for claw mechanism
 
     public Servo elevator1;
     public Servo elevator2; // what are the individual elevator1 and elevator2 motors for? ask hardware team
-    public DcMotorEx intakeMotor; // motor, servo, or both for intake
 
 
     /**
@@ -204,13 +203,13 @@ public class Robot extends Subsystem {
         launcherMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         launcherMotor.setPower(1.0);
 
-        intake = (DcMotorEx) hardwareMap.dcMotor.get("intake");
-        intake.setDirection(DcMotorSimple.Direction.FORWARD);
-        intake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        intake.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        intake.setTargetPosition(0);
-        intake.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        intake.setPower(1.0);
+        intakeMotor = (DcMotorEx) hardwareMap.dcMotor.get("intake");
+        intakeMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+        intakeMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        intakeMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        intakeMotor.setTargetPosition(0);
+        intakeMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        intakeMotor.setPower(1.0);
 
         //Servos
 //        mainClawArm = hardwareMap.servo.get("mA");
@@ -269,7 +268,7 @@ public class Robot extends Subsystem {
 //        drive.printMotorPIDCoefficients();
 //        opMode.sleep(2000);
 
-        control = new Control(intake, launcherMotor, imu, opMode, timer);
+        control = new Control(intakeMotor, launcherMotor, imu, opMode, timer);
 
         if (visionMode != 0) {
             opMode.telemetry.addData("Mode", " Camera initializing...");

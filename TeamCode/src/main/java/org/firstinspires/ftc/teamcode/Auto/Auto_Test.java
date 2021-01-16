@@ -74,29 +74,32 @@ public class Auto_Test extends LinearOpMode{
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        //Detect rings
+        String numRings = null;
+        switch(robot.vision.ringDetect()) {
+            case ZERO:
+                numRings = "ZERO";
+                robot.getOpmode().telemetry.addData("[Ring Stack] >>", numRings);
+                robot.getOpmode().telemetry.update();
+                break;
+            case ONE:
+                numRings = "ONE";
+                robot.getOpmode().telemetry.addData("[Ring Stack] >>", numRings);
+                robot.getOpmode().telemetry.update();
+                break;
+            case FOUR:
+                numRings = "FOUR";
+                robot.getOpmode().telemetry.addData("[Ring Stack] >>", numRings);
+                robot.getOpmode().telemetry.update();
+                break;
+        }
+
         waitForStart();
 
-//        String numRings = null;
-//
-//        sleep(300);
-//        switch(pipeline.getHeight()) {
-//            case ZERO:
-//                numRings = "ZERO";
-//                break;
-//            case ONE:
-//                numRings = "ONE";
-//                break;
-//            case FOUR:
-//                numRings = "FOUR";
-//                break;
-//        }
         while(!isStopRequested()) {
             robot.vision.vuMarkScan();
-            //robot.vision.ringDetect();
         }
-//        telemetry.clearAll();
-//        sleep(5000);
-//
     }
 
     private void initRingPipeline() {

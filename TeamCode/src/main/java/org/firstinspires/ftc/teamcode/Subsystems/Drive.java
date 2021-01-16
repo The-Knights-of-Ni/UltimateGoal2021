@@ -67,7 +67,7 @@ public class Drive extends Subsystem {
     private static final double     ROBOT_INIT_ANGLE    = 45.0;
     private static final float      mmPerInch        = 25.4f;
 
-    private boolean allianceRed = false;
+    private boolean isBlue = false;
 
 
     private OpenGLMatrix lastLocation = null;

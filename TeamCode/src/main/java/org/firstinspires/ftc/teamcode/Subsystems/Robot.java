@@ -36,31 +36,16 @@ public class Robot extends Subsystem {
     public DcMotorEx frontRightDriveMotor;
     public DcMotorEx rearRightDriveMotor;
     public DcMotorEx rearLeftDriveMotor;
-
     public DcMotorEx launcherMotor;
-
-
-    // delete these later; these are from last year, but they cause an error in the current code
-    //when they're removed (will fix that later)
-    public DcMotorEx xRailWinch;
-    public DcMotorEx armTilt;
+    public DcMotorEx intake;
 
     //Servos
-
-//    public Servo mainClawArm;
-//    public Servo mainClawRotation;
-//    public Servo mainClaw; //0
-//    public Servo csClaw; //capstone claw
-//    public Servo csArm; //capstone arm
-//    public Servo fClawL; //foundationClawLeft
-//    public Servo fClawR; // foundationClawRight
-
     public Servo mainClaw; // may need 2 servos for claw mechanism
 
     public Servo elevator1;
     public Servo elevator2; // what are the individual elevator1 and elevator2 motors for? ask hardware team
     public DcMotorEx intakeMotor; // motor, servo, or both for intake
-    public Servo intake;
+
 
     /**
      * Control Hub
@@ -87,7 +72,6 @@ public class Robot extends Subsystem {
 
     //Sensors
     public BNO055IMU imu;
-    private ColorSensor colorSensor;
 
     // Declare game pad objects
     public double leftStickX;
@@ -212,23 +196,23 @@ public class Robot extends Subsystem {
         rearLeftDriveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rearRightDriveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-//        xRailWinch = (DcMotorEx) hardwareMap.dcMotor.get("winch");
-//        xRailWinch.setDirection(DcMotorSimple.Direction.REVERSE);
-//        xRailWinch.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-//        xRailWinch.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//        xRailWinch.setTargetPosition(0);
-//        xRailWinch.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-//        xRailWinch.setPower(1.0);
-//
-//        armTilt = (DcMotorEx) hardwareMap.dcMotor.get("tilt");
-//        armTilt.setDirection(DcMotorSimple.Direction.FORWARD);
-//        armTilt.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-//        armTilt.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//        armTilt.setTargetPosition(0);
-//        armTilt.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-//        armTilt.setPower(1.0);
-//
-//        //Servos
+        launcherMotor = (DcMotorEx) hardwareMap.dcMotor.get("launcher");
+        launcherMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+        launcherMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        launcherMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        launcherMotor.setTargetPosition(0);
+        launcherMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        launcherMotor.setPower(1.0);
+
+        intake = (DcMotorEx) hardwareMap.dcMotor.get("intake");
+        intake.setDirection(DcMotorSimple.Direction.FORWARD);
+        intake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        intake.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        intake.setTargetPosition(0);
+        intake.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        intake.setPower(1.0);
+
+        //Servos
 //        mainClawArm = hardwareMap.servo.get("mA");
 //        mainClawRotation = hardwareMap.servo.get("mR");
 //        mainClaw = hardwareMap.servo.get("mC");
@@ -246,7 +230,6 @@ public class Robot extends Subsystem {
 
         //Sensors
         imu = hardwareMap.get(BNO055IMU.class, "imu");
-//        colorSensor = hardwareMap.colorSensor.get("color");
 
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
@@ -286,7 +269,7 @@ public class Robot extends Subsystem {
 //        drive.printMotorPIDCoefficients();
 //        opMode.sleep(2000);
 
-        control = new Control(xRailWinch, armTilt, imu, opMode, timer);
+        control = new Control(intake, launcherMotor, imu, opMode, timer);
 
         if (visionMode != 0) {
             opMode.telemetry.addData("Mode", " Camera initializing...");

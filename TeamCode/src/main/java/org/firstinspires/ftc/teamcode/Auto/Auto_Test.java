@@ -80,8 +80,8 @@ public class Auto_Test extends LinearOpMode{
         switch(robot.vision.ringDetect()) {
             case ZERO:
                 numRings = "ZERO";
-                robot.getOpmode().telemetry.addData("[Ring Stack] >>", numRings);
-                robot.getOpmode().telemetry.update();
+                telemetry.addData("[Ring Stack] >>", numRings);
+                telemetry.update();
                 break;
             case ONE:
                 numRings = "ONE";

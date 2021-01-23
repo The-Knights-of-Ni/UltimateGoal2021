@@ -28,7 +28,7 @@ import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.XYZ;
 import static org.firstinspires.ftc.robotcore.external.navigation.AxesReference.EXTRINSIC;
 
 @Autonomous(name = "Auto Test (Ryan)")
-public class Auto_Test extends LinearOpMode{
+public class Auto_Blue extends LinearOpMode{
     private Robot robot;
     public ElapsedTime timer;
 
@@ -75,6 +75,8 @@ public class Auto_Test extends LinearOpMode{
             e.printStackTrace();
         }
 
+        sleep(2000);
+
         //Detect rings
         String numRings = null;
         switch(robot.vision.ringDetect()) {
@@ -97,8 +99,33 @@ public class Auto_Test extends LinearOpMode{
 
         waitForStart();
 
-        while(!isStopRequested()) {
-            robot.vision.vuMarkScan();
+        int distance = 1797;
+
+        if(numRings.equals("ZERO")) {
+            robot.drive.moveForward(70.75*mmPerInch);
+            robot.drive.strafe((int)(-22.75/2*25.4));
+        }
+        else if(numRings.equals("ONE")) {
+            robot.drive.moveForward(94.25*mmPerInch);
+            robot.drive.strafe((int)(22.75/2*mmPerInch));
+        }
+        else {
+            robot.drive.moveForward(117.75*mmPerInch);
+            robot.drive.strafe((int)(-22.75/2*mmPerInch));
+        }
+
+        // deploy claw
+
+        if(numRings.equals("ZERO")) {
+            // align robot
+        }
+        else if(numRings.equals("ONE")) {
+            robot.drive.moveBackward((94.25-70.75)*mmPerInch);
+            robot.drive.strafe((int)(-22.75/2*mmPerInch));
+        }
+        else {
+            robot.drive.moveBackward((117.75-70.75)*mmPerInch);
+            robot.drive.strafe((int)(22.75/2*mmPerInch));
         }
     }
 

@@ -62,7 +62,7 @@ public class TeleopMark1 extends LinearOpMode {
         if (visionEnabled) {
             // visionMode 4: backWebcam is initialized for Vuforia and armWebcam is initialized for OpenCV
             try {
-                robot = new Robot(this, timer, 4);
+                robot = new Robot(this, timer, true);
             } catch (IOException e) {
                 e.printStackTrace();
             }

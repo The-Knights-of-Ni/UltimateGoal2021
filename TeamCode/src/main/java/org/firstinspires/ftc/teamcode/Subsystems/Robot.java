@@ -135,6 +135,24 @@ public class Robot extends Subsystem {
     public Control control;
     public Vision vision;
 
+    public Robot(LinearOpMode opMode, ElapsedTime timer) throws IOException {
+        hardwareMap = opMode.hardwareMap;
+        this.opMode = opMode;
+        this.timer = timer;
+        //init(0);
+    }
+
+    /**
+     *
+     * @param opMode
+     * @param timer
+     * @param isBlue
+     *          o: no camera is initialized
+     *          1: only armWebcam is initialized for OpenCV
+     *          2: backWebcam is initialized for Vuforia
+     *          3: backWebcam is initialized for Vuforia and frontWebcam is initialized for OpenCV
+     *          4: armWebcam is initialized for OpenCV and frontWebcam is initialized for OpenCV
+     */
     public Robot(LinearOpMode opMode, ElapsedTime timer, boolean isBlue) throws IOException {
         hardwareMap = opMode.hardwareMap;
         this.opMode = opMode;
@@ -144,43 +162,10 @@ public class Robot extends Subsystem {
         } else {
             this.isBlue = false;
         }
-        initVisionTest();
-    }
-
-    public Robot(LinearOpMode opMode, ElapsedTime timer) throws IOException {
-        hardwareMap = opMode.hardwareMap;
-        this.opMode = opMode;
-        this.timer = timer;
-        init(0);
-    }
-
-    /**
-     *
-     * @param opMode
-     * @param timer
-     * @param visionMode
-     *          o: no camera is initialized
-     *          1: only armWebcam is initialized for OpenCV
-     *          2: backWebcam is initialized for Vuforia
-     *          3: backWebcam is initialized for Vuforia and frontWebcam is initialized for OpenCV
-     *          4: armWebcam is initialized for OpenCV and frontWebcam is initialized for OpenCV
-     */
-    public Robot(LinearOpMode opMode, ElapsedTime timer, int visionMode) throws IOException {
-        hardwareMap = opMode.hardwareMap;
-        this.opMode = opMode;
-        this.timer = timer;
-        init(visionMode);
-    }
-
-    public Robot () throws IOException {
-        init(0);
+        init();
     }
 
     public void init() throws IOException {
-        init(0);
-    }
-
-    public void init(int visionMode) throws IOException {
         //DC Motors
         frontLeftDriveMotor = (DcMotorEx) hardwareMap.dcMotor.get("fl");
         frontRightDriveMotor = (DcMotorEx) hardwareMap.dcMotor.get("fr");
@@ -195,6 +180,7 @@ public class Robot extends Subsystem {
         rearLeftDriveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rearRightDriveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
+        /*
         launcherMotor = (DcMotorEx) hardwareMap.dcMotor.get("launcher");
         launcherMotor.setDirection(DcMotorSimple.Direction.FORWARD);
         launcherMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -210,24 +196,7 @@ public class Robot extends Subsystem {
         intakeMotor.setTargetPosition(0);
         intakeMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         intakeMotor.setPower(1.0);
-
-        //Servos
-//        mainClawArm = hardwareMap.servo.get("mA");
-//        mainClawRotation = hardwareMap.servo.get("mR");
-//        mainClaw = hardwareMap.servo.get("mC");
-//        csClaw = hardwareMap.servo.get("csC"); //capstone claw
-//        csArm = hardwareMap.servo.get("csA"); //capstone arm
-//        fClawL = hardwareMap.servo.get("fL");
-//        fClawR = hardwareMap.servo.get("fR");
-
-//        // Set servo scale ranges
-//        mainArm.scaleRange(0,1);
-//        mainRotation.scaleRange(0,1);
-//        mainClaw.scaleRange(0,1);
-//        fClawL.scaleRange(0.36,0.8);
-//        fClawR.scaleRange(0.11,0.63);
-
-        //Sensors
+         */
         imu = hardwareMap.get(BNO055IMU.class, "imu");
 
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
@@ -255,27 +224,13 @@ public class Robot extends Subsystem {
         //Subsystems
         drive = new Drive(frontLeftDriveMotor, frontRightDriveMotor, rearLeftDriveMotor, rearRightDriveMotor, imu, opMode, timer);
 
-//        drive.setMotorKp(10.0, 10.0, 10.0, 10.0);
-//        drive.setMotorPID(5.0, 1.0, 1.0, 0.0);
-//        drive.printMotorPIDCoefficients();
-//        opMode.sleep(3000);
-
         drive.setRunMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         drive.setRunMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-//        drive.setRunMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//        drive.initMaxVelocity();
-//        drive.stop();
-//        drive.printMotorPIDCoefficients();
-//        opMode.sleep(2000);
 
-        control = new Control(intakeMotor, launcherMotor, imu, opMode, timer);
-
-        if (visionMode != 0) {
-            opMode.telemetry.addData("Mode", " Camera initializing...");
-            opMode.telemetry.update();
-            //vision = new Vision(hardwareMap, this, visionMode);
-        }
+        //control = new Control(intakeMotor, launcherMotor, imu, opMode, timer);
         vision = new Vision(hardwareMap, this, isBlue);
+        opMode.telemetry.addData("Mode", " vision done initializing...");
+        opMode.telemetry.update();
     }
 
     public void initVisionTest() {

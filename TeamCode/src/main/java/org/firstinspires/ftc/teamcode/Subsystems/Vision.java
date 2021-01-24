@@ -80,7 +80,9 @@ public class Vision {
         } else {
             alliance = Color.RED;
         }
-        initVuforia();
+        robot.getOpmode().telemetry.addData("Mode", "Vision initializing...");
+        robot.getOpmode().telemetry.update();
+        //initVuforia();
         initRingPipeline();
     }
 

@@ -52,7 +52,7 @@ public class VisionTest extends LinearOpMode {
         timer = new ElapsedTime();
         // visionMode 3: backWebcam is initialized for Vuforia and frontWebcam is initialized for OpenCV
         try {
-            this.robot = new Robot(this, timer, 3);
+            this.robot = new Robot(this, timer, true);
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -27,7 +27,7 @@ import static org.firstinspires.ftc.robotcore.external.navigation.AngleUnit.DEGR
 import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.XYZ;
 import static org.firstinspires.ftc.robotcore.external.navigation.AxesReference.EXTRINSIC;
 
-@Autonomous(name = "Auto Test (Ryan)")
+@Autonomous(name = "Auto Blue")
 public class Auto_Blue extends LinearOpMode{
     private Robot robot;
     public ElapsedTime timer;
@@ -67,15 +67,25 @@ public class Auto_Blue extends LinearOpMode{
 
     private boolean targetVisible = false;
 
+    private void initOpMode() throws IOException {
+        telemetry.addData("Init Robot", "");
+        telemetry.update();
+        timer = new ElapsedTime();
+
+        this.robot = new Robot(this, timer, isBlue);
+
+        telemetry.addData("Wait for start", "");
+        telemetry.update();
+    }
+
     @Override
-    public void runOpMode() {
+    public void runOpMode() throws InterruptedException{
         try {
-            robot = new Robot(this, timer, isBlue);
+            initOpMode();
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        sleep(2000);
+        waitForStart();
 
         //Detect rings
         String numRings = null;
@@ -96,10 +106,6 @@ public class Auto_Blue extends LinearOpMode{
                 robot.getOpmode().telemetry.update();
                 break;
         }
-
-        waitForStart();
-
-        int distance = 1797;
 
         if(numRings.equals("ZERO")) {
             robot.drive.moveForward(70.75*mmPerInch);

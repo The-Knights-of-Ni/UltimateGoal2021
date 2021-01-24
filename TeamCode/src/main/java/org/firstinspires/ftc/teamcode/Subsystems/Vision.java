@@ -44,11 +44,10 @@ public class Vision {
 
     private static final boolean USING_WEBCAM = true; // change to true if using webcam
     private static final String WEBCAM_NAME = "Webcam 1"; // insert webcam name from configuration if using webcam
+    WebcamName webcamName = null;
 
     private static final String VUFORIA_KEY =
             "ATDGULf/////AAABmRRGSyLSbUY4lPoqBYjklpYqC4y9J7bCk42kjgYS5KtgpKL8FbpEDQTovzZG8thxB01dClvthxkSuSyCkaZi+JiD5Pu0cMVre3gDwRvwRXA7V9kpoYyMIPMVX/yBTGaW8McUaK9UeQUaFSepsTcKjX/itMtcy7nl1k84JChE4i8whbinHWDpaNwb5qcJsXlQwJhE8JE7t8NMxMm31AgzqjVf/7HwprTRfrxjTjVx5v2rp+wgLeeLTE/xk1JnL3fZMG6yyxPHgokWlIYEBZ5gBX+WJfgA+TDsdSPY/MnBp5Z7QxQsO9WJA59o/UzyEo/9BkbvYJZfknZqeoZWrJoN9jk9sivFh0wIPsH+JjZNFsPw";
-
-    private VuforiaLocalizer.Parameters parameters = null;
 
     // Since ImageTarget trackables use mm to specify their dimensions, we must use mm for all the physical dimension.
     // Define constants
@@ -80,18 +79,17 @@ public class Vision {
         } else {
             alliance = Color.RED;
         }
-        robot.getOpmode().telemetry.addData("Mode", "Vision initializing...");
-        robot.getOpmode().telemetry.update();
         //initVuforia();
         initRingPipeline();
     }
 
     private void initVuforia() {
         // Configure parameters
+        webcamName = hardwareMap.get(WebcamName.class, "Webcam 1");
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
+        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
         parameters.vuforiaLicenseKey = VUFORIA_KEY;
-        parameters.cameraName = hardwareMap.get(WebcamName.class, WEBCAM_NAME);; //Indicate which webcame should be used
+        parameters.cameraName = webcamName;
         parameters.useExtendedTracking = false;
 
         // Instantiate the Vuforia engine
@@ -111,14 +109,18 @@ public class Vision {
         target.setLocation(createMatrix(0, 500, mmTargetHeight, 90, 0, 0));
 
         // Define where camera is in relation to center of robot in inches
-        robotFromCamera = createMatrix(CAMERA_LEFT_DISPLACEMENT, CAMERA_FORWARD_DISPLACEMENT, CAMERA_VERTICAL_DISPLACEMENT, 90, 0, 0);
+        final float CAMERA_FORWARD_DISPLACEMENT  = 0 * mmPerInch;
+        final float CAMERA_VERTICAL_DISPLACEMENT = 0 * mmPerInch;
+        final float CAMERA_LEFT_DISPLACEMENT     = 0 * mmPerInch;
+
+        OpenGLMatrix robotFromCamera = createMatrix(CAMERA_LEFT_DISPLACEMENT, CAMERA_FORWARD_DISPLACEMENT, CAMERA_VERTICAL_DISPLACEMENT, 90, 0, 0);
 
         ((VuforiaTrackableDefaultListener) target.getListener()).setPhoneInformation(robotFromCamera, parameters.cameraDirection);
-        targetsUltimateGoal.activate();
     }
 
     public void vuMarkScan() {
         // check all the trackable targets to see which one (if any) is visible.
+        targetsUltimateGoal.activate();
         targetVisible = false;
         if (((VuforiaTrackableDefaultListener)target.getListener()).isVisible()) {
             robot.getOpmode().telemetry.addData("Visible Target", target.getName());

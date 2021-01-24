@@ -109,15 +109,15 @@ public class Auto_Blue extends LinearOpMode{
 
         if(numRings.equals("ZERO")) {
             robot.drive.moveForward(70.75*mmPerInch);
-            robot.drive.strafe((int)(-22.75/2*25.4));
+            robot.drive.moveRight(22.75/2*mmPerInch);
         }
         else if(numRings.equals("ONE")) {
             robot.drive.moveForward(94.25*mmPerInch);
-            robot.drive.strafe((int)(22.75/2*mmPerInch));
+            robot.drive.moveLeft(22.75/2*mmPerInch);
         }
         else {
             robot.drive.moveForward(117.75*mmPerInch);
-            robot.drive.strafe((int)(-22.75/2*mmPerInch));
+            robot.drive.moveRight(22.75/2*mmPerInch);
         }
 
         // deploy claw

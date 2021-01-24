@@ -219,18 +219,20 @@ public class Robot extends Subsystem {
             opMode.idle();
         }
 
+        //Subsystems
         opMode.telemetry.addData("Mode", " drive/control initializing...");
         opMode.telemetry.update();
-        //Subsystems
         drive = new Drive(frontLeftDriveMotor, frontRightDriveMotor, rearLeftDriveMotor, rearRightDriveMotor, imu, opMode, timer);
 
         drive.setRunMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         drive.setRunMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         //control = new Control(intakeMotor, launcherMotor, imu, opMode, timer);
-        vision = new Vision(hardwareMap, this, isBlue);
-        opMode.telemetry.addData("Mode", " vision done initializing...");
+
+        opMode.telemetry.addData("Mode", " vision initializing...");
         opMode.telemetry.update();
+        vision = new Vision(hardwareMap, this, isBlue);
+
     }
 
     public void initVisionTest() {

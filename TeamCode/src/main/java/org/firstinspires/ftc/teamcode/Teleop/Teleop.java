@@ -41,7 +41,6 @@ public class Teleop extends LinearOpMode {
     private boolean wobbleClawControlDigital = true;
     private boolean wobbleClawDeployed = false;
 
-    private double turretAngle; // for turret
 
 
     private void initOpMode() {
@@ -166,7 +165,6 @@ public class Teleop extends LinearOpMode {
 
             telemetry.addData("Drive Mode ", prospectiveMode.toString());
             telemetry.addData("robot angle ", robotAngle);
-            telemetry.addData("turret angle ", turretAngle);
 
             int currentPositions[] = robot.drive.getCurrentPositions();
             telemetry.addData("position", "fl %d, fr %d, rl %d, rr %d",

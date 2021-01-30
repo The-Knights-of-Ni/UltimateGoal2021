@@ -150,7 +150,6 @@ public class Teleop extends LinearOpMode {
                 robot.control.setLaunch(false);
             }
 
-
             telemetry.addData("Drive Mode ", prospectiveMode.toString());
             telemetry.addData("robot angle ", robotAngle);
 

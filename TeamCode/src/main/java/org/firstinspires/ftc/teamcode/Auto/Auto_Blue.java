@@ -133,6 +133,17 @@ public class Auto_Blue extends LinearOpMode{
             robot.drive.moveBackward((117.75-70.75)*mmPerInch);
             robot.drive.strafe((int)(22.75/2*mmPerInch));
         }
+
+        // launch rings
+        launchRings();
+
+        // park robot
+    }
+
+    private void launchRings() {
+        // align robot
+        // detect high goal with vision
+        // launch rings to high goal
     }
 
     private void initRingPipeline() {

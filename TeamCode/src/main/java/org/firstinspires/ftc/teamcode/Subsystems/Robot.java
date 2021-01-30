@@ -36,8 +36,8 @@ public class Robot extends Subsystem {
     public DcMotorEx frontRightDriveMotor;
     public DcMotorEx rearRightDriveMotor;
     public DcMotorEx rearLeftDriveMotor;
-    public DcMotorEx launcherMotor;
-    public DcMotorEx intakeMotor;
+    public DcMotorEx launcher;
+    public DcMotorEx intake;
 
     //Servos
     public Servo mainClaw; // may need 2 servos for claw mechanism
@@ -172,23 +172,22 @@ public class Robot extends Subsystem {
         rearLeftDriveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rearRightDriveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        /*
-        launcherMotor = (DcMotorEx) hardwareMap.dcMotor.get("launcher");
-        launcherMotor.setDirection(DcMotorSimple.Direction.FORWARD);
-        launcherMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        launcherMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        launcherMotor.setTargetPosition(0);
-        launcherMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        launcherMotor.setPower(1.0);
+        launcher = (DcMotorEx) hardwareMap.dcMotor.get("launcher");
+        launcher.setDirection(DcMotorSimple.Direction.FORWARD);
+        launcher.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        launcher.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        launcher.setTargetPosition(0);
+        launcher.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        launcher.setPower(1.0);
 
-        intakeMotor = (DcMotorEx) hardwareMap.dcMotor.get("intake");
-        intakeMotor.setDirection(DcMotorSimple.Direction.FORWARD);
-        intakeMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        intakeMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        intakeMotor.setTargetPosition(0);
-        intakeMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        intakeMotor.setPower(1.0);
-         */
+        intake = (DcMotorEx) hardwareMap.dcMotor.get("intake");
+        intake.setDirection(DcMotorSimple.Direction.FORWARD);
+        intake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        intake.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        intake.setTargetPosition(0);
+        intake.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        intake.setPower(1.0);
+
         imu = hardwareMap.get(BNO055IMU.class, "imu");
 
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
@@ -219,7 +218,7 @@ public class Robot extends Subsystem {
         drive.setRunMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         drive.setRunMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        //control = new Control(intakeMotor, launcherMotor, imu, opMode, timer);
+        control = new Control(intake, launcher, imu, opMode, timer);
 
         opMode.telemetry.addData("Mode", " vision initializing...");
         opMode.telemetry.update();

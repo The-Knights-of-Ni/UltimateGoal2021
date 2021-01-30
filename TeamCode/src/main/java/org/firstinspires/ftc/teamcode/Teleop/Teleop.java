@@ -22,8 +22,7 @@ public class Teleop extends LinearOpMode {
     double timeCurrent;
     double timePre;
     ElapsedTime timer;
-
-
+    
     enum Prospective {
         ROBOT,
         DRIVER,
@@ -47,22 +46,11 @@ public class Teleop extends LinearOpMode {
     private void initOpMode() {
         //Initialize DC motor objects
         timer = new ElapsedTime();
-        if (visionEnabled) {
-            // visionMode 4: backWebcam is initialized for Vuforia and armWebcam is initialized for OpenCV
-            try {
-                robot = new Robot(this, timer, true);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        try {
+            robot = new Robot(this, timer, true);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        else {
-            try {
-                robot = new Robot(this, timer);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
         timeCurrent = timer.nanoseconds();
         timePre = timeCurrent;
 

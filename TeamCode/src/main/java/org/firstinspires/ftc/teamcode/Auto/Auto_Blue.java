@@ -27,6 +27,10 @@ import static org.firstinspires.ftc.robotcore.external.navigation.AngleUnit.DEGR
 import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.XYZ;
 import static org.firstinspires.ftc.robotcore.external.navigation.AxesReference.EXTRINSIC;
 
+/**
+ * Created by Ryan on 1/10/2021.
+ */
+
 @Autonomous(name = "Auto Blue")
 public class Auto_Blue extends LinearOpMode{
     private Robot robot;
@@ -144,41 +148,5 @@ public class Auto_Blue extends LinearOpMode{
         // align robot
         // detect high goal with vision
         // launch rings to high goal
-    }
-
-    private void initRingPipeline() {
-        // get camera from the robot
-        int cameraMonitorViewId = this
-                .hardwareMap
-                .appContext
-                .getResources().getIdentifier(
-                        "cameraMonitorViewId",
-                        "id",
-                        hardwareMap.appContext.getPackageName()
-                );
-        if (USING_WEBCAM) {
-            camera = OpenCvCameraFactory
-                    .getInstance()
-                    .createWebcam(hardwareMap.get(WebcamName.class, WEBCAM_NAME), cameraMonitorViewId);
-        } else {
-            camera = OpenCvCameraFactory
-                    .getInstance()
-                    .createInternalCamera(OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId);
-        }
-
-        UGContourRingPipeline.Config.setCAMERA_WIDTH(CAMERA_WIDTH);
-        UGContourRingPipeline.Config.setHORIZON(HORIZON);
-
-        pipeline = new UGContourRingPipeline(telemetry, DEBUG);
-        camera.setPipeline(pipeline);
-
-        camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
-        {
-            @Override
-            public void onOpened()
-            {
-                camera.startStreaming(CAMERA_WIDTH, CAMERA_HEIGHT, OpenCvCameraRotation.UPRIGHT);
-            }
-        });
     }
 }

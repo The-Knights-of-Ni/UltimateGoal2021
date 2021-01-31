@@ -23,7 +23,6 @@ public class Control extends Subsystem {
 
     //Servos
     private Servo wobbleGoalArm;
-    private Servo wobbleGoalClaw;
     private Servo wobbleClaw;
     public Servo elevator1;
     public Servo elevator2;

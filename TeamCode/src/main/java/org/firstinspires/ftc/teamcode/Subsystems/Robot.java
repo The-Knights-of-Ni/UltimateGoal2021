@@ -36,7 +36,7 @@ public class Robot extends Subsystem {
     public DcMotorEx frontRightDriveMotor;
     public DcMotorEx rearRightDriveMotor;
     public DcMotorEx rearLeftDriveMotor;
-    public DcMotorEx launcher;
+    public DcMotorEx launch;
     public DcMotorEx intake;
 
     //Servos
@@ -172,13 +172,13 @@ public class Robot extends Subsystem {
         rearLeftDriveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rearRightDriveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        launcher = (DcMotorEx) hardwareMap.dcMotor.get("launcher");
-        launcher.setDirection(DcMotorSimple.Direction.FORWARD);
-        launcher.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        launcher.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        launcher.setTargetPosition(0);
-        launcher.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        launcher.setPower(1.0);
+        launch = (DcMotorEx) hardwareMap.dcMotor.get("launcher");
+        launch.setDirection(DcMotorSimple.Direction.FORWARD);
+        launch.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        launch.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        launch.setTargetPosition(0);
+        launch.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        launch.setPower(1.0);
 
         intake = (DcMotorEx) hardwareMap.dcMotor.get("intake");
         intake.setDirection(DcMotorSimple.Direction.FORWARD);
@@ -218,7 +218,8 @@ public class Robot extends Subsystem {
         drive.setRunMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         drive.setRunMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        control = new Control(intake, launcher, imu, opMode, timer);
+        control = new Control(intake, launch
+                , imu, opMode, timer);
 
         opMode.telemetry.addData("Mode", " vision initializing...");
         opMode.telemetry.update();

@@ -90,9 +90,9 @@ public class Teleop extends LinearOpMode {
             // Drive the motors
             double[] motorPowers;
             robotAngle = robot.imu.getAngularOrientation().firstAngle;
-            if (prospectiveMode == Prospective.ROBOT) {
-                motorPowers = robot.drive.calcMotorPowers(robot.leftStickX, robot.leftStickY, robot.rightStickX);
-            }
+
+            motorPowers = robot.drive.calcMotorPowers(robot.leftStickX, robot.leftStickY, robot.rightStickX);
+
             else {  // DRIVER prospective mode
                 // Get robot angle
                 double relativeX = robot.leftStickX * Math.cos(robotAngle*Math.PI/180.0) + robot.leftStickY * Math.sin(robotAngle*Math.PI/180.0);
@@ -106,15 +106,6 @@ public class Teleop extends LinearOpMode {
                 robot.drive.resetDriveMotorEncoders();
             }
 
-            // toggle drive prospective mode
-            if (robot.xButton && !robot.isxButtonPressedPrev) {
-                if (prospectiveMode == Prospective.DRIVER) {
-                    prospectiveMode = Prospective.ROBOT;
-                }
-                else {
-                    prospectiveMode = Prospective.DRIVER;
-                }
-            }
 
             if (wobbleClawControlDigital) {
                 if (robot.bumperRight2 && !robot.isrBumper2PressedPrev) { // toggle main claw arm deploy mode
@@ -147,7 +138,6 @@ public class Teleop extends LinearOpMode {
             else if (robot.bButton && robot.isbButtonPressedPrev){
                 robot.control.setLaunch(false);
             }
-            telemetry.addData("Drive Mode ", prospectiveMode.toString());
             telemetry.addData("robot angle ", robotAngle);
 
             int currentPositions[] = robot.drive.getCurrentPositions();

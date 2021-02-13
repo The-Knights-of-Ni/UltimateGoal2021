@@ -143,10 +143,10 @@ public class Drive extends Subsystem {
 
 
     public void turn(double power) {
-        frontLeft.setPower(power);
-        frontRight.setPower(-power);
-        rearLeft.setPower(power);
-        rearRight.setPower(-power);
+        frontLeft.setPower(-power);
+        frontRight.setPower(power);
+        rearLeft.setPower(-power);
+        rearRight.setPower(power);
     }
 
     // robot move in all directions

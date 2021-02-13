@@ -218,8 +218,7 @@ public class Robot extends Subsystem {
         drive.setRunMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         drive.setRunMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        control = new Control(intake, launch
-                , imu, opMode, timer);
+        control = new Control(intake, launch, imu, opMode, timer);
 
         opMode.telemetry.addData("Mode", " vision initializing...");
         opMode.telemetry.update();

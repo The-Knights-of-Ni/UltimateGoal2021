@@ -140,16 +140,9 @@ public class Teleop extends LinearOpMode {
                 //
                 robot.control.setIntake(true);
             }
-            else if (robot.aButton){
-                robot.control.setIntake(false);
-            }
             if (robot.bButton && !robot.isbButtonPressedPrev){
                 robot.control.setLaunch(true);
             }
-            else if (robot.bButton){
-                robot.control.setLaunch(false);
-            }
-
             telemetry.addData("Drive Mode ", prospectiveMode.toString());
             telemetry.addData("robot angle ", robotAngle);
 

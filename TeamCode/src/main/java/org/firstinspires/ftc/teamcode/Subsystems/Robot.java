@@ -49,15 +49,15 @@ public class Robot extends Subsystem {
     /**
      * Control Hub
      *
-     * bl        0
-     * fl        1
+     * fl        0
+     * bl        1
      * launch    2
      *
      * --------------------
      * Expansion Hub 2
      *
-     * br        0
-     * fr        1
+     * fr        0
+     * br        1
      * intake    2
      */
 

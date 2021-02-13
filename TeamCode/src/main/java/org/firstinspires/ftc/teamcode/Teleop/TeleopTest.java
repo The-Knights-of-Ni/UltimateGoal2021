@@ -44,7 +44,7 @@ public class TeleopTest extends LinearOpMode{
             }
             if (robot.bButton){
                 robot.control.setLaunch(false);
-                telemetry.addData("A Button", true)
+                telemetry.addData("B Button", true);
             }
         }
     }

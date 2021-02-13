@@ -14,8 +14,7 @@ import java.io.IOException;
 public class TeleopTest extends LinearOpMode{
 
     private Robot robot;
-
-    double deltaT;
+    
     double timeCurrent;
     double timePre;
     ElapsedTime timer;
@@ -30,6 +29,8 @@ public class TeleopTest extends LinearOpMode{
         timeCurrent = timer.nanoseconds();
         timePre = timeCurrent;
 
+        telemetry.addData("Wait for start", "");
+        telemetry.update();
     }
 
     public void runOpMode() throws InterruptedException{

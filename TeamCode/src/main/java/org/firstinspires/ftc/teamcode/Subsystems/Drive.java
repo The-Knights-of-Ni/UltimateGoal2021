@@ -185,10 +185,10 @@ public class Drive extends Subsystem {
     }
 
     public void setDrivePowers(double[] powers) {
-        frontLeft.setPower(powers[0]);
-        frontRight.setPower(powers[1]);
-        rearLeft.setPower(powers[2]);
-        rearRight.setPower(powers[3]);
+        rearLeft.setPower(powers[0]);
+        frontLeft.setPower(powers[1]);
+        rearRight.setPower(powers[2]);
+        frontRight.setPower(powers[3]);
     }
 
     public void setDriveFullPower(boolean fullPower) {

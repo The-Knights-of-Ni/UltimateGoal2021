@@ -158,18 +158,5 @@ public class Teleop extends LinearOpMode {
             telemetry.update();
         }
     }
-    public void runOpTest() throws InterruptedException{
-        initOpMode();
-        waitForStart();
-        while (opModeIsActive()){
-            robot.getGamePadInputs();
-            if (robot.aButton){
-                robot.control.setLaunch(true);
-            }
-            if (robot.bButton){
-                robot.control.setLaunch(false);
-            }
-        }
-    }
 
 }

@@ -9,6 +9,8 @@ import org.firstinspires.ftc.teamcode.Subsystems.Robot;
 
 import java.io.IOException;
 
+
+@TeleOp(name="TeleopTest")
 public class TeleopTest extends LinearOpMode{
 
     private Robot robot;

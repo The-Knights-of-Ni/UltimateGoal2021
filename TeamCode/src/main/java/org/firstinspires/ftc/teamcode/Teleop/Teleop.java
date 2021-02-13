@@ -33,8 +33,6 @@ public class Teleop extends LinearOpMode {
 //        OPEN,
 //        WIDEOPEN,
 //    }
-
-    private Prospective prospectiveMode = Prospective.ROBOT;
     private double robotAngle;
     private boolean visionEnabled = false;
     private boolean wobbleClawControlDigital = true;

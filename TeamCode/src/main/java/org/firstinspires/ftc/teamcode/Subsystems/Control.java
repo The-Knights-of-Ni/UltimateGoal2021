@@ -18,8 +18,8 @@ public class Control extends Subsystem {
     private LinearOpMode opMode;
 
     //DC Motors
-    public DcMotorEx intake;
-    public DcMotorEx launch;
+    private DcMotorEx intake;
+    private DcMotorEx launch;
 
     //Servos
     private Servo wobbleGoalArm;

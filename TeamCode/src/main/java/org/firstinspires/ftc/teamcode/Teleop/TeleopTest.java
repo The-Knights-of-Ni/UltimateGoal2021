@@ -51,7 +51,6 @@ public class TeleopTest extends LinearOpMode{
                 robot.launch.setPower(0.0);
             }
             telemetry.update();
-            sleep(100);
         }
     }
 

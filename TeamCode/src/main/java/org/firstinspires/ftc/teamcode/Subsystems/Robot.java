@@ -173,7 +173,7 @@ public class Robot extends Subsystem {
         rearRightDriveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         launch = (DcMotorEx) hardwareMap.dcMotor.get("launcher");
-        launch.setDirection(DcMotorSimple.Direction.FORWARD);
+        launch.setDirection(DcMotorSimple.Direction.REVERSE);
         launch.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         launch.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         launch.setTargetPosition(0);

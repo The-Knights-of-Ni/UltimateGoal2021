@@ -38,14 +38,19 @@ public class TeleopTest extends LinearOpMode{
         waitForStart();
         while (opModeIsActive()){
             robot.getGamePadInputs();
-            if (robot.aButton){
-                robot.control.setLaunch(true);
-                telemetry.addData("A Button", true);
+            boolean aB = robot.aButton;
+            boolean bB = robot.bButton;
+
+            telemetry.addData("A Button: ", aB);
+            telemetry.addData("B Button: ", bB);
+
+            if (aB){
+                robot.launch.setPower(1.0);
             }
-            if (robot.bButton){
-                robot.control.setLaunch(false);
-                telemetry.addData("B Button", true);
+            if (bB){
+                robot.launch.setPower(0.0);
             }
+            telemetry.update();
         }
     }
 

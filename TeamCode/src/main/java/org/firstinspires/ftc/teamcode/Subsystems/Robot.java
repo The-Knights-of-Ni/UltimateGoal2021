@@ -49,15 +49,15 @@ public class Robot extends Subsystem {
     /**
      * Control Hub
      *
-     * fl        0
-     * bl        1
+     * fr       0
+     * br        1
      * launch    2
      *
      * --------------------
      * Expansion Hub 2
      *
-     * fr        0
-     * br        1
+     * fl        0
+     * bl        1
      * intake    2
      */
 
@@ -173,12 +173,12 @@ public class Robot extends Subsystem {
         rearRightDriveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         launch = (DcMotorEx) hardwareMap.dcMotor.get("launcher");
-        launch.setDirection(DcMotorSimple.Direction.FORWARD);
+        launch.setDirection(DcMotorSimple.Direction.REVERSE);
         launch.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         launch.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         launch.setTargetPosition(0);
         launch.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        launch.setPower(1.0);
+        launch.setPower(0.0);
 
         intake = (DcMotorEx) hardwareMap.dcMotor.get("intake");
         intake.setDirection(DcMotorSimple.Direction.FORWARD);
@@ -186,7 +186,7 @@ public class Robot extends Subsystem {
         intake.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         intake.setTargetPosition(0);
         intake.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        intake.setPower(1.0);
+        intake.setPower(0.0);
 
         imu = hardwareMap.get(BNO055IMU.class, "imu");
 

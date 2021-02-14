@@ -176,16 +176,14 @@ public class Robot extends Subsystem {
         launch.setDirection(DcMotorSimple.Direction.REVERSE);
         launch.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         launch.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        launch.setTargetPosition(0);
-        launch.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        launch.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         launch.setPower(0.0);
 
         intake = (DcMotorEx) hardwareMap.dcMotor.get("intake");
         intake.setDirection(DcMotorSimple.Direction.FORWARD);
         intake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         intake.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        intake.setTargetPosition(0);
-        intake.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        intake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         intake.setPower(0.0);
 
         imu = hardwareMap.get(BNO055IMU.class, "imu");

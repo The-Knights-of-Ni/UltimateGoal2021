@@ -93,7 +93,7 @@ public class TowerDetectionCV extends LinearOpMode {
 
         // Load the native OpenCV library
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
-        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
         webcam.setPipeline(new TowerDetectionPipeline());
 
@@ -204,6 +204,7 @@ public class TowerDetectionCV extends LinearOpMode {
             Imgproc.circle(drawing, centers[i], (int) radius[i][0], color, 2);
         }
         //! [forContour]
+        return null; //To keep from having syntax error
     }
 
     class TowerDetectionPipeline extends OpenCvPipeline

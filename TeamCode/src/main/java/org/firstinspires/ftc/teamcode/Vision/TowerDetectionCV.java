@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.Vision;
 
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -22,247 +23,91 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+@TeleOp(name = "Tower Detection CV")
 public class TowerDetectionCV extends LinearOpMode {
+    private static final int CAMERA_WIDTH = 320; // width  of wanted camera resolution
+    private static final int CAMERA_HEIGHT = 240; // height of wanted camera resolution
+    TowerDetector detector = new TowerDetector(false);
 
-    private Mat inputGray = new Mat();
-    private static final int MAX_THRESHOLD = 255;
-    private int threshold = 100;
-    private Random rng = new Random(12345);
     OpenCvCamera webcam;
 
     @Override
     public void runOpMode() {
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
-        webcam.setPipeline(new TowerDetectionPipeline());
-
-        /*
-         * Open the connection to the camera device. New in v1.4.0 is the ability
-         * to open the camera asynchronously, and this is now the recommended way
-         * to do it. The benefits of opening async include faster init time, and
-         * better behavior when pressing stop during init (i.e. less of a chance
-         * of tripping the stuck watchdog)
-         *
-         * If you really want to open synchronously, the old method is still available.
-         */
-        webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
-        {
-            @Override
-            public void onOpened()
-            {
-                // max 480p for 30 FPS, any more will be slow
-                webcam.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
-            }
-        });
-
-        telemetry.addLine("Waiting for start");
-        telemetry.update();
-
-        /*
-         * Wait for the user to press start on the Driver Station
-         */
-        waitForStart();
-
-        while (opModeIsActive())
-        {
-            telemetry.addData("Frame Count", webcam.getFrameCount());
-            telemetry.addData("FPS", String.format("%.2f", webcam.getFps()));
-            telemetry.addData("Total frame time ms", webcam.getTotalFrameTimeMs());
-            telemetry.addData("Pipeline time ms", webcam.getPipelineTimeMs());
-            telemetry.addData("Overhead time ms", webcam.getOverheadTimeMs());
-            telemetry.addData("Theoretical max FPS", webcam.getCurrentPipelineMaxFps());
-            telemetry.update();
-
-            /*
-             * The "if" statement
-             * below will stop streaming from the camera when the "A" button on gamepad 1 is pressed.
-             */
-            if(gamepad1.a)
-            {
-                webcam.stopStreaming();
-                //webcam.closeCameraDevice();
-            }
-
-            /*
-             * For the purposes of this sample, throttle ourselves to 10Hz loop to avoid burning
-             * excess CPU cycles for no reason. (By default, telemetry is only sent to the DS at 4Hz
-             * anyway). Of course in a real OpMode you will likely not want to do this.
-             */
-            sleep(100);
-        }
-
-        // Load the native OpenCV library
-        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
-        cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
-        webcam.setPipeline(new TowerDetectionPipeline());
-
-        /*
-         * Open the connection to the camera device. New in v1.4.0 is the ability
-         * to open the camera asynchronously, and this is now the recommended way
-         * to do it. The benefits of opening async include faster init time, and
-         * better behavior when pressing stop during init (i.e. less of a chance
-         * of tripping the stuck watchdog)
-         *
-         * If you really want to open synchronously, the old method is still available.
-         */
-        webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
-        {
-            @Override
-            public void onOpened()
-            {
-                // max 480p for 30 FPS, any more will be slow
-                webcam.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
-            }
-        });
-
-        telemetry.addLine("Waiting for start");
-        telemetry.update();
-
-        /*
-         * Wait for the user to press start on the Driver Station
-         */
-        waitForStart();
-
-        while (opModeIsActive()) {
-            telemetry.addData("Frame Count", webcam.getFrameCount());
-            telemetry.addData("FPS", String.format("%.2f", webcam.getFps()));
-            telemetry.addData("Total frame time ms", webcam.getTotalFrameTimeMs());
-            telemetry.addData("Pipeline time ms", webcam.getPipelineTimeMs());
-            telemetry.addData("Overhead time ms", webcam.getOverheadTimeMs());
-            telemetry.addData("Theoretical max FPS", webcam.getCurrentPipelineMaxFps());
-            telemetry.update();
-
-            /*
-             * The "if" statement
-             * below will stop streaming from the camera when the "A" button on gamepad 1 is pressed.
-             */
-            if (gamepad1.a) {
-                webcam.stopStreaming();
-                //webcam.closeCameraDevice();
-            }
-
-            /*
-             * For the purposes of this sample, throttle ourselves to 10Hz loop to avoid burning
-             * excess CPU cycles for no reason. (By default, telemetry is only sent to the DS at 4Hz
-             * anyway). Of course in a real OpMode you will likely not want to do this.
-             */
-            sleep(100);
-        }
+        webcam.setPipeline(new TowerDetector(false));
+        webcam.startStreaming(CAMERA_WIDTH, CAMERA_HEIGHT, OpenCvCameraRotation.UPRIGHT);
     }
 
-    ArrayList<MatOfPoint> findContours(Mat input){
-        /// Convert image to gray and blur it
-        // ![setup]
-        Imgproc.cvtColor(input, inputGray, Imgproc.COLOR_BGR2GRAY);
-        Imgproc.blur(inputGray, inputGray, new Size(3, 3));
-        //! [setup]
+    class TowerDetector extends OpenCvPipeline {
+        private boolean isBlue;
 
-        //! [Canny]
-        /// Detect edges using Canny
-        Mat cannyOutput = new Mat();
-        Imgproc.Canny(inputGray, cannyOutput, threshold, threshold * 2);
-        //! [Canny]
-
-        //! [findContours]
-        /// Find contours
-        List<MatOfPoint> contours = new ArrayList<>();
-        Mat hierarchy = new Mat();
-        Imgproc.findContours(cannyOutput, contours, hierarchy,Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_SIMPLE);
-        //! [findContours]
-
-        //! [allthework]
-        /// Approximate contours to polygons + get bounding rects and circles
-        MatOfPoint2f[] contoursPoly  = new MatOfPoint2f[contours.size()];
-        Rect[] boundRect = new Rect[contours.size()];
-        Point[] centers = new Point[contours.size()];
-        float[][] radius = new float[contours.size()][1];
-
-        for (int i = 0; i < contours.size(); i++) {
-            contoursPoly[i] = new MatOfPoint2f();
-            Imgproc.approxPolyDP(new MatOfPoint2f(contours.get(i).toArray()), contoursPoly[i], 3, true);
-            boundRect[i] = Imgproc.boundingRect(new MatOfPoint(contoursPoly[i].toArray()));
-            centers[i] = new Point();
-            Imgproc.minEnclosingCircle(contoursPoly[i], centers[i], radius[i]);
-        }
-        //! [allthework]
-
-        //! [zeroMat]
-        Mat drawing = Mat.zeros(cannyOutput.size(), CvType.CV_8UC3);
-        //! [zeroMat]
-        //! [forContour]
-        /// Draw polygonal contour + bonding rects + circles
-        List<MatOfPoint> contoursPolyList = new ArrayList<>(contoursPoly.length);
-        for (MatOfPoint2f poly : contoursPoly) {
-            contoursPolyList.add(new MatOfPoint(poly.toArray()));
-        }
-
-        for (int i = 0; i < contours.size(); i++) {
-            Scalar color = new Scalar(rng.nextInt(256), rng.nextInt(256), rng.nextInt(256));
-            Imgproc.drawContours(drawing, contoursPolyList, i, color);
-            Imgproc.rectangle(drawing, boundRect[i].tl(), boundRect[i].br(), color, 2);
-            Imgproc.circle(drawing, centers[i], (int) radius[i][0], color, 2);
-        }
-        //! [forContour]
-        return null; //To keep from having syntax error
-    }
-
-    class TowerDetectionPipeline extends OpenCvPipeline
-    {
-        boolean viewportPaused;
-
-        /*
-         * NOTE: if you wish to use additional Mat objects in your processing pipeline, it is
-         * highly recommended to declare them here as instance variables and re-use them for
-         * each invocation of processFrame(), rather than declaring them as new local variables
-         * each time through processFrame(). This removes the danger of causing a memory leak
-         * by forgetting to call mat.release(), and it also reduces memory pressure by not
-         * constantly allocating and freeing large chunks of memory.
+        /**
+         *
+         * @param isBlue are we blue alliance or red alliance?
          */
-
-        @Override
-        public Mat processFrame(Mat input)
-        {
-            /*
-             * IMPORTANT NOTE: the input Mat that is passed in as a parameter to this method
-             * will only dereference to the same image for the duration of this particular
-             * invocation of this method. That is, if for some reason you'd like to save a copy
-             * of this particular frame for later use, you will need to either clone it or copy
-             * it to another Mat.
-             */
-
-            Imgproc.rectangle(
-                    input,
-                    new Point(
-                            input.cols()/4,
-                            input.rows()/4),
-                    new Point(
-                            input.cols()*(3f/4f),
-                            input.rows()*(3f/4f)),
-                    new Scalar(0, 255, 0), 4);
-
-            /**
-             * NOTE: to see how to get data from your pipeline to your OpMode as well as how
-             * to change which stage of the pipeline is rendered to the viewport when it is
-             * tapped, please see {@link PipelineStageSwitchingExample}
-             */
-
-            return input;
+        public TowerDetector(boolean isBlue) {
+            this.isBlue = isBlue;
         }
 
         @Override
-        public void onViewportTapped()
-        {
-            viewportPaused = !viewportPaused;
+        public Mat processFrame(Mat input) {
+            // "Mat" stands for matrix, which is basically the image that the detector will process
+            // the input matrix is the image coming from the camera
+            // the function will return a matrix to be drawn on your phone's screen
 
-            if(viewportPaused)
-            {
-                webcam.pauseViewport();
+            // The detector detects regular stones. The camera fits two stones.
+            // If it finds one regular stone then the other must be the skystone.
+            // If both are regular stones, it returns NONE to tell the robot to keep looking
+
+            // Make a working copy of the input matrix in HSV
+            Mat mat = new Mat();
+            Imgproc.cvtColor(input, mat, Imgproc.COLOR_RGB2HSV);
+
+            // if something is wrong, we assume there's no skystone
+            if (mat.empty()) {
+                return input;
             }
-            else
-            {
-                webcam.resumeViewport();
+
+            // We create a HSV range for yellow to detect regular stones
+            // NOTE: In OpenCV's implementation,
+            // Hue values are half the real value
+            Scalar lowHSV;
+            Scalar highHSV;
+            if(isBlue) {
+                lowHSV = new Scalar(0, 25, 25); // lower bound HSV for blue
+                highHSV = new Scalar(10, 160, 160); // higher bound HSV for blue
+            } else {
+                lowHSV = new Scalar(0, 25, 25); // lower bound HSV for red
+                highHSV = new Scalar(10, 255, 255); // higher bound HSV for red
             }
+            Mat thresh = new Mat();
+
+            // We'll get a black and white image. The white regions represent the regular stones.
+            // inRange(): thresh[i][j] = {255,255,255} if mat[i][i] is within the range
+            Core.inRange(mat, lowHSV, highHSV, thresh);
+
+            // Use Canny Edge Detection to find edges
+            // you might have to tune the thresholds for hysteresis
+            Mat edges = new Mat();
+            Imgproc.Canny(thresh, edges, 100, 300);
+
+            // https://docs.opencv.org/3.4/da/d0c/tutorial_bounding_rects_circles.html
+            // Oftentimes the edges are disconnected. findContours connects these edges.
+            // We then find the bounding rectangles of those contours
+            List<MatOfPoint> contours = new ArrayList<>();
+            Mat hierarchy = new Mat();
+            Imgproc.findContours(edges, contours, hierarchy, Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_SIMPLE);
+
+            MatOfPoint2f[] contoursPoly  = new MatOfPoint2f[contours.size()];
+            Rect[] boundRect = new Rect[contours.size()];
+            for (int i = 0; i < contours.size(); i++) {
+                contoursPoly[i] = new MatOfPoint2f();
+                Imgproc.approxPolyDP(new MatOfPoint2f(contours.get(i).toArray()), contoursPoly[i], 3, true);
+                boundRect[i] = Imgproc.boundingRect(new MatOfPoint(contoursPoly[i].toArray()));
+            }
+
+            return mat; // return the mat with rectangles drawn
         }
     }
 

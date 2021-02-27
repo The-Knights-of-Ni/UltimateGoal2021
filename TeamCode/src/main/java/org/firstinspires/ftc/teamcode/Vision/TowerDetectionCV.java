@@ -35,12 +35,27 @@ public class TowerDetectionCV extends LinearOpMode {
     public void runOpMode() {
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
-        webcam.setPipeline(new TowerDetector(false));
-        webcam.startStreaming(CAMERA_WIDTH, CAMERA_HEIGHT, OpenCvCameraRotation.UPRIGHT);
+        TowerDetector pipeline = new TowerDetector(false);
+        webcam.setPipeline(pipeline);
+        webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
+        {
+            @Override
+            public void onOpened()
+            {
+                webcam.startStreaming(CAMERA_WIDTH, CAMERA_HEIGHT, OpenCvCameraRotation.UPRIGHT);
+            }
+        });
+
+        waitForStart();
+
+        while(opModeIsActive()) {
+            telemetry.addData("Goal found: ", pipeline.goalFound());
+        }
     }
 
     class TowerDetector extends OpenCvPipeline {
         private boolean isBlue;
+        private boolean goalFound;
 
         /**
          *
@@ -48,6 +63,7 @@ public class TowerDetectionCV extends LinearOpMode {
          */
         public TowerDetector(boolean isBlue) {
             this.isBlue = isBlue;
+            this.goalFound = false;
         }
 
         @Override
@@ -78,7 +94,7 @@ public class TowerDetectionCV extends LinearOpMode {
                 lowHSV = new Scalar(0, 25, 25); // lower bound HSV for blue
                 highHSV = new Scalar(10, 160, 160); // higher bound HSV for blue
             } else {
-                lowHSV = new Scalar(0, 25, 25); // lower bound HSV for red
+                lowHSV = new Scalar(0, 50, 50); // lower bound HSV for red
                 highHSV = new Scalar(10, 255, 255); // higher bound HSV for red
             }
             Mat thresh = new Mat();
@@ -107,7 +123,14 @@ public class TowerDetectionCV extends LinearOpMode {
                 boundRect[i] = Imgproc.boundingRect(new MatOfPoint(contoursPoly[i].toArray()));
             }
 
+            if(contours.size() > 0)
+                goalFound = true;
+
             return mat; // return the mat with rectangles drawn
+        }
+
+        public boolean goalFound() {
+            return goalFound();
         }
     }
 

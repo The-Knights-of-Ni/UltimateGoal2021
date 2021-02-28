@@ -52,8 +52,8 @@ public class Robot extends Subsystem {
      *
      * fr        0
      * br        1
-     * launch1   2
-     * launch2   3
+     * launch2   2
+     * launch1   3
      *
      * --------------------
      * Expansion Hub 2
@@ -174,14 +174,14 @@ public class Robot extends Subsystem {
         rearLeftDriveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rearRightDriveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        launch1 = (DcMotorEx) hardwareMap.dcMotor.get("launcher1");
+        launch1 = (DcMotorEx) hardwareMap.dcMotor.get("launch1");
         launch1.setDirection(DcMotorSimple.Direction.REVERSE);
         launch1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         launch1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         launch1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         launch1.setPower(0.0);
 
-        launch2 = (DcMotorEx) hardwareMap.dcMotor.get("launcher2");
+        launch2 = (DcMotorEx) hardwareMap.dcMotor.get("launch2");
         launch2.setDirection(DcMotorSimple.Direction.REVERSE);
         launch2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         launch2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);

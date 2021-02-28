@@ -78,7 +78,17 @@ public class TowerDetectionCV extends LinearOpMode {
 
             // Make a working copy of the input matrix in HSV
             Mat mat = new Mat();
+            Mat matY = new Mat();
+            Mat matCr = new Mat();
+            Mat matCb = new Mat();
+
             Imgproc.cvtColor(input, mat, Imgproc.COLOR_RGB2YCrCb);
+            Core.extractChannel(mat, matY, 0);
+            Core.extractChannel(mat, matCr, 1);
+            Core.extractChannel(mat, matCb, 2);
+            // matY frame is the Y frame
+            // matCr frame is the Cr frame
+            // matCb frame is the Cb frame
 
             // if something is wrong, we assume there's no skystone
             if (mat.empty()) {
@@ -90,7 +100,9 @@ public class TowerDetectionCV extends LinearOpMode {
             // Hue values are half the real value
             Mat thresh = new Mat();
 
-            Imgproc.threshold(mat, thresh, 120, 255, Imgproc.THRESH_BINARY);
+            Imgproc.threshold(matCr, thresh, 120, 255, Imgproc.THRESH_BINARY);
+
+
 
             // We'll get a black and white image. The white regions represent the regular stones.
             // inRange(): thresh[i][j] = {255,255,255} if mat[i][i] is within the range
@@ -119,7 +131,7 @@ public class TowerDetectionCV extends LinearOpMode {
             if(contours.size() > 0)
                 goalFound = true;
 
-            return mat; // return the mat with rectangles drawn
+            return matY; // return the mat with rectangles drawn
         }
 
         public boolean goalFound() {

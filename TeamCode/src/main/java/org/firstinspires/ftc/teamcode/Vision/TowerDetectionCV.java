@@ -90,9 +90,9 @@ public class TowerDetectionCV extends LinearOpMode {
             Mat thresh = new Mat();
 
             if(isBlue)
-                Imgproc.threshold(matCb, thresh, 150, 255, Imgproc.THRESH_BINARY);
+                Imgproc.threshold(matCb, thresh, 160, 255, Imgproc.THRESH_BINARY);
             else
-                Imgproc.threshold(matCr, thresh, 150, 255, Imgproc.THRESH_BINARY);
+                Imgproc.threshold(matCr, thresh, 160, 255, Imgproc.THRESH_BINARY);
 
             return thresh; // return the mat with rectangles drawn
         }

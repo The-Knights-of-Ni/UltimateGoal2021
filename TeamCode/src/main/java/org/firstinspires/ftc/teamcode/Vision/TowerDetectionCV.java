@@ -78,7 +78,7 @@ public class TowerDetectionCV extends LinearOpMode {
 
             // Make a working copy of the input matrix in HSV
             Mat mat = new Mat();
-            Imgproc.cvtColor(input, mat, Imgproc.COLOR_RGB2HSV);
+            Imgproc.cvtColor(input, mat, Imgproc.COLOR_RGB2YCrCb);
 
             // if something is wrong, we assume there's no skystone
             if (mat.empty()) {
@@ -88,20 +88,13 @@ public class TowerDetectionCV extends LinearOpMode {
             // We create a HSV range for yellow to detect regular stones
             // NOTE: In OpenCV's implementation,
             // Hue values are half the real value
-            Scalar lowHSV;
-            Scalar highHSV;
-            if(isBlue) {
-                lowHSV = new Scalar(0, 25, 25); // lower bound HSV for blue
-                highHSV = new Scalar(10, 160, 160); // higher bound HSV for blue
-            } else {
-                lowHSV = new Scalar(0, 50, 50); // lower bound HSV for red
-                highHSV = new Scalar(10, 255, 255); // higher bound HSV for red
-            }
             Mat thresh = new Mat();
+
+            Imgproc.threshold(mat, thresh, 120, 255, Imgproc.THRESH_BINARY);
 
             // We'll get a black and white image. The white regions represent the regular stones.
             // inRange(): thresh[i][j] = {255,255,255} if mat[i][i] is within the range
-            Core.inRange(mat, lowHSV, highHSV, thresh);
+            //Core.inRange(mat, lowHSV, highHSV, thresh);
 
             // Use Canny Edge Detection to find edges
             // you might have to tune the thresholds for hysteresis

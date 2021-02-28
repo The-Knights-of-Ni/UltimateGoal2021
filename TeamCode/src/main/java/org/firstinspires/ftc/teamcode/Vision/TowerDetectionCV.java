@@ -89,30 +89,10 @@ public class TowerDetectionCV extends LinearOpMode {
 
             Mat thresh = new Mat();
 
-            Imgproc.threshold(matCr, thresh, 120, 255, Imgproc.THRESH_BINARY);
-
-            // Use Canny Edge Detection to find edges
-            // you might have to tune the thresholds for hysteresis
-//            Mat edges = new Mat();
-//            Imgproc.Canny(thresh, edges, 100, 300);
-//
-//            // https://docs.opencv.org/3.4/da/d0c/tutorial_bounding_rects_circles.html
-//            // Oftentimes the edges are disconnected. findContours connects these edges.
-//            // We then find the bounding rectangles of those contours
-//            List<MatOfPoint> contours = new ArrayList<>();
-//            Mat hierarchy = new Mat();
-//            Imgproc.findContours(edges, contours, hierarchy, Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_SIMPLE);
-//
-//            MatOfPoint2f[] contoursPoly  = new MatOfPoint2f[contours.size()];
-//            Rect[] boundRect = new Rect[contours.size()];
-//            for (int i = 0; i < contours.size(); i++) {
-//                contoursPoly[i] = new MatOfPoint2f();
-//                Imgproc.approxPolyDP(new MatOfPoint2f(contours.get(i).toArray()), contoursPoly[i], 3, true);
-//                boundRect[i] = Imgproc.boundingRect(new MatOfPoint(contoursPoly[i].toArray()));
-//            }
-
-            if(contours.size() > 0)
-                goalFound = true;
+            if(isBlue)
+                Imgproc.threshold(matCb, thresh, 150, 255, Imgproc.THRESH_BINARY);
+            else
+                Imgproc.threshold(matCr, thresh, 150, 255, Imgproc.THRESH_BINARY);
 
             return thresh; // return the mat with rectangles drawn
         }

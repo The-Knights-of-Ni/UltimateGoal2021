@@ -217,7 +217,7 @@ public class Control extends Subsystem {
         }
         else{
             launch1.setPower(0.0);
-            launch2.setPower(1.0);
+            launch2.setPower(0.0);
         }
     }
 

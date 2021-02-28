@@ -45,10 +45,10 @@ public class TeleopTest extends LinearOpMode{
             telemetry.addData("B Button: ", bB);
 
             if (aB){
-                robot.launch.setPower(1.0);
+                robot.control.setLaunch(true);
             }
             if (bB){
-                robot.launch.setPower(0.0);
+                robot.control.setLaunch(false);
             }
             telemetry.update();
         }

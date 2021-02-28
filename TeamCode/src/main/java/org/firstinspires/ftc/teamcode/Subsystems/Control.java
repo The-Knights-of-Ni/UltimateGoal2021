@@ -19,7 +19,8 @@ public class Control extends Subsystem {
 
     //DC Motors
     private DcMotorEx intake;
-    private DcMotorEx launch;
+    private DcMotorEx launch1;
+    private DcMotorEx launch2;
 
     //Servos
     private Servo wobbleGoalArm;
@@ -130,10 +131,11 @@ public class Control extends Subsystem {
     private boolean mainClawArmTrackingMode = false;
     private double ClawRotationAngle = 0.0;
 
-    public Control(DcMotorEx intake, DcMotorEx launch, BNO055IMU imu, LinearOpMode opMode, ElapsedTime timer) {
+    public Control(DcMotorEx intake, DcMotorEx launch1, DcMotorEx launch2, BNO055IMU imu, LinearOpMode opMode, ElapsedTime timer) {
         // store device information locally
         this.intake = intake;
-        this.launch = launch;
+        this.launch1 = launch1;
+        this.launch2 = launch2;
         this.opMode = opMode;
         this.hardwareMap = opMode.hardwareMap;
         this.imu = imu;
@@ -149,7 +151,8 @@ public class Control extends Subsystem {
      */
     private void setZeroPowerBehavior(DcMotor.ZeroPowerBehavior mode) {
         intake.setZeroPowerBehavior(mode);
-        launch.setZeroPowerBehavior(mode);
+        launch1.setZeroPowerBehavior(mode);
+        launch2.setZeroPowerBehavior(mode);
     }
 
     public double getWinchMaxSpeedMMpSec(){
@@ -209,10 +212,12 @@ public class Control extends Subsystem {
 
     public void setLaunch(boolean status){
         if (status){
-            launch.setPower(1.0);
+            launch1.setPower(1.0);
+            launch2.setPower(1.0);
         }
         else{
-            launch.setPower(0.0);
+            launch1.setPower(0.0);
+            launch2.setPower(1.0);
         }
     }
 

@@ -94,7 +94,10 @@ public class TowerDetectionCV extends LinearOpMode {
             else
                 Imgproc.threshold(matCr, thresh, 160, 255, Imgproc.THRESH_BINARY);
 
-            return thresh; // return the mat with rectangles drawn
+            Mat edges = new Mat();
+            Imgproc.Canny(thresh, edges, 100, 300);
+
+            return edges; // return the mat with rectangles drawn
         }
 
         public boolean goalFound() {

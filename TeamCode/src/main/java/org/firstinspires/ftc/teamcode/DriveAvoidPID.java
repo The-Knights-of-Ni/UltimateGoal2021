@@ -27,7 +27,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 @Autonomous(name="Drive Avoid PID", group="Exercises")
 //@Disabled
-public class DriveAvoidPid extends LinearOpMode
+public class DriveAvoidPID extends LinearOpMode
 {
     DcMotor                 leftMotor, rightMotor;
     TouchSensor             touch;

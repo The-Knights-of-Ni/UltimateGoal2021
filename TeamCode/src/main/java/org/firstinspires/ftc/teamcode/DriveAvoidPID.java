@@ -30,7 +30,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 //@Disabled
 public class DriveAvoidPID extends LinearOpMode
 {
-    DcMotor frontLeftDriveMotor, frontRightDriveMotor, rearRightDriveMotor, rearLeftDriveMotor;
+    DcMotorEx frontLeftDriveMotor, frontRightDriveMotor, rearRightDriveMotor, rearLeftDriveMotor;
     TouchSensor             touch;
     BNO055IMU               imu;
     Orientation             lastAngles = new Orientation();
@@ -110,56 +110,7 @@ public class DriveAvoidPID extends LinearOpMode
         pidDrive.setInputRange(-90, 90);
         pidDrive.enable();
 
-        // drive until end of period.
-
-        while (opModeIsActive())
-        {
-            // Use PID with imu input to drive in a straight line.
-            correction = pidDrive.performPID(getAngle());
-
-            telemetry.addData("1 imu heading", lastAngles.firstAngle);
-            telemetry.addData("2 global heading", globalAngle);
-            telemetry.addData("3 correction", correction);
-            telemetry.addData("4 turn rotation", rotation);
-            telemetry.update();
-
-            // set power levels.
-            frontLeftDriveMotor.setPower(power - correction);
-            rearLeftDriveMotor.setPower(power - correction);
-            frontRightDriveMotor.setPower(power + correction);
-            rearRightDriveMotor.setPower(power + correction);
-
-            // We record the sensor values because we will test them in more than
-            // one place with time passing between those places. See the lesson on
-            // Timing Considerations to know why.
-
-            aButton = gamepad1.a;
-            bButton = gamepad1.b;
-            touched = touch.isPressed();
-
-            if (touched || aButton || bButton)
-            {
-                // backup.
-                frontLeftDriveMotor.setPower(-power);
-                rearLeftDriveMotor.setPower(-power);
-                frontRightDriveMotor.setPower(-power);
-                rearRightDriveMotor.setPower(-power);
-
-                sleep(500);
-
-                // stop.
-                frontLeftDriveMotor.setPower(0);
-                rearLeftDriveMotor.setPower(0);
-                frontRightDriveMotor.setPower(0);
-                rearRightDriveMotor.setPower(0);
-
-                // turn 90 degrees right.
-                if (touched || aButton) rotate(-90, power);
-
-                // turn 90 degrees left.
-                if (bButton) rotate(90, power);
-            }
-        }
+        rotate(90, power);
 
         // turn the motors off.
         frontLeftDriveMotor.setPower(0);

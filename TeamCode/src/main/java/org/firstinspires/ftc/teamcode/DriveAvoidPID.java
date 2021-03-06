@@ -17,6 +17,7 @@ import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 
@@ -27,9 +28,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 @Autonomous(name="Drive Avoid PID", group="Exercises")
 //@Disabled
-public class DriveAvoidPid extends LinearOpMode
+public class DriveAvoidPID extends LinearOpMode
 {
-    DcMotor                 leftMotor, rightMotor;
+    DcMotor frontLeftDriveMotor, frontRightDriveMotor, rearRightDriveMotor, rearLeftDriveMotor;
     TouchSensor             touch;
     BNO055IMU               imu;
     Orientation             lastAngles = new Orientation();
@@ -41,13 +42,18 @@ public class DriveAvoidPid extends LinearOpMode
     @Override
     public void runOpMode() throws InterruptedException
     {
-        leftMotor = hardwareMap.dcMotor.get("left_motor");
-        rightMotor = hardwareMap.dcMotor.get("right_motor");
+        frontLeftDriveMotor = (DcMotorEx) hardwareMap.dcMotor.get("fl");
+        frontRightDriveMotor = (DcMotorEx) hardwareMap.dcMotor.get("fr");
+        rearLeftDriveMotor = (DcMotorEx) hardwareMap.dcMotor.get("bl");
+        rearRightDriveMotor = (DcMotorEx) hardwareMap.dcMotor.get("br");
 
-        leftMotor.setDirection(DcMotor.Direction.REVERSE);
+        frontLeftDriveMotor.setDirection(DcMotor.Direction.REVERSE);
+        rearLeftDriveMotor.setDirection(DcMotor.Direction.REVERSE);
 
-        leftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        rightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        frontLeftDriveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        frontRightDriveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rearLeftDriveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rearRightDriveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         // get a reference to REV Touch sensor.
         touch = hardwareMap.touchSensor.get("touch_sensor");
@@ -118,8 +124,10 @@ public class DriveAvoidPid extends LinearOpMode
             telemetry.update();
 
             // set power levels.
-            leftMotor.setPower(power - correction);
-            rightMotor.setPower(power + correction);
+            frontLeftDriveMotor.setPower(power - correction);
+            rearLeftDriveMotor.setPower(power - correction);
+            frontRightDriveMotor.setPower(power + correction);
+            rearRightDriveMotor.setPower(power + correction);
 
             // We record the sensor values because we will test them in more than
             // one place with time passing between those places. See the lesson on
@@ -132,14 +140,18 @@ public class DriveAvoidPid extends LinearOpMode
             if (touched || aButton || bButton)
             {
                 // backup.
-                leftMotor.setPower(-power);
-                rightMotor.setPower(-power);
+                frontLeftDriveMotor.setPower(-power);
+                rearLeftDriveMotor.setPower(-power);
+                frontRightDriveMotor.setPower(-power);
+                rearRightDriveMotor.setPower(-power);
 
                 sleep(500);
 
                 // stop.
-                leftMotor.setPower(0);
-                rightMotor.setPower(0);
+                frontLeftDriveMotor.setPower(0);
+                rearLeftDriveMotor.setPower(0);
+                frontRightDriveMotor.setPower(0);
+                rearRightDriveMotor.setPower(0);
 
                 // turn 90 degrees right.
                 if (touched || aButton) rotate(-90, power);
@@ -150,8 +162,10 @@ public class DriveAvoidPid extends LinearOpMode
         }
 
         // turn the motors off.
-        rightMotor.setPower(0);
-        leftMotor.setPower(0);
+        frontLeftDriveMotor.setPower(0);
+        rearLeftDriveMotor.setPower(0);
+        frontRightDriveMotor.setPower(0);
+        rearRightDriveMotor.setPower(0);
     }
 
     /**
@@ -229,29 +243,37 @@ public class DriveAvoidPid extends LinearOpMode
             // On right turn we have to get off zero first.
             while (opModeIsActive() && getAngle() == 0)
             {
-                leftMotor.setPower(power);
-                rightMotor.setPower(-power);
+                frontLeftDriveMotor.setPower(power);
+                rearLeftDriveMotor.setPower(power);
+                frontRightDriveMotor.setPower(-power);
+                rearRightDriveMotor.setPower(-power);
                 sleep(100);
             }
 
             do
             {
                 power = pidRotate.performPID(getAngle()); // power will be - on right turn.
-                leftMotor.setPower(-power);
-                rightMotor.setPower(power);
+                frontLeftDriveMotor.setPower(-power);
+                rearLeftDriveMotor.setPower(-power);
+                frontRightDriveMotor.setPower(power);
+                rearRightDriveMotor.setPower(power);
             } while (opModeIsActive() && !pidRotate.onTarget());
         }
         else    // left turn.
             do
             {
                 power = pidRotate.performPID(getAngle()); // power will be + on left turn.
-                leftMotor.setPower(-power);
-                rightMotor.setPower(power);
+                frontLeftDriveMotor.setPower(-power);
+                rearLeftDriveMotor.setPower(-power);
+                frontRightDriveMotor.setPower(power);
+                rearRightDriveMotor.setPower(power);
             } while (opModeIsActive() && !pidRotate.onTarget());
 
         // turn the motors off.
-        rightMotor.setPower(0);
-        leftMotor.setPower(0);
+        frontLeftDriveMotor.setPower(0);
+        rearLeftDriveMotor.setPower(0);
+        frontRightDriveMotor.setPower(0);
+        rearRightDriveMotor.setPower(0);
 
         rotation = getAngle();
         

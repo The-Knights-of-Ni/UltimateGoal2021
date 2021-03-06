@@ -4,6 +4,7 @@ import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorControllerEx;
@@ -41,10 +42,13 @@ public class Robot extends Subsystem {
     public DcMotorEx intake;
 
     //Servos
-    public Servo mainClaw; // may need 2 servos for claw mechanism
+    public Servo claw;
+    public Servo clawDeploy;
 
-    public Servo elevator1;
-    public Servo elevator2; // what are the individual elevator1 and elevator2 motors for? ask hardware team
+    public Servo feeder; //Conveyer at top of robot
+
+    public CRServo elevator1;
+    public CRServo elevator2; // what are the individual elevator1 and elevator2 motors for? ask hardware team
 
 
     /**
@@ -194,6 +198,13 @@ public class Robot extends Subsystem {
         intake.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         intake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         intake.setPower(0.0);
+
+        //Servos
+        clawDeploy = hardwareMap.servo.get("clawDeploy");
+        claw = hardwareMap.servo.get("claw");
+        feeder = hardwareMap.servo.get("feeder");
+        elevator1 = hardwareMap.crservo.get("e1");
+        elevator2 = hardwareMap.crservo.get("e2");
 
         imu = hardwareMap.get(BNO055IMU.class, "imu");
 

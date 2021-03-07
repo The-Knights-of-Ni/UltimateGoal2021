@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.Subsystems.Robot;
 
 import java.io.IOException;
@@ -54,8 +55,8 @@ public class TeleopTest extends LinearOpMode{
                 robot.launch2.setPower(0.0);
             }
 
-            double speed1 = robot.launch1.getVelocity() * 60 / TICKS_PER_REV;
-            double speed2 = robot.launch2.getVelocity() * 60 / TICKS_PER_REV;
+            double speed1 = robot.launch1.getVelocity(AngleUnit.DEGREES) * 60 / 360;
+            double speed2 = robot.launch2.getVelocity(AngleUnit.DEGREES) * 60 / 360;
 
             telemetry.addData("Launch 1 RPM: ", speed1);
             telemetry.addData("Launch 2 RPM: ", speed2);

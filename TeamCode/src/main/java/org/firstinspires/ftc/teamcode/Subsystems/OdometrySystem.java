@@ -111,5 +111,32 @@ public class OdometrySystem {
         return value/sensorCount;
     }   //averageOdometry
 
+    public synchronized OdometrySensor.Odometry getOdometryDelta()
+    {
+        OdometrySensor.Odometry x1Odometry = x1Sensor != null? x1Sensor.getOdometry(): null;
+        OdometrySensor.Odometry x2Odometry = x2Sensor != null? x2Sensor.getOdometry(): null;
+        OdometrySensor.Odometry y1Odometry = y1Sensor != null? y1Sensor.getOdometry(): null;
+        OdometrySensor.Odometry y2Odometry = y2Sensor != null? y2Sensor.getOdometry(): null;
+        OdometrySensor.Odometry angleOdometry = angleSensor.getOdometry();
+        DriveBase.Odometry odometryDelta = new OdometrySensor.Odometry();
+
+        double avgXPos = averageOdometry(x1Odometry, x2Odometry, true);
+        double avgYPos = averageOdometry(y1Odometry, y2Odometry, true);
+        double avgXVel = averageOdometry(x1Odometry, x2Odometry, false);
+        double avgYVel = averageOdometry(y1Odometry, y2Odometry, false);
+
+        odometryDelta.position.x = (avgXPos - prevAvgXPos)*xScale;
+        odometryDelta.position.y = (avgYPos - prevAvgYPos)*yScale;
+        odometryDelta.position.angle = (angleOdometry.currPos - angleOdometry.prevPos)*angleScale;
+        odometryDelta.velocity.x = avgXVel*xScale;
+        odometryDelta.velocity.y = avgYVel*yScale;
+        odometryDelta.velocity.angle = angleOdometry.velocity*angleScale;
+
+        prevAvgXPos = avgXPos;
+        prevAvgYPos = avgYPos;
+
+        return odometryDelta;
+    }   //getOdometryDelta
+
 
 }

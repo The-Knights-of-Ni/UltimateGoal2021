@@ -199,13 +199,13 @@ public class Robot extends Subsystem {
         intake.setPower(0.0);
 
         //Servos
-        clawDeploy = hardwareMap.servo.get("clawDeploy");
-        claw = hardwareMap.servo.get("claw");
-        feeder = hardwareMap.servo.get("feeder");
-        elevator1 = hardwareMap.crservo.get("e1");
-        elevator2 = hardwareMap.crservo.get("e2");
-
-        elevator2.setDirection(DcMotorSimple.Direction.REVERSE);
+//        clawDeploy = hardwareMap.servo.get("clawDeploy");
+//        claw = hardwareMap.servo.get("claw");
+//        feeder = hardwareMap.servo.get("feeder");
+//        elevator1 = hardwareMap.crservo.get("e1");
+//        elevator2 = hardwareMap.crservo.get("e2");
+//
+//        elevator2.setDirection(DcMotorSimple.Direction.REVERSE);
 
         imu = hardwareMap.get(BNO055IMU.class, "imu");
 

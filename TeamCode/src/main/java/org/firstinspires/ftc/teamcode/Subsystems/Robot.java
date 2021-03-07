@@ -50,7 +50,6 @@ public class Robot extends Subsystem {
     public CRServo elevator1;
     public CRServo elevator2; // what are the individual elevator1 and elevator2 motors for? ask hardware team
 
-
     /**
      * Control Hub
      *
@@ -205,6 +204,8 @@ public class Robot extends Subsystem {
         feeder = hardwareMap.servo.get("feeder");
         elevator1 = hardwareMap.crservo.get("e1");
         elevator2 = hardwareMap.crservo.get("e2");
+
+        elevator2.setDirection(DcMotorSimple.Direction.REVERSE);
 
         imu = hardwareMap.get(BNO055IMU.class, "imu");
 

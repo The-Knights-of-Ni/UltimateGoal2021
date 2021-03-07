@@ -55,8 +55,8 @@ public class TeleopTest extends LinearOpMode{
                 robot.launch2.setPower(0.0);
             }
 
-            double speed1 = robot.launch1.getVelocity(AngleUnit.DEGREES) * 60 / 360;
-            double speed2 = robot.launch2.getVelocity(AngleUnit.DEGREES) * 60 / 360;
+            double speed1 = robot.launch1.getVelocity(AngleUnit.DEGREES);
+            double speed2 = robot.launch2.getVelocity(AngleUnit.DEGREES);
 
             telemetry.addData("Launch 1 RPM: ", speed1);
             telemetry.addData("Launch 2 RPM: ", speed2);

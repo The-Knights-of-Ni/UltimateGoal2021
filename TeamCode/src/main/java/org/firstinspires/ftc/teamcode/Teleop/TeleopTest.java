@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.Subsystems.Robot;
 
 import java.io.IOException;
@@ -13,6 +14,7 @@ import java.io.IOException;
 @TeleOp(name="TeleopTest")
 public class TeleopTest extends LinearOpMode{
 
+    public final double TICKS_PER_REV = 537.6;
     private Robot robot;
     
     double timeCurrent;
@@ -53,19 +55,25 @@ public class TeleopTest extends LinearOpMode{
                 robot.launch2.setPower(0.0);
             }
 
-            boolean xB = robot.xButton;
-            boolean yB = robot.yButton;
+            double speed1 = robot.launch1.getVelocity(AngleUnit.DEGREES);
+            double speed2 = robot.launch2.getVelocity(AngleUnit.DEGREES);
 
-            if (xB) {
-                robot.elevator1.setPower(0.2);
-                robot.elevator2.setPower(0.2);
-            } else if (yB){
-                robot.elevator1.setPower(-0.2);
-                robot.elevator2.setPower(-0.2);
-            } else {
-                robot.elevator1.setPower(0.0);
-                robot.elevator2.setPower(0.0);
-            }
+            telemetry.addData("Launch 1 RPM: ", speed1);
+            telemetry.addData("Launch 2 RPM: ", speed2);
+
+//            boolean xB = robot.xButton;
+//            boolean yB = robot.yButton;
+//
+//            if (xB) {
+//                robot.elevator1.setPower(0.2);
+//                robot.elevator2.setPower(0.2);
+//            } else if (yB){
+//                robot.elevator1.setPower(-0.2);
+//                robot.elevator2.setPower(-0.2);
+//            } else {
+//                robot.elevator1.setPower(0.0);
+//                robot.elevator2.setPower(0.0);
+//            }
 
             telemetry.update();
         }

@@ -50,7 +50,6 @@ public class Robot extends Subsystem {
     public CRServo elevator1;
     public CRServo elevator2; // what are the individual elevator1 and elevator2 motors for? ask hardware team
 
-
     /**
      * Control Hub
      *
@@ -182,14 +181,14 @@ public class Robot extends Subsystem {
         launch1.setDirection(DcMotorSimple.Direction.REVERSE);
         launch1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         launch1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        launch1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        launch1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         launch1.setPower(0.0);
 
         launch2 = (DcMotorEx) hardwareMap.dcMotor.get("launch2");
         launch2.setDirection(DcMotorSimple.Direction.REVERSE);
         launch2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         launch2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        launch2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        launch2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         launch2.setPower(0.0);
 
         intake = (DcMotorEx) hardwareMap.dcMotor.get("intake");
@@ -200,11 +199,13 @@ public class Robot extends Subsystem {
         intake.setPower(0.0);
 
         //Servos
-        clawDeploy = hardwareMap.servo.get("clawDeploy");
-        claw = hardwareMap.servo.get("claw");
-        feeder = hardwareMap.servo.get("feeder");
-        elevator1 = hardwareMap.crservo.get("e1");
-        elevator2 = hardwareMap.crservo.get("e2");
+//        clawDeploy = hardwareMap.servo.get("clawDeploy");
+//        claw = hardwareMap.servo.get("claw");
+//        feeder = hardwareMap.servo.get("feeder");
+//        elevator1 = hardwareMap.crservo.get("e1");
+//        elevator2 = hardwareMap.crservo.get("e2");
+//
+//        elevator2.setDirection(DcMotorSimple.Direction.REVERSE);
 
         imu = hardwareMap.get(BNO055IMU.class, "imu");
 

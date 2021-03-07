@@ -13,6 +13,7 @@ import java.io.IOException;
 @TeleOp(name="TeleopTest")
 public class TeleopTest extends LinearOpMode{
 
+    public final double TICKS_PER_REV = 537.6;
     private Robot robot;
     
     double timeCurrent;
@@ -52,6 +53,12 @@ public class TeleopTest extends LinearOpMode{
                 robot.launch1.setPower(0.0);
                 robot.launch2.setPower(0.0);
             }
+
+            double speed1 = robot.launch1.getVelocity() * 60 / TICKS_PER_REV;
+            double speed2 = robot.launch2.getVelocity() * 60 / TICKS_PER_REV;
+
+            telemetry.addData("Launch 1 RPM: ", speed1);
+            telemetry.addData("Launch 2 RPM: ", speed2);
 
             boolean xB = robot.xButton;
             boolean yB = robot.yButton;

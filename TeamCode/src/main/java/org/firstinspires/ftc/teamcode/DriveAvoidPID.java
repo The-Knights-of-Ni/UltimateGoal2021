@@ -76,9 +76,6 @@ public class DriveAvoidPID extends LinearOpMode
         // P by itself may stall before turn completed so we add a bit of I (integral) which
         // causes the PID controller to gently increase power if the turn is not completed.
         pidRotate = new PIDController(.003, .00003, 0);
-
-        // Set PID proportional value to produce non-zero correction value when robot veers off
-        // straight line. P value controls how sensitive the correction is.
         pidDrive = new PIDController(.05, 0, 0);
 
         telemetry.addData("Mode", "calibrating...");
@@ -104,13 +101,10 @@ public class DriveAvoidPID extends LinearOpMode
 
         sleep(1000);
 
-        // Set up parameters for driving in a straight line.
-        pidDrive.setSetpoint(0);
-        pidDrive.setOutputRange(0, power);
-        pidDrive.setInputRange(-90, 90);
-        pidDrive.enable();
+        moveForward(2, power);
 
-        rotate(90, power);
+        rotate(2, power);
+        rotate(-2, power);
 
         // turn the motors off.
         frontLeftDriveMotor.setPower(0);
@@ -127,6 +121,13 @@ public class DriveAvoidPID extends LinearOpMode
         lastAngles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
 
         globalAngle = 0;
+    }
+
+    /**
+     * Resets the cumulative distance tracking to zero.
+     */
+    private void resetDistance() {
+        //Fill in after odometry is done
     }
 
     /**
@@ -154,6 +155,12 @@ public class DriveAvoidPID extends LinearOpMode
         lastAngles = angles;
 
         return globalAngle;
+    }
+
+    private double getDistance() {
+        double distance = 0;
+        return distance;
+        //Fill in when odometry done
     }
 
     /**
@@ -233,5 +240,48 @@ public class DriveAvoidPID extends LinearOpMode
 
         // reset angle tracking on new heading.
         resetAngle();
+    }
+
+    private void moveForward(double distance, double power) // unit of measurement TBD
+    {
+        // restart odometry distance tracking.
+        resetDistance();
+
+        pidDrive.reset();
+        pidDrive.setSetpoint(distance);
+        pidDrive.setInputRange(0, distance);
+        pidDrive.setOutputRange(0, power);
+        pidDrive.setTolerance(1);
+        pidDrive.enable();
+
+        if (distance < 0) // backward
+            do
+            {
+                power = pidDrive.performPID(getDistance()); // power will be - on backward.
+                frontLeftDriveMotor.setPower(-power);
+                rearLeftDriveMotor.setPower(-power);
+                frontRightDriveMotor.setPower(-power);
+                rearRightDriveMotor.setPower(-power);
+            } while (opModeIsActive() && !pidDrive.onTarget());
+        else    // forward
+            do
+            {
+                power = pidDrive.performPID(getDistance()); // power will be + on forward.
+                frontLeftDriveMotor.setPower(power);
+                rearLeftDriveMotor.setPower(power);
+                frontRightDriveMotor.setPower(power);
+                rearRightDriveMotor.setPower(power);
+            } while (opModeIsActive() && !pidDrive.onTarget());
+
+        // turn the motors off.
+        frontLeftDriveMotor.setPower(0);
+        rearLeftDriveMotor.setPower(0);
+        frontRightDriveMotor.setPower(0);
+        rearRightDriveMotor.setPower(0);
+
+        sleep(500);
+
+        // reset distance tracking on new location.
+        resetDistance();
     }
 }

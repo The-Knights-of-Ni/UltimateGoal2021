@@ -26,9 +26,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
-@Autonomous(name="Drive Avoid PID", group="Exercises")
+@Autonomous(name="Drive PID")
 //@Disabled
-public class DriveAvoidPID extends LinearOpMode
+public class DrivePID extends LinearOpMode
 {
     DcMotorEx frontLeftDriveMotor, frontRightDriveMotor, rearRightDriveMotor, rearLeftDriveMotor;
     TouchSensor             touch;

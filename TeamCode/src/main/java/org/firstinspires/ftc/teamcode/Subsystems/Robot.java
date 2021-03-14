@@ -64,6 +64,12 @@ public class Robot extends Subsystem {
      * fl        0
      * bl        1
      * intake    2
+     *
+     * feeding          0
+     * left elevator    1
+     * wbc1             2
+     * wbc2             3
+     * right elevator   4
      */
 
     //Sensors

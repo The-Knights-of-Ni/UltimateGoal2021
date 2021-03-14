@@ -55,9 +55,6 @@ public class DrivePID extends LinearOpMode
         rearLeftDriveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rearRightDriveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        // get a reference to REV Touch sensor.
-        touch = hardwareMap.touchSensor.get("touch_sensor");
-
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
 
         parameters.mode                = BNO055IMU.SensorMode.IMU;

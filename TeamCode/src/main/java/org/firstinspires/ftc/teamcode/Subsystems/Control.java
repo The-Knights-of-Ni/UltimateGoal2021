@@ -26,6 +26,8 @@ public class Control extends Subsystem {
     public Servo elevator1;
     public Servo elevator2;
     public Servo launchFeed;
+    private Servo wobbleClaw;
+    private Servo wobbleGoalArm;
 
     //Sensors
     private BNO055IMU imu;
@@ -129,8 +131,10 @@ public class Control extends Subsystem {
     private boolean mainClawArmTrackingMode = false;
     private double ClawRotationAngle = 0.0;
 
-    public Control(DcMotorEx intake, DcMotorEx launch1, DcMotorEx launch2, BNO055IMU imu, LinearOpMode opMode, ElapsedTime timer) {
+    public Control(DcMotorEx intake, DcMotorEx launch1, DcMotorEx launch2, BNO055IMU imu, LinearOpMode opMode, ElapsedTime timer, Servo wobbleClaw, Servo wobbleGoalArm) {
         // store device information locally
+        this.wobbleClaw = wobbleClaw;
+        this.wobbleGoalArm = wobbleGoalArm;
         this.intake = intake;
         this.launch1 = launch1;
         this.launch2 = launch2;

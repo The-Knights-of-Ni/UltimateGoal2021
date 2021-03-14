@@ -61,19 +61,19 @@ public class TeleopTest extends LinearOpMode{
             telemetry.addData("Launch 1 RPM: ", speed1);
             telemetry.addData("Launch 2 RPM: ", speed2);
 
-            boolean xB = robot.xButton;
-            boolean yB = robot.yButton;
-
-            if (xB) {
-                robot.elevator1.setPower(0.2);
-                robot.elevator2.setPower(0.2);
-            } else if (yB){
-                robot.elevator1.setPower(-0.2);
-                robot.elevator2.setPower(-0.2);
-            } else {
-                robot.elevator1.setPower(0.0);
-                robot.elevator2.setPower(0.0);
-            }
+//            boolean xB = robot.xButton;
+//            boolean yB = robot.yButton;
+//
+//            if (xB) {
+//                robot.elevator1.setPower(0.2);
+//                robot.elevator2.setPower(0.2);
+//            } else if (yB){
+//                robot.elevator1.setPower(-0.2);
+//                robot.elevator2.setPower(-0.2);
+//            } else {
+//                robot.elevator1.setPower(0.0);
+//                robot.elevator2.setPower(0.0);
+//            }
 
             telemetry.update();
         }

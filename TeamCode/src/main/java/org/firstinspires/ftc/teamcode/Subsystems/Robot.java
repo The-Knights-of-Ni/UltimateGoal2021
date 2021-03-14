@@ -44,12 +44,13 @@ public class Robot extends Subsystem {
     //Servos
     public Servo claw;
     public Servo clawDeploy;
-
     public Servo feeder; //Conveyer at top of robot
 
     public CRServo elevator1;
-    public CRServo elevator2; // what are the individual elevator1 and elevator2 motors for? ask hardware team
+    public CRServo elevator2;
 
+    public Servo wobbleClaw;
+    public Servo wobbleGoalArm;
     /**
      * Control Hub
      *
@@ -212,6 +213,8 @@ public class Robot extends Subsystem {
 //        elevator2 = hardwareMap.crservo.get("e2");
 //
 //        elevator2.setDirection(DcMotorSimple.Direction.REVERSE);
+        wobbleClaw=hardwareMap.servo.get("wbc1");
+        wobbleGoalArm=hardwareMap.servo.get("wbc2");
 
         imu = hardwareMap.get(BNO055IMU.class, "imu");
 

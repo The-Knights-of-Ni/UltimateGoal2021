@@ -23,8 +23,6 @@ public class Control extends Subsystem {
     private DcMotorEx launch2;
 
     //Servos
-    private Servo wobbleGoalArm;
-    private Servo wobbleClaw;
     public Servo elevator1;
     public Servo elevator2;
     public Servo launchFeed;

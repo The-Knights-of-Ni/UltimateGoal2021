@@ -227,8 +227,8 @@ public class Control extends Subsystem {
     public void modifyServo(Servo servo, double value) {
         double currentValue = servo.getPosition();
         currentValue = currentValue + value;
-        if (currentValue > 1.0) currentValue = 1.0;
-        if (currentValue < 0.0) currentValue = 0.0;
+//        if (currentValue > 1.0) currentValue = 1.0;
+//        if (currentValue < 0.0) currentValue = 0.0;
         servo.setPosition(currentValue);
     }
     //complete later. need to take some robot position (absolute)/angle values as input and calculate how much to rotate the turret

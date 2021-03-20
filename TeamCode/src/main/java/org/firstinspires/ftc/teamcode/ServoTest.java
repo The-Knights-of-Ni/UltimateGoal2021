@@ -28,7 +28,13 @@ public class ServoTest extends LinearOpMode {
 
     public void initOpMode() throws IOException {
         timer = new ElapsedTime();
-        this.robot = new Robot(this, timer);
+        this.robot = new Robot(this, timer, true);
+
+        timeCurrent = timer.nanoseconds();
+        timePre = timeCurrent;
+
+        telemetry.addData("Wait for start", "");
+        telemetry.update();
 
     }
     public void runOpMode() {
@@ -37,7 +43,7 @@ public class ServoTest extends LinearOpMode {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        robot.initServosAuto();
+        //robot.initServosAuto();
         telemetry.clearAll();
 //        telemetry.addLine("Wait For Start");
 //        telemetry.update();

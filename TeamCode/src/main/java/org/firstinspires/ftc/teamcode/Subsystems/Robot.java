@@ -190,7 +190,7 @@ public class Robot extends Subsystem {
         launch1.setPower(0.0);
 
         launch2 = (DcMotorEx) hardwareMap.dcMotor.get("launch2");
-        launch2.setDirection(DcMotorSimple.Direction.REVERSE);
+        //launch2.setDirection(DcMotorSimple.Direction.REVERSE);
         launch2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         launch2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         launch2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);

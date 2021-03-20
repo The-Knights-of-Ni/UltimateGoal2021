@@ -60,19 +60,12 @@ public class Teleop extends LinearOpMode {
         initOpMode();
         waitForStart();
 
-        // call initServosTeleop() after running Auto program
         robot.initServosTeleop();
-        // call initServosAuto() if testing Teleop stand-alone
-//        robot.initServosAuto();
 
         telemetry.clearAll();
         timeCurrent = timer.nanoseconds();
         timePre = timeCurrent;
-//        if (visionEnabled) {
-//            robot.vision.getTargetsSkyStone().activate();
-//        }
 
-//      mainClawState = MainClawState.CLOSE;
         while(opModeIsActive()) {
 
             // Get gamepad inputs
@@ -82,10 +75,6 @@ public class Teleop extends LinearOpMode {
             timeCurrent = timer.nanoseconds();
             deltaT = timeCurrent - timePre;
             timePre = timeCurrent;
-
-            if (visionEnabled) {
-//                robot.vision.vuMarkScan();
-            }
 
             // Drive the motors
             double[] motorPowers;
@@ -99,7 +88,7 @@ public class Teleop extends LinearOpMode {
                 robot.drive.resetDriveMotorEncoders();
             }
 
-
+            //Deploy and retract arm
             if (wobbleClawControlDigital) {
                 if (robot.bumperRight2 && !robot.isrBumper2PressedPrev) { // toggle main claw arm deploy mode
                     if (wobbleClawDeployed) {
@@ -112,19 +101,24 @@ public class Teleop extends LinearOpMode {
                     }
                 }
             }
+
+            //Open and close claw
             if ((robot.triggerLeft2 > 0.5) && (robot.triggerRight2 < 0.5)) {
                 robot.control.openWobbleClaw();
             }
             else if ((robot.triggerRight2 > 0.5) && (robot.triggerLeft2 < 0.5)){
                 robot.control.closeWobbleClaw();
             }
+
+            //Toggle intake
             if (robot.aButton && !robot.isaButtonPressedPrev){
-                //
                 robot.control.setIntake(true);
             }
             else if (robot.aButton && robot.isaButtonPressedPrev){
                 robot.control.setIntake(false);
             }
+
+            //Toggle launcher
             if (robot.bButton && !robot.isbButtonPressedPrev){
                 robot.control.setLaunch(true);
             }

@@ -179,29 +179,37 @@ public class Control extends Subsystem {
     public void closeWobbleClaw(){
         wobbleClaw.setPosition(0.977);
     }
-    public double getWobbleArmTargetAngle() {
-        return mainArmTargetAngle;
+
+    public void deployWobble() {
+        wobbleGoalArm.setPosition(0.75);
     }
-    public double wobbleGoalArmAngleToPos(double angle){
-        int lowerIndex, upperIndex;
-        int i = 1;
-        double servoTarget;
-        while ((i < CLAW_ARM_TILT_TABLE_SIZE) && (CLAW_ARM_TILT_TABLE[i*2] < angle)) {
-            ++i;
-        }
-        upperIndex = i;
-        lowerIndex = i-1;
-        servoTarget = CLAW_ARM_TILT_TABLE[lowerIndex*2+1] +
-                (CLAW_ARM_TILT_TABLE[upperIndex*2+1]-CLAW_ARM_TILT_TABLE[lowerIndex*2+1])*(angle-CLAW_ARM_TILT_TABLE[lowerIndex*2])
-                        /(CLAW_ARM_TILT_TABLE[upperIndex*2]-CLAW_ARM_TILT_TABLE[lowerIndex*2]);
-        return servoTarget;
+
+    public void retractWobble() {
+        wobbleGoalArm.setPosition(0.255);
     }
-    public void setWobbleAngle(double angle){
-        wobbleGoalArm.setPosition(this.wobbleGoalArmAngleToPos(angle));
-    }
-    public void retractWobbleClaw(){
-        setWobbleAngle(-180);
-    }
+//    public double getWobbleArmTargetAngle() {
+//        return mainArmTargetAngle;
+//    }
+//    public double wobbleGoalArmAngleToPos(double angle){
+//        int lowerIndex, upperIndex;
+//        int i = 1;
+//        double servoTarget;
+//        while ((i < CLAW_ARM_TILT_TABLE_SIZE) && (CLAW_ARM_TILT_TABLE[i*2] < angle)) {
+//            ++i;
+//        }
+//        upperIndex = i;
+//        lowerIndex = i-1;
+//        servoTarget = CLAW_ARM_TILT_TABLE[lowerIndex*2+1] +
+//                (CLAW_ARM_TILT_TABLE[upperIndex*2+1]-CLAW_ARM_TILT_TABLE[lowerIndex*2+1])*(angle-CLAW_ARM_TILT_TABLE[lowerIndex*2])
+//                        /(CLAW_ARM_TILT_TABLE[upperIndex*2]-CLAW_ARM_TILT_TABLE[lowerIndex*2]);
+//        return servoTarget;
+//    }
+//    public void setWobbleAngle(double angle){
+//        wobbleGoalArm.setPosition(this.wobbleGoalArmAngleToPos(angle));
+//    }
+//    public void retractWobbleClaw(){
+//        setWobbleAngle(-180);
+//    }
 
     public void setIntake(boolean status){
         if(status){

@@ -113,11 +113,11 @@ public class TeleopTest extends LinearOpMode{
             if (wobbleClawControlDigital) {
                 if (robot.bumperRight2 && !robot.isrBumper2PressedPrev) { // toggle main claw arm deploy mode
                     if (wobbleClawDeployed) {
-                        robot.control.retractWobbleClaw();
+                        robot.control.retractWobble();
                         wobbleClawDeployed = false;
                     }
                     else {
-                        robot.control.setWobbleAngle(robot.control.getWobbleArmTargetAngle());
+                        robot.control.deployWobble();
                         wobbleClawDeployed = true;
                     }
                 }

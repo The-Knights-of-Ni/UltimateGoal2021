@@ -1012,9 +1012,9 @@ public class Drive extends Subsystem {
          *
          * @return a copy of this odometry.
          */
-        public DriveBase.Odometry clone()
+        public Odometry clone()
         {
-            return new DriveBase.Odometry(position.clone(), velocity.clone());
+            return new Odometry(position.clone(), velocity.clone());
         }   //clone
 
         /**

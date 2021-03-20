@@ -52,16 +52,16 @@ public class ServoTest extends LinearOpMode {
 
             // test main arm servos
             if (robot.triggerLeft2 > 0.5) {
-                robot.control.modifyServo(robot.wobbleClaw, 0.005);
+                robot.control.modifyServo(robot.wobbleClaw, 0.05);
             }
             else if (robot.triggerLeft2 > 0.1){
-                robot.control.modifyServo(robot.wobbleClaw, 0.001);
+                robot.control.modifyServo(robot.wobbleClaw, 0.01);
             }
             else if (robot.triggerRight2 > 0.5){
-                robot.control.modifyServo(robot.wobbleClaw, -0.005);
+                robot.control.modifyServo(robot.wobbleClaw, -0.05);
             }
             else if (robot.triggerRight2 > 0.1){
-                robot.control.modifyServo(robot.wobbleClaw, -0.001);
+                robot.control.modifyServo(robot.wobbleClaw, -0.01);
             }
 
 

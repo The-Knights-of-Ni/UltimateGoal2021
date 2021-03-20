@@ -42,8 +42,6 @@ public class Robot extends Subsystem {
     public DcMotorEx intake;
 
     //Servos
-    public Servo claw;
-    public Servo clawDeploy;
     public Servo feeder; //Conveyer at top of robot
 
     public CRServo elevator1;

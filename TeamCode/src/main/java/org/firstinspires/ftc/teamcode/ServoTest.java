@@ -65,7 +65,7 @@ public class ServoTest extends LinearOpMode {
             }
 
 
-            telemetry.addData("Wobble Claw      ", "%.3f", robot.wobbleClaw.getPosition());
+            //telemetry.addData("Wobble Claw      ", "%.3f", robot.wobbleClaw.getPosition());
             //telemetry.addData("Wobble Goal Arm  ", "%.3f", robot.wobbleGoalArm.getPosition());
 
             telemetry.update();

@@ -61,12 +61,6 @@ public class TeleopTest extends LinearOpMode{
         telemetry.addData("Wait for start", "");
         telemetry.update();
     }
-    public void openWobbleClaw() {
-        robot.wobbleClaw.setPosition(0.416);
-    }
-    public void closeWobbleClaw(){
-        robot.wobbleClaw.setPosition(0.64);
-    }
     public double getWobbleArmTargetAngle() {
         return 0.0;
     }
@@ -129,10 +123,10 @@ public class TeleopTest extends LinearOpMode{
                 }
             }
             if ((robot.triggerLeft2 > 0.5) && (robot.triggerRight2 < 0.5)) {
-                robot.control.openWobbleClaw();
+                robot.control.closeWobbleClaw();
             }
             else if ((robot.triggerRight2 > 0.5) && (robot.triggerLeft2 < 0.5)){
-                robot.control.closeWobbleClaw();
+                robot.control.openWobbleClaw();
             }
 
 //            boolean xB = robot.xButton;

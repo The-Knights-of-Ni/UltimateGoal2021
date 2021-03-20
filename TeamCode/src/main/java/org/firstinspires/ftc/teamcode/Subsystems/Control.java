@@ -174,10 +174,10 @@ public class Control extends Subsystem {
     }
 
     public void openWobbleClaw() {
-        wobbleClaw.setPosition(0.416);
+        wobbleClaw.setPosition(0.7);
     }
     public void closeWobbleClaw(){
-        wobbleClaw.setPosition(0.64);
+        wobbleClaw.setPosition(0.977);
     }
     public double getWobbleArmTargetAngle() {
         return mainArmTargetAngle;

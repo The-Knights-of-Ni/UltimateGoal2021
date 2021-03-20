@@ -211,8 +211,8 @@ public class Robot extends Subsystem {
 //        elevator2 = hardwareMap.crservo.get("e2");
 //
 //        elevator2.setDirection(DcMotorSimple.Direction.REVERSE);
-        wobbleClaw = hardwareMap.servo.get("wbc2");
-        wobbleGoalArm = hardwareMap.servo.get("wbc1");
+        wobbleClaw = hardwareMap.servo.get("wbc1");
+        wobbleGoalArm = hardwareMap.servo.get("wbc2");
 
         imu = hardwareMap.get(BNO055IMU.class, "imu");
 

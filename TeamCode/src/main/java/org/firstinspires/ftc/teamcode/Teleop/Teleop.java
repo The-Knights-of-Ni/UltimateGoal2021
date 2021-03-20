@@ -101,14 +101,14 @@ public class Teleop extends LinearOpMode {
                 wobbleClawOpen = false;
             }
 
-            //Open and close claw
+            //Retract and deploy arm
             if (wobbleClawControlDigital) {
                 if (robot.bumperLeft2 && !robot.islBumper2PressedPrev) { // toggle main claw arm deploy mode
                     robot.control.deployWobble();
                     wobbleClawDeployed = true;
                 }
             }
-            if ((robot.triggerRight2 > 0.5) && (robot.triggerLeft2 < 0.5)){
+            if ((robot.triggerLeft2 > 0.5) && (robot.triggerRight2 < 0.5)){
                 robot.control.retractWobble();
                 wobbleClawDeployed = false;
             }

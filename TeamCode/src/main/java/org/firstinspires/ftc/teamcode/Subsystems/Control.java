@@ -177,7 +177,7 @@ public class Control extends Subsystem {
         wobbleClaw.setPosition(0.7);
     }
     public void closeWobbleClaw(){
-        wobbleClaw.setPosition(0.977);
+        wobbleClaw.setPosition(1);
     }
 
     public void deployWobble() {

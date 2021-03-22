@@ -111,14 +111,14 @@ public class OdometrySystem {
         return value/sensorCount;
     }   //averageOdometry
 
-    public synchronized OdometrySensor.Odometry getOdometryDelta()
+    public synchronized Drive.Odometry getOdometryDelta()
     {
         OdometrySensor.Odometry x1Odometry = x1Sensor != null? x1Sensor.getOdometry(): null;
         OdometrySensor.Odometry x2Odometry = x2Sensor != null? x2Sensor.getOdometry(): null;
         OdometrySensor.Odometry y1Odometry = y1Sensor != null? y1Sensor.getOdometry(): null;
         OdometrySensor.Odometry y2Odometry = y2Sensor != null? y2Sensor.getOdometry(): null;
         OdometrySensor.Odometry angleOdometry = angleSensor.getOdometry();
-        DriveBase.Odometry odometryDelta = new OdometrySensor.Odometry();
+        Drive.Odometry odometryDelta = new Drive.Odometry();
 
         double avgXPos = averageOdometry(x1Odometry, x2Odometry, true);
         double avgYPos = averageOdometry(y1Odometry, y2Odometry, true);

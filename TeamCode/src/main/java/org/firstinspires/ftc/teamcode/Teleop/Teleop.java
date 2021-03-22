@@ -37,6 +37,7 @@ public class Teleop extends LinearOpMode {
     private boolean visionEnabled = false;
     private boolean wobbleClawControlDigital = true;
     private boolean wobbleClawDeployed = false;
+    private boolean wobbleClawOpen = false;
 
 
 
@@ -60,19 +61,12 @@ public class Teleop extends LinearOpMode {
         initOpMode();
         waitForStart();
 
-        // call initServosTeleop() after running Auto program
         robot.initServosTeleop();
-        // call initServosAuto() if testing Teleop stand-alone
-//        robot.initServosAuto();
 
         telemetry.clearAll();
         timeCurrent = timer.nanoseconds();
         timePre = timeCurrent;
-//        if (visionEnabled) {
-//            robot.vision.getTargetsSkyStone().activate();
-//        }
 
-//      mainClawState = MainClawState.CLOSE;
         while(opModeIsActive()) {
 
             // Get gamepad inputs
@@ -82,10 +76,6 @@ public class Teleop extends LinearOpMode {
             timeCurrent = timer.nanoseconds();
             deltaT = timeCurrent - timePre;
             timePre = timeCurrent;
-
-            if (visionEnabled) {
-//                robot.vision.vuMarkScan();
-            }
 
             // Drive the motors
             double[] motorPowers;
@@ -99,32 +89,39 @@ public class Teleop extends LinearOpMode {
                 robot.drive.resetDriveMotorEncoders();
             }
 
-
+            //Open and close claw
             if (wobbleClawControlDigital) {
                 if (robot.bumperRight2 && !robot.isrBumper2PressedPrev) { // toggle main claw arm deploy mode
-                    if (wobbleClawDeployed) {
-                        robot.control.retractWobbleClaw();
-                        wobbleClawDeployed = false;
-                    }
-                    else {
-                        robot.control.setWobbleAngle(robot.control.getWobbleArmTargetAngle());
-                        wobbleClawDeployed = true;
-                    }
+                    robot.control.openWobbleClaw();
+                    wobbleClawOpen = true;
                 }
             }
-            if ((robot.triggerLeft2 > 0.5) && (robot.triggerRight2 < 0.5)) {
-                robot.control.openWobbleClaw();
-            }
-            else if ((robot.triggerRight2 > 0.5) && (robot.triggerLeft2 < 0.5)){
+            if ((robot.triggerRight2 > 0.5) && (robot.triggerLeft2 < 0.5)){
                 robot.control.closeWobbleClaw();
+                wobbleClawOpen = false;
             }
+
+            //Retract and deploy arm
+            if (wobbleClawControlDigital) {
+                if (robot.bumperLeft2 && !robot.islBumper2PressedPrev) { // toggle main claw arm deploy mode
+                    robot.control.deployWobble();
+                    wobbleClawDeployed = true;
+                }
+            }
+            if ((robot.triggerLeft2 > 0.5) && (robot.triggerRight2 < 0.5)){
+                robot.control.retractWobble();
+                wobbleClawDeployed = false;
+            }
+
+            //Toggle intake
             if (robot.aButton && !robot.isaButtonPressedPrev){
-                //
                 robot.control.setIntake(true);
             }
             else if (robot.aButton && robot.isaButtonPressedPrev){
                 robot.control.setIntake(false);
             }
+
+            //Toggle launcher
             if (robot.bButton && !robot.isbButtonPressedPrev){
                 robot.control.setLaunch(true);
             }

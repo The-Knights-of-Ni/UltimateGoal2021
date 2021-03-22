@@ -42,14 +42,13 @@ public class Robot extends Subsystem {
     public DcMotorEx intake;
 
     //Servos
-    public Servo claw;
-    public Servo clawDeploy;
-
     public Servo feeder; //Conveyer at top of robot
 
     public CRServo elevator1;
-    public CRServo elevator2; // what are the individual elevator1 and elevator2 motors for? ask hardware team
+    public CRServo elevator2;
 
+    public Servo wobbleClaw;
+    public Servo wobbleGoalArm;
     /**
      * Control Hub
      *
@@ -64,6 +63,12 @@ public class Robot extends Subsystem {
      * fl        0
      * bl        1
      * intake    2
+     *
+     * feeding          0
+     * left elevator    1
+     * wbc1             2
+     * wbc2             3
+     * right elevator   4
      */
 
     //Sensors
@@ -185,7 +190,7 @@ public class Robot extends Subsystem {
         launch1.setPower(0.0);
 
         launch2 = (DcMotorEx) hardwareMap.dcMotor.get("launch2");
-        launch2.setDirection(DcMotorSimple.Direction.REVERSE);
+        //launch2.setDirection(DcMotorSimple.Direction.REVERSE);
         launch2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         launch2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         launch2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -206,6 +211,8 @@ public class Robot extends Subsystem {
 //        elevator2 = hardwareMap.crservo.get("e2");
 //
 //        elevator2.setDirection(DcMotorSimple.Direction.REVERSE);
+        wobbleClaw = hardwareMap.servo.get("wbc2");
+        wobbleGoalArm = hardwareMap.servo.get("wbc1");
 
         imu = hardwareMap.get(BNO055IMU.class, "imu");
 
@@ -237,7 +244,7 @@ public class Robot extends Subsystem {
         drive.setRunMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         drive.setRunMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        control = new Control(intake, launch1, launch2, imu, opMode, timer);
+        control = new Control(intake, launch1, launch2, imu, opMode, timer, wobbleClaw, wobbleGoalArm);
 
         opMode.telemetry.addData("Mode", " vision initializing...");
         opMode.telemetry.update();
@@ -254,7 +261,8 @@ public class Robot extends Subsystem {
     }
 
     public void initServosTeleop() {
-        // code here
+        control.retractWobble();
+        control.closeWobbleClaw();
     }
 
     public OpMode getOpmode(){

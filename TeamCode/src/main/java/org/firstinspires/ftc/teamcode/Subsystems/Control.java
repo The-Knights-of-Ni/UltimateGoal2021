@@ -23,11 +23,11 @@ public class Control extends Subsystem {
     private DcMotorEx launch2;
 
     //Servos
-    private Servo wobbleGoalArm;
-    private Servo wobbleClaw;
     public Servo elevator1;
     public Servo elevator2;
     public Servo launchFeed;
+    private Servo wobbleClaw;
+    private Servo wobbleGoalArm;
 
     //Sensors
     private BNO055IMU imu;
@@ -131,8 +131,10 @@ public class Control extends Subsystem {
     private boolean mainClawArmTrackingMode = false;
     private double ClawRotationAngle = 0.0;
 
-    public Control(DcMotorEx intake, DcMotorEx launch1, DcMotorEx launch2, BNO055IMU imu, LinearOpMode opMode, ElapsedTime timer) {
+    public Control(DcMotorEx intake, DcMotorEx launch1, DcMotorEx launch2, BNO055IMU imu, LinearOpMode opMode, ElapsedTime timer, Servo wobbleClaw, Servo wobbleGoalArm) {
         // store device information locally
+        this.wobbleClaw = wobbleClaw;
+        this.wobbleGoalArm = wobbleGoalArm;
         this.intake = intake;
         this.launch1 = launch1;
         this.launch2 = launch2;
@@ -172,34 +174,42 @@ public class Control extends Subsystem {
     }
 
     public void openWobbleClaw() {
-        wobbleClaw.setPosition(0.416);
+        wobbleClaw.setPosition(0.7);
     }
     public void closeWobbleClaw(){
-        wobbleClaw.setPosition(0.64);
+        wobbleClaw.setPosition(1);
     }
-    public double getWobbleArmTargetAngle() {
-        return mainArmTargetAngle;
+
+    public void deployWobble() {
+        wobbleGoalArm.setPosition(0.255);
     }
-    public double wobbleGoalArmAngleToPos(double angle){
-        int lowerIndex, upperIndex;
-        int i = 1;
-        double servoTarget;
-        while ((i < CLAW_ARM_TILT_TABLE_SIZE) && (CLAW_ARM_TILT_TABLE[i*2] < angle)) {
-            ++i;
-        }
-        upperIndex = i;
-        lowerIndex = i-1;
-        servoTarget = CLAW_ARM_TILT_TABLE[lowerIndex*2+1] +
-                (CLAW_ARM_TILT_TABLE[upperIndex*2+1]-CLAW_ARM_TILT_TABLE[lowerIndex*2+1])*(angle-CLAW_ARM_TILT_TABLE[lowerIndex*2])
-                        /(CLAW_ARM_TILT_TABLE[upperIndex*2]-CLAW_ARM_TILT_TABLE[lowerIndex*2]);
-        return servoTarget;
+
+    public void retractWobble() {
+        wobbleGoalArm.setPosition(0.75);
     }
-    public void setWobbleAngle(double angle){
-        wobbleGoalArm.setPosition(this.wobbleGoalArmAngleToPos(angle));
-    }
-    public void retractWobbleClaw(){
-        setWobbleAngle(-180);
-    }
+//    public double getWobbleArmTargetAngle() {
+//        return mainArmTargetAngle;
+//    }
+//    public double wobbleGoalArmAngleToPos(double angle){
+//        int lowerIndex, upperIndex;
+//        int i = 1;
+//        double servoTarget;
+//        while ((i < CLAW_ARM_TILT_TABLE_SIZE) && (CLAW_ARM_TILT_TABLE[i*2] < angle)) {
+//            ++i;
+//        }
+//        upperIndex = i;
+//        lowerIndex = i-1;
+//        servoTarget = CLAW_ARM_TILT_TABLE[lowerIndex*2+1] +
+//                (CLAW_ARM_TILT_TABLE[upperIndex*2+1]-CLAW_ARM_TILT_TABLE[lowerIndex*2+1])*(angle-CLAW_ARM_TILT_TABLE[lowerIndex*2])
+//                        /(CLAW_ARM_TILT_TABLE[upperIndex*2]-CLAW_ARM_TILT_TABLE[lowerIndex*2]);
+//        return servoTarget;
+//    }
+//    public void setWobbleAngle(double angle){
+//        wobbleGoalArm.setPosition(this.wobbleGoalArmAngleToPos(angle));
+//    }
+//    public void retractWobbleClaw(){
+//        setWobbleAngle(-180);
+//    }
 
     public void setIntake(boolean status){
         if(status){

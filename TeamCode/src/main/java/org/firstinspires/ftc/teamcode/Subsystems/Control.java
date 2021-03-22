@@ -181,11 +181,11 @@ public class Control extends Subsystem {
     }
 
     public void deployWobble() {
-        wobbleGoalArm.setPosition(0.255);
+        wobbleGoalArm.setPosition(0.934);
     }
 
     public void retractWobble() {
-        wobbleGoalArm.setPosition(0.75);
+        wobbleGoalArm.setPosition(0.1);
     }
 //    public double getWobbleArmTargetAngle() {
 //        return mainArmTargetAngle;

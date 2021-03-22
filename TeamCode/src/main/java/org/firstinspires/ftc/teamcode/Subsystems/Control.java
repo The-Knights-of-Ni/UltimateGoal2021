@@ -20,7 +20,8 @@ public class Control extends Subsystem {
     //DC Motors
     private DcMotorEx intake;
     private DcMotorEx launch1;
-    private DcMotorEx launch2;
+    private DcMotorEx launch2a;
+    private DcMotorEx launch2b;
 
     //Servos
     public Servo elevator1;
@@ -131,13 +132,16 @@ public class Control extends Subsystem {
     private boolean mainClawArmTrackingMode = false;
     private double ClawRotationAngle = 0.0;
 
-    public Control(DcMotorEx intake, DcMotorEx launch1, DcMotorEx launch2, BNO055IMU imu, LinearOpMode opMode, ElapsedTime timer, Servo wobbleClaw, Servo wobbleGoalArm) {
+//    public Control(DcMotorEx intake, DcMotorEx launch1, DcMotorEx launch2, BNO055IMU imu, LinearOpMode opMode, ElapsedTime timer, Servo wobbleClaw, Servo wobbleGoalArm) {
+    public Control(DcMotorEx intake, DcMotorEx launch1, DcMotorEx launch2a, DcMotorEx launch2b, BNO055IMU imu, LinearOpMode opMode, ElapsedTime timer) {
+
         // store device information locally
         this.wobbleClaw = wobbleClaw;
         this.wobbleGoalArm = wobbleGoalArm;
         this.intake = intake;
         this.launch1 = launch1;
-        this.launch2 = launch2;
+        this.launch2a = launch2a;
+        this.launch2b = launch2b;
         this.opMode = opMode;
         this.hardwareMap = opMode.hardwareMap;
         this.imu = imu;
@@ -154,7 +158,8 @@ public class Control extends Subsystem {
     private void setZeroPowerBehavior(DcMotor.ZeroPowerBehavior mode) {
         intake.setZeroPowerBehavior(mode);
         launch1.setZeroPowerBehavior(mode);
-        launch2.setZeroPowerBehavior(mode);
+        launch2a.setZeroPowerBehavior(mode);
+        launch2b.setZeroPowerBehavior(mode);
     }
 
     public double getWinchMaxSpeedMMpSec(){
@@ -222,13 +227,21 @@ public class Control extends Subsystem {
 
     public void setLaunch(boolean status){
         if (status){
-            launch1.setPower(1.0);
-            launch2.setPower(1.0);
+            launch1.setPower(-1.0);
+            launch2a.setPower(-1.0);
+            launch2b.setPower(-1.0);
         }
         else{
             launch1.setPower(0.0);
-            launch2.setPower(0.0);
+            launch2a.setPower(0.0);
+            launch2b.setPower(0.0);
         }
+    }
+
+    public void setLaunchPower(double launchPower){
+            launch1.setPower(-launchPower);
+            launch2a.setPower(-launchPower);
+            launch2b.setPower(-launchPower);
     }
 
 

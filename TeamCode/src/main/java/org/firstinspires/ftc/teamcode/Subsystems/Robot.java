@@ -38,7 +38,8 @@ public class Robot extends Subsystem {
     public DcMotorEx rearRightDriveMotor;
     public DcMotorEx rearLeftDriveMotor;
     public DcMotorEx launch1;
-    public DcMotorEx launch2;
+    public DcMotorEx launch2a;
+    public DcMotorEx launch2b;
     public DcMotorEx intake;
 
     //Servos
@@ -141,7 +142,7 @@ public class Robot extends Subsystem {
         hardwareMap = opMode.hardwareMap;
         this.opMode = opMode;
         this.timer = timer;
-        //init(0);
+        init();
     }
 
     /**
@@ -169,18 +170,18 @@ public class Robot extends Subsystem {
 
     public void init() throws IOException {
         //DC Motors
-        frontLeftDriveMotor = (DcMotorEx) hardwareMap.dcMotor.get("fl");
-        frontRightDriveMotor = (DcMotorEx) hardwareMap.dcMotor.get("fr");
-        rearLeftDriveMotor = (DcMotorEx) hardwareMap.dcMotor.get("bl");
-        rearRightDriveMotor = (DcMotorEx) hardwareMap.dcMotor.get("br");
-
-        frontRightDriveMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-        rearRightDriveMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-
-        frontLeftDriveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        frontRightDriveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        rearLeftDriveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        rearRightDriveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//        frontLeftDriveMotor = (DcMotorEx) hardwareMap.dcMotor.get("fl");
+//        frontRightDriveMotor = (DcMotorEx) hardwareMap.dcMotor.get("fr");
+//        rearLeftDriveMotor = (DcMotorEx) hardwareMap.dcMotor.get("bl");
+//        rearRightDriveMotor = (DcMotorEx) hardwareMap.dcMotor.get("br");
+//
+//        frontRightDriveMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+//        rearRightDriveMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+//
+//        frontLeftDriveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//        frontRightDriveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//        rearLeftDriveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//        rearRightDriveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         launch1 = (DcMotorEx) hardwareMap.dcMotor.get("launch1");
         launch1.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -189,12 +190,19 @@ public class Robot extends Subsystem {
         launch1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         launch1.setPower(0.0);
 
-        launch2 = (DcMotorEx) hardwareMap.dcMotor.get("launch2");
-        //launch2.setDirection(DcMotorSimple.Direction.REVERSE);
-        launch2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        launch2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        launch2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        launch2.setPower(0.0);
+        launch2a = (DcMotorEx) hardwareMap.dcMotor.get("launch2a");
+        launch2a.setDirection(DcMotorSimple.Direction.REVERSE);
+        launch2a.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        launch2a.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        launch2a.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        launch2a.setPower(0.0);
+
+        launch2b = (DcMotorEx) hardwareMap.dcMotor.get("launch2b");
+        launch2b.setDirection(DcMotorSimple.Direction.REVERSE);
+        launch2b.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        launch2b.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        launch2b.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        launch2b.setPower(0.0);
 
         intake = (DcMotorEx) hardwareMap.dcMotor.get("intake");
         intake.setDirection(DcMotorSimple.Direction.FORWARD);
@@ -239,16 +247,17 @@ public class Robot extends Subsystem {
         //Subsystems
         opMode.telemetry.addData("Mode", " drive/control initializing...");
         opMode.telemetry.update();
-        drive = new Drive(frontLeftDriveMotor, frontRightDriveMotor, rearLeftDriveMotor, rearRightDriveMotor, imu, opMode, timer);
+//        drive = new Drive(frontLeftDriveMotor, frontRightDriveMotor, rearLeftDriveMotor, rearRightDriveMotor, imu, opMode, timer);
 
-        drive.setRunMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        drive.setRunMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//        drive.setRunMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        drive.setRunMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        control = new Control(intake, launch1, launch2, imu, opMode, timer, wobbleClaw, wobbleGoalArm);
+//        control = new Control(intake, launch1, launch2, imu, opMode, timer, wobbleClaw, wobbleGoalArm);
+        control = new Control(intake, launch1, launch2a, launch2b, imu, opMode, timer);
 
         opMode.telemetry.addData("Mode", " vision initializing...");
         opMode.telemetry.update();
-        vision = new Vision(hardwareMap, this, isBlue);
+//        vision = new Vision(hardwareMap, this, isBlue);
 
     }
 

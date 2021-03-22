@@ -124,7 +124,10 @@ public class DrivePID extends LinearOpMode
      * Resets the cumulative distance tracking to zero.
      */
     private void resetDistance() {
-        //Fill in after odometry is done
+        frontLeftDriveMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        frontRightDriveMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rearLeftDriveMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rearRightDriveMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 
     /**
@@ -155,9 +158,8 @@ public class DrivePID extends LinearOpMode
     }
 
     private double getDistance() {
-        double distance = 0;
+        double distance = (frontLeftDriveMotor.getCurrentPosition() + frontRightDriveMotor.getCurrentPosition() + rearLeftDriveMotor.getCurrentPosition() + rearRightDriveMotor.getCurrentPosition()) / 4;
         return distance;
-        //Fill in when odometry done
     }
 
     /**

@@ -39,15 +39,22 @@ public class Drive extends Subsystem {
     private int encoderOffsetRR = 0;
 
     //DO WITH ENCODERS
+    private static final double     DRIVE_GEAR_REDUCTION            = 1.0 ;     // This is < 1.0 if geared UP
+
     private static final double     TICKS_PER_MOTOR_REV_20          = 537.6;    // AM Orbital 20 motor
     private static final double     RPM_MAX_NEVERREST_20            = 340;
     private static final double     ANGULAR_V_MAX_NEVERREST_20      = (TICKS_PER_MOTOR_REV_20 * RPM_MAX_NEVERREST_20) / 60.0;
-    private static final double     DRIVE_GEAR_REDUCTION            = 1.0 ;     // This is < 1.0 if geared UP
+
+    //NEW Chassis
+    private static final double     MOTOR_TICK_PER_REV_YELLOJACKET312   = 537.6;
+    private static final double     GOBUILDA_MECANUM_DIAMETER_MM        = 96.0;
+    private static final double     COUNTS_PER_MM                       = (MOTOR_TICK_PER_REV_YELLOJACKET312 * DRIVE_GEAR_REDUCTION) / (GOBUILDA_MECANUM_DIAMETER_MM * Math.PI);
+
+
     private static final double     WHEEL_DIAMETER_INCHES           = 100.0/25.4 ;     // For figuring circumference
     private static final double     WHEEL_DIAMETER_MM               = 100.0;
     private static final double     COUNTS_PER_INCH                 = (TICKS_PER_MOTOR_REV_20 * DRIVE_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_INCHES * 3.1415);
-    private static final double     COUNTS_PER_MM                 = (TICKS_PER_MOTOR_REV_20 * DRIVE_GEAR_REDUCTION) / (WHEEL_DIAMETER_MM * Math.PI);
     private static final double     COUNTS_CORRECTION_X             = 1.167;
     private static final double     COUNTS_CORRECTION_Y             = 0.9918;
     private static final double     COUNTS_PER_DEGREE             = 10.833*0.99;     // 975 ticks per 90 degrees

@@ -39,6 +39,11 @@ public class Teleop extends LinearOpMode {
     private boolean wobbleClawDeployed = false;
     private boolean wobbleClawOpen = false;
 
+    private boolean isIntakeOn = false;
+    private boolean isLaunchOn = false;
+
+
+
 
 
     private void initOpMode() {
@@ -89,50 +94,58 @@ public class Teleop extends LinearOpMode {
                 robot.drive.resetDriveMotorEncoders();
             }
 
-            //Open and close claw
-            if (wobbleClawControlDigital) {
-                if (robot.bumperRight2 && !robot.isrBumper2PressedPrev) { // toggle main claw arm deploy mode
-                    robot.control.openWobbleClaw();
-                    wobbleClawOpen = true;
-                }
-            }
-            if ((robot.triggerRight2 > 0.5) && (robot.triggerLeft2 < 0.5)){
-                robot.control.closeWobbleClaw();
-                wobbleClawOpen = false;
-            }
 
-            //Retract and deploy arm
-            if (wobbleClawControlDigital) {
-                if (robot.bumperLeft2 && !robot.islBumper2PressedPrev) { // toggle main claw arm deploy mode
-                    robot.control.deployWobble();
-                    wobbleClawDeployed = true;
-                }
-            }
-            if ((robot.triggerLeft2 > 0.5) && (robot.triggerRight2 < 0.5)){
-                robot.control.retractWobble();
-                wobbleClawDeployed = false;
-            }
+//            //Open and close claw
+//            if (wobbleClawControlDigital) {
+//                if (robot.bumperRight2 && !robot.isrBumper2PressedPrev) { // toggle main claw arm deploy mode
+//                    robot.control.openWobbleClaw();
+//                        robot.isrBumper2PressedPrev = true;
+//                    wobbleClawOpen = true;
+//                }
+//                else
+//                    robot.isrBumper2PressedPrev = false;
+//            }
+//            if ((robot.triggerRight2 > 0.5) && (robot.triggerLeft2 < 0.5)){
+//                robot.control.closeWobbleClaw();
+//                wobbleClawOpen = false;
+//            }
+//
+//            //Retract and deploy arm
+//            if (wobbleClawControlDigital) {
+//                if (robot.bumperLeft2 && !robot.islBumper2PressedPrev) { // toggle main claw arm deploy mode
+//                    robot.control.deployWobble();
+//                    wobbleClawDeployed = true;
+//                }
+//            }
+//            if ((robot.triggerLeft2 > 0.5) && (robot.triggerRight2 < 0.5)){
+//                robot.control.retractWobble();
+//                wobbleClawDeployed = false;
+//            }
 
             //Toggle intake
             if (robot.aButton && !robot.isaButtonPressedPrev){
-                robot.control.setIntake(true);
-            }
-            else if (robot.aButton && robot.isaButtonPressedPrev){
-                robot.control.setIntake(false);
+                if(isIntakeOn){
+                    robot.control.setIntake(false);
+                    isIntakeOn = false;
+                }
+                else{
+                    robot.control.setIntake(true);
+                    isIntakeOn = true;
+                }
             }
 
             //Toggle launcher
             if (robot.bButton && !robot.isbButtonPressedPrev){
-                robot.control.setLaunch(true);
+                if(isLaunchOn)
+                    robot.control.setLaunch(false);
+                else
+                    robot.control.setLaunch(true);
             }
             else if (robot.bButton && robot.isbButtonPressedPrev){
-                robot.control.setLaunch(false);
             }
-            telemetry.addData("robot angle ", robotAngle);
-
-            int currentPositions[] = robot.drive.getCurrentPositions();
-            telemetry.addData("position", "fl %d, fr %d, rl %d, rr %d",
-                    currentPositions[0], currentPositions[1], currentPositions[2], currentPositions[3]);
+//            int currentPositions[] = robot.drive.getCurrentPositions();
+//            telemetry.addData("position", "fl %d, fr %d, rl %d, rr %d",
+//                    currentPositions[0], currentPositions[1], currentPositions[2], currentPositions[3]);
             telemetry.update();
         }
     }

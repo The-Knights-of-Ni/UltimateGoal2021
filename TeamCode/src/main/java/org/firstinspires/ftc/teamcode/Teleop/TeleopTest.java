@@ -98,18 +98,19 @@ public class TeleopTest extends LinearOpMode{
 
             if (aB){
                 robot.launch1.setPower(1.0);
-                robot.launch2.setPower(1.0);
+                robot.launch2a.setPower(1.0);
+                robot.launch2b.setPower(1.0);
             }
             if (bB){
                 robot.launch1.setPower(0.0);
-                robot.launch2.setPower(0.0);
+                robot.launch2a.setPower(0.0);
+                robot.launch2b.setPower(0.0);
             }
 
             double speed1 = robot.launch1.getVelocity(AngleUnit.DEGREES);
-            double speed2 = robot.launch2.getVelocity(AngleUnit.DEGREES);
+            double speed2a = robot.launch2a.getVelocity(AngleUnit.DEGREES);
+            double speed2b = robot.launch2b.getVelocity(AngleUnit.DEGREES);
 
-            telemetry.addData("Launch 1 RPM: ", speed1);
-            telemetry.addData("Launch 2 RPM: ", speed2);
             if (wobbleClawControlDigital) {
                 if (robot.bumperRight2 && !robot.isrBumper2PressedPrev) { // toggle main claw arm deploy mode
                     if (wobbleClawDeployed) {
@@ -128,6 +129,9 @@ public class TeleopTest extends LinearOpMode{
             else if ((robot.triggerRight2 > 0.5) && (robot.triggerLeft2 < 0.5)){
                 robot.control.openWobbleClaw();
             }
+            telemetry.addData("Launch 1  RPM: ", speed1);
+            telemetry.addData("Launch 2a RPM: ", speed2a);
+            telemetry.addData("Launch 2b RPM: ", speed2b);
 
 //            boolean xB = robot.xButton;
 //            boolean yB = robot.yButton;

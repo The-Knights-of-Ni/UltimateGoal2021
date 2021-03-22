@@ -68,19 +68,19 @@ public class MotorTest extends LinearOpMode{
         telemetry.update();
         sleep(100);
 
-        robot.control.setLaunchPower(1.0 );
-
-        while(opModeIsActive()) {
-
-            int currentCountL1 = -robot.launch1.getCurrentPosition();
-            double currentTimeFL = ((double) (timer.nanoseconds() - startTime)) * 1.0e-6;
-            int currentCountL2a = -robot.launch2a.getCurrentPosition();
-            int currentCountL2b = -robot.launch2b.getCurrentPosition();
-
-            String output = String.format("time %.3f launch1 %d launch2a %d launch2b %d",
-                    currentTimeFL, currentCountL1, currentCountL2a, currentCountL2b);
-            Log.d("launcherEnc", output);
-        }
+//        robot.control.setLaunchPower(1.0 );
+//
+//        while(opModeIsActive()) {
+//
+//            int currentCountL1 = -robot.launch1.getCurrentPosition();
+//            double currentTimeFL = ((double) (timer.nanoseconds() - startTime)) * 1.0e-6;
+//            int currentCountL2a = -robot.launch2a.getCurrentPosition();
+//            int currentCountL2b = -robot.launch2b.getCurrentPosition();
+//
+//            String output = String.format("time %.3f launch1 %d launch2a %d launch2b %d",
+//                    currentTimeFL, currentCountL1, currentCountL2a, currentCountL2b);
+//            Log.d("launcherEnc", output);
+//        }
 
 
         // park robot

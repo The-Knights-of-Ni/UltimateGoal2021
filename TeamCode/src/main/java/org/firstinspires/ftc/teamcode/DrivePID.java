@@ -25,13 +25,19 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+import org.firstinspires.ftc.teamcode.Subsystems.OriginalDrive;
 
 @Autonomous(name="Drive PID")
 //@Disabled
 public class DrivePID extends LinearOpMode
 {
+    private static final double     DRIVE_GEAR_REDUCTION            = 1.0 ;     // This is < 1.0 if geared UP
+
+    private static final double     MOTOR_TICK_PER_REV_YELLOJACKET312   = 537.6;
+    private static final double     GOBUILDA_MECANUM_DIAMETER_MM        = 96.0;
+    private static final double     COUNTS_PER_MM                 = (MOTOR_TICK_PER_REV_YELLOJACKET312 * DRIVE_GEAR_REDUCTION) / (GOBUILDA_MECANUM_DIAMETER_MM * Math.PI);
+
     DcMotorEx frontLeftDriveMotor, frontRightDriveMotor, rearRightDriveMotor, rearLeftDriveMotor;
-    TouchSensor             touch;
     BNO055IMU               imu;
     Orientation             lastAngles = new Orientation();
     double                  globalAngle, power = .30, correction, rotation;
@@ -98,10 +104,15 @@ public class DrivePID extends LinearOpMode
 
         sleep(1000);
 
-        moveForward(2, power);
 
-        rotate(2, power);
-        rotate(-2, power);
+        OriginalDrive drive = new OriginalDrive(frontLeftDriveMotor, frontRightDriveMotor, rearLeftDriveMotor, rearRightDriveMotor, imu, this, null);
+        drive.turnByAngle(power, 15);
+
+        telemetry.addData("Angle ", imu.getAngularOrientation());
+        telemetry.update();
+
+        //rotate(15, power);
+        //rotate(-2, power);
 
         // turn the motors off.
         frontLeftDriveMotor.setPower(0);
@@ -128,6 +139,11 @@ public class DrivePID extends LinearOpMode
         frontRightDriveMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rearLeftDriveMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rearRightDriveMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        frontLeftDriveMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        frontRightDriveMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rearLeftDriveMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rearRightDriveMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
     /**
@@ -158,7 +174,7 @@ public class DrivePID extends LinearOpMode
     }
 
     private double getDistance() {
-        double distance = (frontLeftDriveMotor.getCurrentPosition() + frontRightDriveMotor.getCurrentPosition() + rearLeftDriveMotor.getCurrentPosition() + rearRightDriveMotor.getCurrentPosition()) / 4;
+        double distance = ((frontLeftDriveMotor.getCurrentPosition() + frontRightDriveMotor.getCurrentPosition() + rearLeftDriveMotor.getCurrentPosition() + rearRightDriveMotor.getCurrentPosition()) / 4) / COUNTS_PER_MM;
         return distance;
     }
 
@@ -243,8 +259,20 @@ public class DrivePID extends LinearOpMode
 
     private void moveForward(double distance, double power) // unit of measurement TBD
     {
+        telemetry.addData("Encoder fl: ", frontLeftDriveMotor.getCurrentPosition() / COUNTS_PER_MM);
+        telemetry.addData("Encoder fr: ", frontRightDriveMotor.getCurrentPosition() / COUNTS_PER_MM);
+        telemetry.addData("Encoder bl: ", rearLeftDriveMotor.getCurrentPosition() / COUNTS_PER_MM);
+        telemetry.addData("Encoder br: ", rearRightDriveMotor.getCurrentPosition() / COUNTS_PER_MM);
+        telemetry.update();
         // restart odometry distance tracking.
         resetDistance();
+        telemetry.clear();
+
+        telemetry.addData("Encoder fl: ", frontLeftDriveMotor.getCurrentPosition() / COUNTS_PER_MM);
+        telemetry.addData("Encoder fr: ", frontRightDriveMotor.getCurrentPosition() / COUNTS_PER_MM);
+        telemetry.addData("Encoder bl: ", rearLeftDriveMotor.getCurrentPosition() / COUNTS_PER_MM);
+        telemetry.addData("Encoder br: ", rearRightDriveMotor.getCurrentPosition() / COUNTS_PER_MM);
+        telemetry.update();
 
         pidDrive.reset();
         pidDrive.setSetpoint(distance);

@@ -48,7 +48,7 @@ public class Drive extends Subsystem {
     //NEW Chassis
     private static final double     MOTOR_TICK_PER_REV_YELLOJACKET312   = 537.6;
     private static final double     GOBUILDA_MECANUM_DIAMETER_MM        = 96.0;
-    private static final double     COUNTS_PER_MM                 = (MOTOR_TICK_PER_REV_YELLOJACKET312 * DRIVE_GEAR_REDUCTION) / (GOBUILDA_MECANUM_DIAMETER_MM * Math.PI);
+    private static final double     COUNTS_PER_MM                       = (MOTOR_TICK_PER_REV_YELLOJACKET312 * DRIVE_GEAR_REDUCTION) / (GOBUILDA_MECANUM_DIAMETER_MM * Math.PI);
 
 
     private static final double     WHEEL_DIAMETER_INCHES           = 100.0/25.4 ;     // For figuring circumference

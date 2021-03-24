@@ -10,11 +10,11 @@ import org.firstinspires.ftc.teamcode.Subsystems.Robot;
 import java.io.IOException;
 
 /**
- * Created by PaigeYeung on 10/17/2020
+ * Created by Andrew Chiang on 3/23/2021
  */
 
-@TeleOp(name = "Teleop")
-public class Teleop extends LinearOpMode {
+@TeleOp(name = "TeleopMark2")
+public class TeleopMark2 extends LinearOpMode {
     //Declare DC motor objects
     private Robot robot;
 
@@ -22,13 +22,13 @@ public class Teleop extends LinearOpMode {
     double timeCurrent;
     double timePre;
     ElapsedTime timer;
-    
+
     enum Prospective {
         ROBOT,
         DRIVER,
     }
 
-//    enum MainClawState {
+    //    enum MainClawState {
 //        CLOSE,
 //        OPEN,
 //        WIDEOPEN,
@@ -41,6 +41,10 @@ public class Teleop extends LinearOpMode {
 
     private boolean isIntakeOn = false;
     private boolean isLaunchOn = false;
+    private boolean isIntakeToElevatorOpen = false;
+    private boolean isLauncherFeeder = false;
+
+
 
 
 
@@ -122,7 +126,7 @@ public class Teleop extends LinearOpMode {
 //                wobbleClawDeployed = false;
 //            }
 
-            //Toggle intake
+            //Toggle intake regular
             if (robot.aButton && !robot.isaButtonPressedPrev){
                 if(isIntakeOn){
                     robot.control.setIntake(false);
@@ -134,8 +138,20 @@ public class Teleop extends LinearOpMode {
                 }
             }
 
-            //Toggle launcher
+            //Toggle intake REVERSE
             if (robot.bButton && !robot.isbButtonPressedPrev){
+                if(isIntakeOn){
+                    robot.control.setIntakeReverse(false);
+                    isIntakeOn = false;
+                }
+                else{
+                    robot.control.setIntakeReverse(true);
+                    isIntakeOn = true;
+                }
+            }
+
+            //Toggle launcher
+            if (robot.xButton && !robot.isxButtonPressedPrev){
                 if(isLaunchOn) {
                     robot.control.setLaunch(false);
                     isLaunchOn = false;

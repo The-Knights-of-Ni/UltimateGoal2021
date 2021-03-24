@@ -20,15 +20,18 @@ public class Control extends Subsystem {
     //DC Motors
     private DcMotorEx intake;
     private DcMotorEx launch1;
-    private DcMotorEx launch2;
+    private DcMotorEx launch2a;
+    private DcMotorEx launch2b;
 
     //Servos
-    private Servo wobbleGoalArm;
-    private Servo wobbleClaw;
     public Servo elevator1;
     public Servo elevator2;
-    public Servo launchFeed;
-
+    private Servo wobbleClaw;
+    private Servo wobbleGoalArm;
+    private Servo intakeToElevatorL;
+    private Servo intakeToElevatorR;
+    private Servo launcherFeederL;
+    private Servo launcherFeederR;
     //Sensors
     private BNO055IMU imu;
 
@@ -87,32 +90,6 @@ public class Control extends Subsystem {
 
     private static final double     MAINARM_LENGTH_TICK_MAX         = 8900.0;    // main arm tick max
 
-    // Servos
-//    private static final double     fClawLFoundation = 0.42;
-//    private static final double     fClawRFoundation = 0.58;
-//    private static final double     fClawLDown = 0.36;
-//    private static final double     fClawLUp = 0.795;
-//    private static final double     fClawRUp = 0.05;
-//    private static final double     fClawRDown = 0.63;
-//
-//    private static final double     CLAW_ARM_POS_ANGLE                  = 70.1; // most positive angle
-//    private static final double     CLAW_ARM_POS_VALUE                  = 0.971; // servo setting at most positive angle
-//    private static final double     CLAW_ARM_POS_0_DEG                  = 0.692; // xRail horizontal and main claw facing down
-//    private static final double     CLAW_ARM_POS_N180_DEG                = 0.04;
-//    private static final double     CLAW_ARM_ROT_0_DEG                  = 0.046;
-//    private static final double     CLAW_ARM_ROT_180_DEG                = 0.796;
-//    private static final double     MAIN_CLAW_POS_OPEN_WIDE              = 0.369;
-//    private static final double     MAIN_CLAW_POS_OPEN                  = 0.416;
-//    private static final double     MAIN_CLAW_POS_CLOSED_STONE          = 0.589;
-//    private static final double     MAIN_CLAW_POS_CLOSED                = 0.64;
-//
-//    private static final double     CS_ARM_POS_ANGLE                  = 68.5; // most positive angle
-//    private static final double     CS_ARM_POS_VALUE                  = 0.038; // servo setting at most positive angle
-//    private static final double     CS_ARM_POS_0_DEG                  = 0.301; // xRail horizontal and cs claw facing down
-//    private static final double     CS_ARM_POS_N180_DEG                = 0.939;
-//    private static final double     CS_CLAW_POS_OPEN                  = 0.66;
-//    private static final double     CS_CLAW_POS_CLOSED                = 0.43;
-//
 
     // THESE NEXT VALUES NEED TO BE SET LATER - wobble goal for ultimategoal
     private static final double     WB_ARM_POS_ANGLE                  = 0; // most positive angle
@@ -121,6 +98,17 @@ public class Control extends Subsystem {
     private static final double     WB_CLAW_POS_OPEN                  = 0;
     private static final double     WB_CLAW_POS_CLOSED_STONE          = 0;
     private static final double     WB_CLAW_POS_CLOSED                = 0;
+
+    private static final double     INTAKE_TO_ELEVATOR_R_OPEN    = 0.0;
+    private static final double     INTAKE_TO_ELEVATOR_R_CLOSE   = 0.0;
+    private static final double     INTAKE_TO_ELEVATOR_L_OPEN    = 0.0;
+    private static final double     INTAKE_TO_ELEVATOR_L_CLOSE   = 0.0;
+    private static final double     LAUNCHER_FEEDER_R_OPEN       = 0.0;
+    private static final double     LAUNCHER_FEEDER_R_CLOSE      = 0.0;
+    private static final double     LAUNCHER_FEEDER_L_OPEN       = 0.0;
+    private static final double     LAUNCHER_FEEDER_L_CLOSE      = 0.0;
+
+
 
     // define variables
     private double mainArmAngle = 0.0;
@@ -131,11 +119,40 @@ public class Control extends Subsystem {
     private boolean mainClawArmTrackingMode = false;
     private double ClawRotationAngle = 0.0;
 
-    public Control(DcMotorEx intake, DcMotorEx launch1, DcMotorEx launch2, BNO055IMU imu, LinearOpMode opMode, ElapsedTime timer) {
+//    public Control(DcMotorEx intake, DcMotorEx launch1, DcMotorEx launch2, BNO055IMU imu, LinearOpMode opMode, ElapsedTime timer, ) {
+    public Control(DcMotorEx intake, DcMotorEx launch1, DcMotorEx launch2a, DcMotorEx launch2b, BNO055IMU imu, LinearOpMode opMode, ElapsedTime timer, Servo wobbleClaw, Servo wobbleGoalArm) {
+
         // store device information locally
+        this.wobbleClaw = wobbleClaw;
+        this.wobbleGoalArm = wobbleGoalArm;
         this.intake = intake;
         this.launch1 = launch1;
-        this.launch2 = launch2;
+        this.launch2a = launch2a;
+        this.launch2b = launch2b;
+        this.opMode = opMode;
+        this.hardwareMap = opMode.hardwareMap;
+        this.imu = imu;
+        this.timer = timer;
+        setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        // initialize main arm parameters
+        mainClawArmTrackingMode = false;
+    }
+
+    public Control(DcMotorEx intake, DcMotorEx launch1, DcMotorEx launch2a, DcMotorEx launch2b, BNO055IMU imu, LinearOpMode opMode, ElapsedTime timer,
+                   Servo wobbleClaw, Servo wobbleGoalArm, Servo intakeToElevatorR, Servo intakeToElevatorL, Servo launcherFeederR, Servo launcherFeederL) {
+
+        // store device information locally
+        this.wobbleClaw = wobbleClaw;
+        this.wobbleGoalArm = wobbleGoalArm;
+        this.intakeToElevatorR = intakeToElevatorR;
+        this.intakeToElevatorL = intakeToElevatorL;
+        this.launcherFeederR = launcherFeederR;
+        this.launcherFeederR = launcherFeederL;
+        this.intake = intake;
+        this.launch1 = launch1;
+        this.launch2a = launch2a;
+        this.launch2b = launch2b;
         this.opMode = opMode;
         this.hardwareMap = opMode.hardwareMap;
         this.imu = imu;
@@ -152,7 +169,8 @@ public class Control extends Subsystem {
     private void setZeroPowerBehavior(DcMotor.ZeroPowerBehavior mode) {
         intake.setZeroPowerBehavior(mode);
         launch1.setZeroPowerBehavior(mode);
-        launch2.setZeroPowerBehavior(mode);
+        launch2a.setZeroPowerBehavior(mode);
+        launch2b.setZeroPowerBehavior(mode);
     }
 
     public double getWinchMaxSpeedMMpSec(){
@@ -172,33 +190,61 @@ public class Control extends Subsystem {
     }
 
     public void openWobbleClaw() {
-        wobbleClaw.setPosition(0.416);
+        wobbleClaw.setPosition(0.7);
     }
     public void closeWobbleClaw(){
-        wobbleClaw.setPosition(0.64);
+        wobbleClaw.setPosition(1);
     }
-    public double getWobbleArmTargetAngle() {
-        return mainArmTargetAngle;
+
+    public void deployWobble() {
+        wobbleGoalArm.setPosition(0.934);
     }
-    public double wobbleGoalArmAngleToPos(double angle){
-        int lowerIndex, upperIndex;
-        int i = 1;
-        double servoTarget;
-        while ((i < CLAW_ARM_TILT_TABLE_SIZE) && (CLAW_ARM_TILT_TABLE[i*2] < angle)) {
-            ++i;
-        }
-        upperIndex = i;
-        lowerIndex = i-1;
-        servoTarget = CLAW_ARM_TILT_TABLE[lowerIndex*2+1] +
-                (CLAW_ARM_TILT_TABLE[upperIndex*2+1]-CLAW_ARM_TILT_TABLE[lowerIndex*2+1])*(angle-CLAW_ARM_TILT_TABLE[lowerIndex*2])
-                        /(CLAW_ARM_TILT_TABLE[upperIndex*2]-CLAW_ARM_TILT_TABLE[lowerIndex*2]);
-        return servoTarget;
+
+    public void retractWobble() {
+        wobbleGoalArm.setPosition(0.1);
     }
-    public void setWobbleAngle(double angle){
-        wobbleGoalArm.setPosition(this.wobbleGoalArmAngleToPos(angle));
+//    public double getWobbleArmTargetAngle() {
+//        return mainArmTargetAngle;
+//    }
+//    public double wobbleGoalArmAngleToPos(double angle){
+//        int lowerIndex, upperIndex;
+//        int i = 1;
+//        double servoTarget;
+//        while ((i < CLAW_ARM_TILT_TABLE_SIZE) && (CLAW_ARM_TILT_TABLE[i*2] < angle)) {
+//            ++i;
+//        }
+//        upperIndex = i;
+//        lowerIndex = i-1;
+//        servoTarget = CLAW_ARM_TILT_TABLE[lowerIndex*2+1] +
+//                (CLAW_ARM_TILT_TABLE[upperIndex*2+1]-CLAW_ARM_TILT_TABLE[lowerIndex*2+1])*(angle-CLAW_ARM_TILT_TABLE[lowerIndex*2])
+//                        /(CLAW_ARM_TILT_TABLE[upperIndex*2]-CLAW_ARM_TILT_TABLE[lowerIndex*2]);
+//        return servoTarget;
+//    }
+//    public void setWobbleAngle(double angle){
+//        wobbleGoalArm.setPosition(this.wobbleGoalArmAngleToPos(angle));
+//    }
+//    public void retractWobbleClaw(){
+//        setWobbleAngle(-180);
+//    }
+
+    public void closeIntakeToElevator(){
+        intakeToElevatorR.setPosition(INTAKE_TO_ELEVATOR_R_CLOSE);
+        intakeToElevatorL.setPosition(INTAKE_TO_ELEVATOR_L_CLOSE);
     }
-    public void retractWobbleClaw(){
-        setWobbleAngle(-180);
+
+    public void openIntakeToElevator(){
+        intakeToElevatorR.setPosition(INTAKE_TO_ELEVATOR_R_OPEN);
+        intakeToElevatorL.setPosition(INTAKE_TO_ELEVATOR_L_OPEN);
+    }
+
+    public void openLauncherFeeder(){
+        launcherFeederR.setPosition(LAUNCHER_FEEDER_R_OPEN);
+        launcherFeederL.setPosition(LAUNCHER_FEEDER_L_OPEN);
+    }
+
+    public void closeLauncherFeeder(){
+        launcherFeederR.setPosition(LAUNCHER_FEEDER_R_CLOSE);
+        launcherFeederL.setPosition(LAUNCHER_FEEDER_L_CLOSE);
     }
 
     public void setIntake(boolean status){
@@ -210,15 +256,32 @@ public class Control extends Subsystem {
         }
     }
 
+    public void setIntakeReverse(boolean status){
+        if(status){
+            intake.setPower(-0.8);
+        }
+        else {
+            intake.setPower(0.0);
+        }
+    }
+
     public void setLaunch(boolean status){
         if (status){
-            launch1.setPower(1.0);
-            launch2.setPower(1.0);
+            launch1.setPower(-1.0);
+            launch2a.setPower(-1.0);
+            launch2b.setPower(-1.0);
         }
         else{
             launch1.setPower(0.0);
-            launch2.setPower(0.0);
+            launch2a.setPower(0.0);
+            launch2b.setPower(0.0);
         }
+    }
+
+    public void setLaunchPower(double launchPower){
+            launch1.setPower(-launchPower);
+            launch2a.setPower(-launchPower);
+            launch2b.setPower(-launchPower);
     }
 
 

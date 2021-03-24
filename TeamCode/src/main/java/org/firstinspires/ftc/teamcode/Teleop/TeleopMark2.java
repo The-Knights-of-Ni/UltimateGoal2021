@@ -41,7 +41,7 @@ public class TeleopMark2 extends LinearOpMode {
 
     private boolean isIntakeOn = false;
     private boolean isLaunchOn = false;
-    private boolean isIntakeToElevatorOpen = false;
+    private boolean isIntakeToElevator = false;
     private boolean isLauncherFeeder = false;
 
 
@@ -93,10 +93,6 @@ public class TeleopMark2 extends LinearOpMode {
             motorPowers = robot.drive.calcMotorPowers(robot.leftStickX, robot.leftStickY, robot.rightStickX);
             robot.drive.setDrivePowers(motorPowers);
 
-            // reset drive motor encoders
-            if (robot.yButton && !robot.isyButtonPressedPrev) {
-                robot.drive.resetDriveMotorEncoders();
-            }
 
 
 //            //Open and close claw
@@ -160,8 +156,15 @@ public class TeleopMark2 extends LinearOpMode {
                     robot.control.setLaunch(true);
                     isLaunchOn = true;
                 }
-
             }
+
+            //Intake to elevator
+            if (robot.bumperRight && !robot.isrBumperPressedPrev){
+                robot.control.closeIntakeToElevator();
+                robot.control.openIntakeToElevator();
+            }
+
+
 
 //            int currentPositions[] = robot.drive.getCurrentPositions();
 //            telemetry.addData("position", "fl %d, fr %d, rl %d, rr %d",

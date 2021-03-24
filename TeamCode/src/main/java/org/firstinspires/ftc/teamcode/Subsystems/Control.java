@@ -227,14 +227,24 @@ public class Control extends Subsystem {
 //        setWobbleAngle(-180);
 //    }
 
-    public void closeintakeToElevator(){
+    public void closeIntakeToElevator(){
         intakeToElevatorR.setPosition(INTAKE_TO_ELEVATOR_R_CLOSE);
         intakeToElevatorL.setPosition(INTAKE_TO_ELEVATOR_L_CLOSE);
     }
 
-    public void openintakeToElevator(){
+    public void openIntakeToElevator(){
         intakeToElevatorR.setPosition(INTAKE_TO_ELEVATOR_R_OPEN);
         intakeToElevatorL.setPosition(INTAKE_TO_ELEVATOR_L_OPEN);
+    }
+
+    public void openLauncherFeeder(){
+        launcherFeederR.setPosition(LAUNCHER_FEEDER_R_OPEN);
+        launcherFeederL.setPosition(LAUNCHER_FEEDER_L_OPEN);
+    }
+
+    public void closeLauncherFeeder(){
+        launcherFeederR.setPosition(LAUNCHER_FEEDER_R_CLOSE);
+        launcherFeederL.setPosition(LAUNCHER_FEEDER_L_CLOSE);
     }
 
     public void setIntake(boolean status){

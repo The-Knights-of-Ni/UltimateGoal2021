@@ -26,6 +26,11 @@ import static org.firstinspires.ftc.robotcore.external.navigation.AxesReference.
  * Created by Ryan Lin on 1/04/2021.
  */
 
+/**
+ * https://github.com/OpenFTC/OpenCV-Repackaged
+ * Open CV library
+ */
+
 public class Vision {
     private HardwareMap hardwareMap;
     private Robot robot;

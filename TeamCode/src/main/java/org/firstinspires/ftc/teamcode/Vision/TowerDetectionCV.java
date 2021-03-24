@@ -97,7 +97,6 @@ public class TowerDetectionCV extends LinearOpMode {
 
             Mat edges = new Mat();
             Imgproc.Canny(thresh, edges, 100, 300);
-            ORB.
 
 
             return edges; // return the mat with rectangles drawn
